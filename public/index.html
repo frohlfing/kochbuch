@@ -60,7 +60,7 @@
     justify-content:center;
   }
   .controls input[type=search]{
-    flex:1 1 320px;
+    flex:1 1 270px;
     max-width:420px;
     padding:.6rem .9rem;
     border:1px solid var(--rule);
@@ -257,14 +257,15 @@
 
   /* Buttons */
   .btn{
-    font-family:inherit;
-    font-size:.85rem;
+    font-family: inherit;
+    font-size: .95rem;
     padding:.5rem .95rem;
     border-radius:2px;
     border:1px solid var(--rule);
     background:var(--card);
     color:var(--ink);
     cursor:pointer;
+    height: 43.69px;
   }
   .btn:hover{border-color:var(--accent); color:var(--accent);}
   .btn-primary{background:var(--accent); border-color:var(--accent); color:#fff;}
@@ -378,6 +379,7 @@
     <option value="title">Alphabetisch</option>
   </select>
   <button class="btn btn-primary" id="newRecipeBtn" type="button">+ Neues Rezept</button>
+  <button class="btn" id="importRecipeBtn" type="button">Importieren</button>
 </div>
 <p class="count" id="resultCount"></p>
 
@@ -399,6 +401,7 @@ const catSel = document.getElementById('catSel');
 const resultCount = document.getElementById('resultCount');
 const subCount = document.getElementById('subCount');
 const newRecipeBtn = document.getElementById('newRecipeBtn');
+const importRecipeBtn = document.getElementById('importRecipeBtn');
 
 const TOKEN_KEY = 'kochbuch_api_token';
 
@@ -857,6 +860,63 @@ searchInput.addEventListener('input', renderGrid);
 sortSel.addEventListener('change', renderGrid);
 catSel.addEventListener('change', renderGrid);
 newRecipeBtn.addEventListener('click', () => openEditForm(null));
+importRecipeBtn.addEventListener('click', () => openImportForm());
+
+/** Zeigt das Formular zum Rezept-Import per URL (chefkoch.de u. Ä. mit schema.org/Recipe). */
+function openImportForm(){
+  sheet.innerHTML = `
+    <button class="close" id="closeBtn" aria-label="Schließen">&times;</button>
+    <h2>Rezept importieren</h2>
+    <div id="formError"></div>
+    <div class="form-field">
+      <label for="importUrlInput">URL</label>
+      <input type="text" id="importUrlInput" placeholder="https://www.chefkoch.de/rezepte/...">
+      <div class="hint">Funktioniert bei chefkoch.de und vielen anderen Rezeptseiten mit schema.org/Recipe-Daten. Titel, Kategorie, Portionen, Zutaten, Zubereitung und Bild werden automatisch übernommen.</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="importBtn" type="button">Importieren</button>
+      <button class="btn" id="cancelBtn" type="button">Abbrechen</button>
+    </div>
+  `;
+  overlay.classList.add('open');
+  document.getElementById('closeBtn').addEventListener('click', closeRecipe);
+  document.getElementById('cancelBtn').addEventListener('click', closeRecipe);
+  document.getElementById('importBtn').addEventListener('click', runImport);
+}
+
+async function runImport(){
+  const url = document.getElementById('importUrlInput').value.trim();
+  const errorBox = document.getElementById('formError');
+  errorBox.innerHTML = '';
+
+  if(!url){
+    errorBox.innerHTML = '<div class="error-box">URL ist erforderlich.</div>';
+    return;
+  }
+
+  const importBtn = document.getElementById('importBtn');
+  importBtn.disabled = true;
+  importBtn.textContent = 'Importiert …';
+
+  try {
+    const saved = await apiWrite('api/import.php', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({url}),
+    });
+    RECIPES = RECIPES.filter(x => x.slug !== saved.slug);
+    RECIPES.push(saved);
+    renderGrid();
+    openRecipe(RECIPES.indexOf(saved));
+    if(saved.import_warning){
+      alert(saved.import_warning);
+    }
+  } catch(err){
+    errorBox.innerHTML = `<div class="error-box">${escapeHtml(err.message)}</div>`;
+    importBtn.disabled = false;
+    importBtn.textContent = 'Importieren';
+  }
+}
 
 async function init(){
   try {

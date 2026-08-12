@@ -54,11 +54,19 @@ public/                     Document Root
     ├── recipes.php          GET/POST/PUT/DELETE – Rezepte lesen, anlegen, bearbeiten, löschen
     ├── upload.php           POST – Bild-Upload für ein Rezept inkl. Thumbnail-Generierung
     ├── image.php            GET – liefert image.<ext>/thumb.<ext> aus (siehe data/, oben)
+    ├── import.php           POST – Rezept von externer URL importieren (chefkoch.de u. Ä.)
     └── lib/
         ├── crud.php         Read/Write/Rename/Delete-Logik + Validierung
         ├── slug.php         slugify() + Eindeutigkeits-Check
         ├── thumbnail.php    Thumbnail-Erzeugung per GD (Center-Crop) + Lazy-Fallback
-        └── http.php         JSON-Response- und Token-Check-Helper
+        ├── image_store.php  Bild validieren/speichern + Thumbnail (gemeinsam für upload.php und import.php)
+        ├── http.php         JSON-Response- und Token-Check-Helper
+        └── parsers/
+            ├── RecipeParserInterface.php    Vertrag: supports(url), parse(url)
+            ├── ChefkochParser.php           erkennt/parst chefkoch.de
+            ├── GenericSchemaOrgParser.php   Fallback für jede Seite mit schema.org/Recipe
+            ├── schema_org.php               gemeinsame JSON-LD-Extraktion (auch @graph-Strukturen)
+            └── fetch.php                    http_get(): curl, sonst file_get_contents()-Fallback
 ```
 
 ## API
@@ -75,6 +83,7 @@ sonst `401`. Lesende Endpunkte (`GET`) sind offen.
 | DELETE  | `/api/recipes.php?slug=xyz`                 | Rezept samt Ordner (Bilder inklusive) löschen                                                                               |
 | POST    | `/api/upload.php`                           | Bild für ein Rezept hochladen (`multipart/form-data`: `slug`, `image`)                                                      |
 | GET     | `/api/image.php?slug=xyz&type=image\|thumb` | Original- bzw. Thumbnail-Bild ausliefern                                                                                    |
+| POST    | `/api/import.php`                           | Rezept von einer externen URL importieren (Body: `{"url": "..."}`)                                                          |
 
 `recipe.json`-Schema pro Rezept:
 
@@ -115,7 +124,40 @@ Es wird nur dann wieder nachgefragt, wenn entweder:
 
 ### Import-Funktion
 
-TODO
+Der "Importieren"-Button neben "+ Neues Rezept" öffnet ein Formular für eine URL und ruft
+`POST /api/import.php` auf (`{"url": "..."}`, Token nötig). Der Endpunkt nutzt eine kleine
+Parser-Registry (`api/lib/parsers/`): anhand der URL wird ein zuständiger `RecipeParserInterface`
+gesucht (`supports(url): bool`) und mit `parse(url): array` ausgelesen.
+
+- **`ChefkochParser`**: zuständig für `chefkoch.de`.
+- **`GenericSchemaOrgParser`**: Fallback für jede andere Seite (`supports()` liefert immer
+  `true`, muss daher als letztes in der Registry stehen) – funktioniert überall dort, wo
+  `schema.org/Recipe`-JSON-LD eingebettet ist (z. B. wie bei nextcloud/cookbook üblich).
+
+Beide Parser nutzen dieselbe Extraktion (`schema_org.php`): sie durchsuchen alle
+`<script type="application/ld+json">`-Blöcke der Seite, auch verschachtelt in einer
+`@graph`-Struktur (so bei chefkoch.de), lösen `@id`-Referenzen auf (Bild, Autor) auf und wandeln
+`recipeInstructions` unabhängig von der Form (String, HowToStep-Liste, verschachtelte
+HowToSection wie bei chefkoch.de) in eine flache Schritt-Liste um. Ein an den Titel angehängter
+Autorenname (z. B. chefkoch.de: `"... von PicassosWelt"`) wird nur entfernt, wenn er exakt mit
+dem über `author` verlinkten Namen übereinstimmt (kein Raten anhand von Textmustern) – Titel wie
+"Involtini von Huhn" bleiben also unangetastet. Die `description` wird bewusst **nicht** als
+Notiz übernommen, da dort bei chefkoch.de u. a. reiner SEO-Marketingtext steht.
+
+Neue Portale: einfach `RecipeParserInterface` implementieren und in der `$parsers`-Registry in
+`import.php` eintragen (vor dem `GenericSchemaOrgParser`-Fallback) – an `import.php` selbst
+ändert sich dabei nichts.
+
+Gespeichert wird über dieselbe Validierungs-/Anlege-Funktion wie `POST /api/recipes.php`
+(`create_recipe()` aus `crud.php`) – es gibt also nur einen Validierungsweg, keinen separaten
+für Importe. Das Titelbild wird danach herunterergeladen und über `store_recipe_image()`
+gespeichert (dieselbe Funktion wie beim manuellen Bild-Upload); schlägt nur das fehl, bleibt das
+Rezept trotzdem gespeichert (Antwort enthält dann zusätzlich `"import_warning"`).
+
+`http_get()` (`fetch.php`) nutzt die curl-Extension, falls vorhanden, sonst `file_get_contents()`
+mit Stream-Context als Fallback. Das ist mehr als reine Portabilität: manche Seiten blocken
+PHPs `file_get_contents()`-Stream-Wrapper als Bot, akzeptieren curl-Anfragen mit realistischeren
+Headern aber anstandslos.
 
 ### Druckfunktion
 
@@ -140,7 +182,7 @@ kein Garant für exakt eine Seite bei sehr langen Rezepten.
 - ✅ JSON-API (CRUD + Bild-Upload mit automatischem Thumbnail)
 - ✅ Frontend auf die API umgestellt, inkl. Anlegen/Bearbeiten/Löschen
 - ✅ Druckansicht (eine A4-Seite pro Rezept, `@media print`)
-- ⏳ Rezept-Import per URL (chefkoch.de u. Ä. über `schema.org/Recipe`-JSON-LD)
+- ✅ Rezept-Import per URL (chefkoch.de u. Ä. über `schema.org/Recipe`-JSON-LD)
 
 ## Lizenz
 

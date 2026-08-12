@@ -1,0 +1,102 @@
+<?php
+
+const HTTP_FETCH_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36';
+
+/**
+ * Lädt $url per GET und gibt den Response-Body zurück. Nutzt die curl-Extension, falls
+ * verfügbar (realistischerer Browser-Fingerprint, manche Seiten blocken PHPs file_get_contents()-
+ * Stream-Wrapper sonst als Bot), sonst file_get_contents() mit Stream-Context als Fallback
+ * (allow_url_fopen ist praktisch überall aktiviert, curl dagegen nicht garantiert vorhanden).
+ * Folgt Redirects.
+ *
+ * Bekanntes lokales Problem (dieses XAMPP, nicht der Code hier): Unter Apache (nicht CLI!) schlägt
+ * das Laden von php_curl.dll fehl, extension_loaded('curl') liefert dort false, der Fallback auf
+ * file_get_contents() greift automatisch. Sichtbar in C:\xampp\php\logs\php_error_log als
+ * "PHP Startup: Unable to load dynamic library 'php_curl.dll' (Das angegebene Modul/die angegebene
+ * Prozedur wurde nicht gefunden)" – ein DLL-Versionskonflikt einer curl-Abhängigkeit (vermutlich
+ * OpenSSL/libssh2) speziell im apache2handler-SAPI dieser XAMPP-Installation. php -m (CLI) zeigt
+ * curl fälschlich als geladen an, das täuscht leicht. Auswirkung: file_get_contents() wird von
+ * manchen Seiten mit aggressiver Bot-Erkennung blockiert (z. B. allrecipes.com, simplyrecipes.com
+ * mit HTTP 401/402), chefkoch.de funktioniert davon unbeeinflusst. Auf dem Ziel-Webspace (Linux)
+ * ist curl mit hoher Wahrscheinlichkeit intakt; vor dem Verlassen auf den Fallback dort prüfen,
+ * z. B. mit einer kurzen Testdatei <?php var_dump(extension_loaded('curl'));.
+ *
+ * @throws RuntimeException bei ungültigem Schema, Netzwerkfehler oder HTTP-Fehlerstatus
+ */
+function http_get(string $url, int $timeoutSeconds = 10, int $maxBytes = 8 * 1024 * 1024): string
+{
+    $scheme = parse_url($url, PHP_URL_SCHEME);
+    if (!in_array($scheme, ['http', 'https'], true)) {
+        throw new RuntimeException('Nur http/https-URLs werden unterstützt');
+    }
+
+    return extension_loaded('curl')
+        ? http_get_curl($url, $timeoutSeconds, $maxBytes)
+        : http_get_stream($url, $timeoutSeconds, $maxBytes);
+}
+
+function http_get_curl(string $url, int $timeoutSeconds, int $maxBytes): string
+{
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_MAXREDIRS => 5,
+        CURLOPT_TIMEOUT => $timeoutSeconds,
+        CURLOPT_CONNECTTIMEOUT => $timeoutSeconds,
+        CURLOPT_USERAGENT => HTTP_FETCH_USER_AGENT,
+        CURLOPT_HTTPHEADER => ['Accept-Language: de-DE,de;q=0.9,en;q=0.8'],
+        CURLOPT_RANGE => '0-' . $maxBytes, // Kulanz-Bremse, Server kann Range ignorieren
+        CURLOPT_SSL_VERIFYPEER => true,
+    ]);
+    $body = curl_exec($ch);
+    $error = curl_error($ch);
+    $status = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+    curl_close($ch);
+
+    if ($body === false) {
+        throw new RuntimeException("Abruf fehlgeschlagen: $error");
+    }
+    if ($status >= 400) {
+        throw new RuntimeException("Server antwortete mit HTTP $status");
+    }
+
+    return $body;
+}
+
+function http_get_stream(string $url, int $timeoutSeconds, int $maxBytes): string
+{
+    $context = stream_context_create([
+        'http' => [
+            'method' => 'GET',
+            'header' => "User-Agent: " . HTTP_FETCH_USER_AGENT . "\r\nAccept-Language: de-DE,de;q=0.9,en;q=0.8\r\n",
+            'timeout' => $timeoutSeconds,
+            'follow_location' => 1,
+            'max_redirects' => 5,
+            // Damit wir den Status selbst auswerten (und eine sprechende Fehlermeldung geben)
+            // statt dass file_get_contents() bei 4xx/5xx nur eine PHP-Warning wirft.
+            'ignore_errors' => true,
+        ],
+        'ssl' => [
+            'verify_peer' => true,
+            'verify_peer_name' => true,
+        ],
+    ]);
+
+    $body = @file_get_contents($url, false, $context, 0, $maxBytes);
+    if ($body === false) {
+        throw new RuntimeException('Abruf fehlgeschlagen (Netzwerkfehler oder ungültige URL)');
+    }
+
+    $status = 0;
+    foreach ($http_response_header ?? [] as $header) {
+        if (preg_match('#^HTTP/\S+\s+(\d+)#', $header, $m)) {
+            $status = (int) $m[1];
+        }
+    }
+    if ($status >= 400) {
+        throw new RuntimeException("Server antwortete mit HTTP $status");
+    }
+
+    return $body;
+}

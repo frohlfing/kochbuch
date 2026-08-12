@@ -28,7 +28,10 @@
       "Bash(mv data_backup data)",
       "Bash(cd \"C:\\\\Users\\\\frank\\\\Source\\\\PhpStorm\\\\kochbuch\\\\public\")",
       "Bash(echo \"JS OK\")",
-      "Bash(node -e \"require\\('jsdom'\\); console.log\\('jsdom verfuegbar'\\)\")"
+      "Bash(node -e \"require\\('jsdom'\\); console.log\\('jsdom verfuegbar'\\)\")",
+      "Read(//c/xampp/php/ext/**)",
+      "Read(//c/xampp/php/**)",
+      "PowerShell(Get-Process *)"
     ]
   }
 }
