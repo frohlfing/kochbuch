@@ -18,28 +18,24 @@ Ein privates Familien-Kochbuch, digitalisiert als kleine PHP/JSON-API mit einer 
    php -r "echo bin2hex(random_bytes(32));"
    ```
 3. Webserver mit Document Root `public/` auf ein Verzeichnis zeigen lassen (z. B. XAMPP-vHost).
+4. GD-Extension für PHP aktivieren. Unter XAMPP geht das so:
+
+    Testdatei:
+    ```php
+    <?php
+    // Nur zur manuellen Prüfung der PHP-Konfiguration (z. B. GD-Verfügbarkeit) nach dem Deploy.
+    // Danach wieder löschen - phpinfo() gibt Server-Interna preis.
+    phpinfo();
+    ```
+
+   Unter XAMPP:  
+   - `C:\xampp\php\php.ini` öffnen und die Zeile `;extension=gd` zu `extension=gd` ändern.
+   - Apache neu starten.
+
+   Unter Hetzner-Webspace: 
+   - GD ist standardmäßig aktiviert. Falls nicht, kann dies per KonsoleH eingerichtet werden.
+
 4. Seite aufrufen – die Rezeptliste lädt sich selbst über `GET /api/recipes.php`.
-
-Für Änderungen (Rezept anlegen/bearbeiten/löschen, Bild-Upload) fragt das Frontend beim ersten
-Schreibversuch per `prompt()` nach dem API-Token und merkt es sich in `localStorage`.
-
-### GD unter XAMPP aktivieren
-
-Testdatei:
-```php
-<?php
-// Nur zur manuellen Prüfung der PHP-Konfiguration (z. B. GD-Verfügbarkeit) nach dem Deploy.
-// Danach wieder löschen - phpinfo() gibt Server-Interna preis.
-phpinfo();
-```
-
-`php_gd.dll` liegt XAMPP standardmäßig bei, ist aber in `php.ini` auskommentiert. So aktivieren:
-
-1. `C:\xampp\php\php.ini` öffnen und die Zeile `;extension=gd` zu `extension=gd` ändern.
-2. Apache neu starten, damit die Änderung greift.
-
-Auf dem finalen Hetzner-Webspace ist GD standardmäßig aktiviert. Falls nicht, kann dies per KonsoleH 
-eingerichtet werden.
 
 ## Projektstruktur
 
@@ -100,6 +96,30 @@ sonst `401`. Lesende Endpunkte (`GET`) sind offen.
   "notes": []
 }
 ```
+
+## Frontend / Arbeitsweise
+
+### Token-Authentifizierung
+
+Für Änderungen (Rezept anlegen/bearbeiten/löschen, Bild-Upload) fragt das Frontend beim ersten
+Schreibversuch per `prompt()` nach dem API-Token und merkt es sich in `localStorage`.
+
+Beim ersten Schreibversuch (Anlegen/Bearbeiten/Löschen/Upload) fragt das Frontend per prompt() nach dem Token und legt 
+es danach in `localStorage` unter dem Schlüssel `kochbuch_api_token` ab. Jeder weitere Schreibversuch liest das 
+gespeicherte Token wieder aus und fragt nicht erneut nach.
+
+Es wird nur dann wieder nachgefragt, wenn entweder:
+- der Server das gespeicherte Token ablehnt (401) – dann wird es automatisch aus `localStorage` gelöscht, oder
+- du es manuell löschst, z. B. in den Browser-DevTools mit `localStorage.removeItem('kochbuch_api_token')` oder über 
+  "Website-Daten löschen".
+
+### Import-Funktion
+
+TODO
+
+### Druckfunktion
+
+TODO
 
 ## Stand / Roadmap
 

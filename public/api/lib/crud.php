@@ -128,10 +128,13 @@ function validate_recipe_input(array $data): array
     if (trim((string) ($data['title'] ?? '')) === '') {
         $errors[] = 'title ist erforderlich';
     }
-    foreach (['ingredients', 'steps', 'notes'] as $field) {
+    foreach (['ingredients', 'steps'] as $field) {
         if (isset($data[$field]) && !is_array($data[$field])) {
             $errors[] = "$field muss ein Array sein";
         }
+    }
+    if (isset($data['notes']) && $data['notes'] !== null && !is_string($data['notes'])) {
+        $errors[] = 'notes muss ein Text sein';
     }
     foreach ($data['ingredients'] ?? [] as $group) {
         if (!is_array($group) || !array_key_exists('group', $group) || !isset($group['text']) || !is_array($group['text'])) {
@@ -146,6 +149,8 @@ function validate_recipe_input(array $data): array
 /** Baut aus rohen Request-Daten die vom Store verwalteten Felder (title/category/servings/ingredients/steps/notes), mit Defaults/Typumwandlung. */
 function normalize_recipe_fields(array $data): array
 {
+    $notes = trim((string) ($data['notes'] ?? ''));
+
     return [
         'title' => trim((string) ($data['title'] ?? '')),
         'category' => !empty($data['category']) ? (string) $data['category'] : null,
@@ -158,7 +163,7 @@ function normalize_recipe_fields(array $data): array
             $data['ingredients'] ?? []
         ),
         'steps' => array_values(array_map('strval', $data['steps'] ?? [])),
-        'notes' => array_values(array_map('strval', $data['notes'] ?? [])),
+        'notes' => $notes !== '' ? $notes : null,
     ];
 }
 

@@ -35,7 +35,7 @@ kochbuch_export/
     { "group": "Für die Soße", "text": "..." }
   ],
   "steps": ["Gemüse mit Kräutern aufkochen ...", "..."],
-  "notes": []
+  "notes": "Das ist lecker."
 }
 ```
 
@@ -95,7 +95,7 @@ kochbuch_export/
     { "group": "Für die Knödel", "text": ["500 g Rinderleber", "6 altbackene Brötchen, geraspelt", "..."] }
   ],
   "steps": ["Gemüse mit Kräutern aufkochen ...", "..."],
-  "notes": []
+  "notes": "Das ist lecker."
 }
 ```
 

@@ -449,6 +449,11 @@ function cardHtml(r, idx){
   </div>`;
 }
 
+/** Alle bereits verwendeten Kategorien (aus dem aktuellen RECIPES-Stand), alphabetisch, ohne Duplikate. */
+function knownCategories(){
+  return [...new Set(RECIPES.map(r => r.category).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'de'));
+}
+
 function renderGrid(){
   const q = searchInput.value.trim().toLowerCase();
   const cat = catSel.value;
@@ -492,8 +497,9 @@ function openRecipe(idx){
     ? `<h4>Zubereitung</h4><ol class="steps">${r.steps.map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ol>`
     : '';
 
-  const notesHtml = r.notes && r.notes.length
-    ? `<h4>Notizen</h4><div class="notes">${r.notes.map(n => `<p>${escapeHtml(n)}</p>`).join('')}</div>`
+  const noteLines = r.notes ? r.notes.split('\n').map(s => s.trim()).filter(Boolean) : [];
+  const notesHtml = noteLines.length
+    ? `<h4>Notizen</h4><div class="notes">${noteLines.map(n => `<p>${escapeHtml(n)}</p>`).join('')}</div>`
     : '';
 
   const src = imageSrc(r);
@@ -544,6 +550,22 @@ function formatIngredientsText(ingredients){
   }).join('\n');
 }
 
+/** Nummeriert die Zubereitungsschritte fürs Formular durch ("1. ", "2. ", ...). Umkehrfunktion zu parseStepsText(). */
+function formatStepsText(steps){
+  return steps.map((s, i) => `${i + 1}. ${s}`).join('\n');
+}
+
+/**
+ * Entfernt eine vom User eingegebene Nummerierung ("1.", "2)", ...) oder ein Listenzeichen
+ * ("-", "*") am Zeilenanfang wieder – Bsp1–Bsp4 aus der Anfrage führen alle zum selben Ergebnis.
+ * Leerzeilen werden ignoriert.
+ */
+function parseStepsText(text){
+  return text.split('\n')
+    .map(s => s.trim().replace(/^(?:\d+[.)]|[-*])\s*/, ''))
+    .filter(Boolean);
+}
+
 /**
  * Parst den einfachen Zutaten-Text zurück ins gruppierte API-Format. Zeilen mit führendem "#"
  * eröffnen eine neue Gruppe (Text danach = Gruppenname, ein optionaler abschließender Doppelpunkt
@@ -577,8 +599,8 @@ function parseIngredientsText(text){
 function openEditForm(r){
   const isEdit = r !== null;
   const ingredientsText = isEdit ? formatIngredientsText(r.ingredients) : '';
-  const stepsText = isEdit ? r.steps.join('\n') : '';
-  const notesText = isEdit ? (r.notes || []).join('\n') : '';
+  const stepsText = isEdit ? formatStepsText(r.steps) : '';
+  const notesText = isEdit ? (r.notes || '') : '';
   const src = isEdit ? imageSrc(r) : null;
   const previewHtml = src
     ? `<div class="form-preview"><div class="ratio-box"><img id="imgPreview" src="${escapeHtml(src)}" alt=""></div></div>`
@@ -594,7 +616,8 @@ function openEditForm(r){
     </div>
     <div class="form-field">
       <label for="categoryInput">Kategorie</label>
-      <input type="text" id="categoryInput" value="${isEdit ? escapeHtml(r.category || '') : ''}">
+      <input type="text" id="categoryInput" list="categoryList" value="${isEdit ? escapeHtml(r.category || '') : ''}">
+      <datalist id="categoryList">${knownCategories().map(c => `<option value="${escapeHtml(c)}">`).join('')}</datalist>
     </div>
     <div class="form-field">
       <label for="servingsInput">Personen</label>
@@ -614,10 +637,12 @@ function openEditForm(r){
     <div class="form-field">
       <label for="stepsInput">Zubereitung (ein Schritt pro Zeile)</label>
       <textarea id="stepsInput">${escapeHtml(stepsText)}</textarea>
+      <div class="hint">Nummerierung nur zur Übersicht, wird beim Speichern entfernt. "1.", "-" oder "*" am Zeilenanfang werden ignoriert.</div>
     </div>
     <div class="form-field">
-      <label for="notesInput">Notizen (eine pro Zeile)</label>
+      <label for="notesInput">Notizen</label>
       <textarea id="notesInput">${escapeHtml(notesText)}</textarea>
+      <div class="hint">Freier Text. In der Leseansicht wird jede Zeile als eigener Absatz dargestellt.</div>
     </div>
     <div class="btn-row">
       <button class="btn btn-primary" id="saveBtn" type="button">Speichern</button>
@@ -652,8 +677,8 @@ function collectFormData(){
 
   const ingredients = parseIngredientsText(document.getElementById('ingredientsInput').value);
 
-  const steps = document.getElementById('stepsInput').value.split('\n').map(s => s.trim()).filter(Boolean);
-  const notes = document.getElementById('notesInput').value.split('\n').map(s => s.trim()).filter(Boolean);
+  const steps = parseStepsText(document.getElementById('stepsInput').value);
+  const notes = document.getElementById('notesInput').value.trim() || null;
 
   return {title, category, servings, ingredients, steps, notes};
 }
@@ -748,7 +773,7 @@ async function init(){
     return;
   }
 
-  const cats = [...new Set(RECIPES.map(r => r.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'de'));
+  const cats = knownCategories();
   catSel.innerHTML = '<option value="">Alle Kategorien</option>' + cats.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
 
   subCount.textContent = `${RECIPES.length} Rezepte`;

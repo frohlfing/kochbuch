@@ -25,7 +25,9 @@
       "Bash(node --check /tmp/_extracted.js)",
       "Bash(node --check 'C:\\\\Users\\\\frank\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-frank-Source-PhpStorm-kochbuch\\\\48819b69-3732-4669-961f-1772feb8a50b\\\\scratchpad/_extracted.js')",
       "Bash(rm -rf data)",
-      "Bash(mv data_backup data)"
+      "Bash(mv data_backup data)",
+      "Bash(cd \"C:\\\\Users\\\\frank\\\\Source\\\\PhpStorm\\\\kochbuch\\\\public\")",
+      "Bash(echo \"JS OK\")"
     ]
   }
 }
