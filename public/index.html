@@ -254,6 +254,88 @@
     padding:3rem 1rem;
     font-style:italic;
   }
+
+  /* Buttons */
+  .btn{
+    font-family:inherit;
+    font-size:.85rem;
+    padding:.5rem .95rem;
+    border-radius:2px;
+    border:1px solid var(--rule);
+    background:var(--card);
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .btn:hover{border-color:var(--accent); color:var(--accent);}
+  .btn-primary{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .btn-primary:hover{opacity:.88; color:#fff;}
+  .btn-danger:hover{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .btn-row{display:flex; gap:.6rem; flex-wrap:wrap; margin:1rem 0;}
+  .sheet .toolbar{margin-bottom:1.1rem;}
+
+  /* Formular (Anlegen/Bearbeiten) */
+  .form-field{margin-bottom:1rem;}
+  .form-field label{
+    display:block;
+    font-size:.78rem;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--ink-soft);
+    margin-bottom:.3rem;
+  }
+  .form-field input[type=text], .form-field textarea{
+    width:100%;
+    padding:.55rem .7rem;
+    border:1px solid var(--rule);
+    border-radius:2px;
+    background:var(--card);
+    font-family:inherit;
+    font-size:.95rem;
+    color:var(--ink);
+    resize:vertical;
+  }
+  .form-field textarea{min-height:4.2rem;}
+  .form-field .hint{font-size:.72rem; color:var(--ink-soft); margin-top:.3rem;}
+  .group-editor{
+    border:1px dotted var(--rule);
+    border-radius:3px;
+    padding:.8rem;
+    margin-bottom:.8rem;
+  }
+  .group-editor .group-head{
+    display:flex;
+    gap:.5rem;
+    align-items:center;
+    margin-bottom:.5rem;
+  }
+  .group-editor .group-name{flex:1 1 auto;}
+  .form-preview{
+    width:150px;
+    margin-bottom:.6rem;
+  }
+  .form-preview .ratio-box{
+    width:100%;
+    padding-top:75%;
+    position:relative;
+    border-radius:3px;
+    border:1px solid var(--rule);
+    overflow:hidden;
+    background:var(--paper-deep);
+  }
+  .form-preview .ratio-box img{
+    position:absolute; top:0; left:0;
+    width:100%; height:100%;
+    object-fit:cover;
+  }
+  .error-box{
+    background:#fbeaea;
+    border:1px solid var(--accent);
+    color:var(--accent);
+    border-radius:3px;
+    padding:.6rem .8rem;
+    font-size:.85rem;
+    margin-bottom:1rem;
+  }
   @media (max-width:520px){
     header h1{font-size:2rem;}
     .sheet{padding:1.3rem 1.1rem 1.6rem;}
@@ -276,6 +358,7 @@
     <option value="page">Reihenfolge im Buch</option>
     <option value="title">Alphabetisch</option>
   </select>
+  <button class="btn btn-primary" id="newRecipeBtn" type="button">+ Neues Rezept</button>
 </div>
 <p class="count" id="resultCount"></p>
 
@@ -296,25 +379,73 @@ const sortSel = document.getElementById('sortSel');
 const catSel = document.getElementById('catSel');
 const resultCount = document.getElementById('resultCount');
 const subCount = document.getElementById('subCount');
+const newRecipeBtn = document.getElementById('newRecipeBtn');
+
+const TOKEN_KEY = 'kochbuch_api_token';
 
 function escapeHtml(str){
   return (str||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-// Ein Ordner pro Rezept (data/<slug>/recipe.json + image.* + thumb.*), siehe docs/Arbeitsübergabe.md
+// PHP liefert die Rezeptliste über die JSON-API (api/recipes.php), siehe docs/Arbeitsübergabe.md
 async function loadRecipes(){
-  const manifest = await fetch('data/index.json').then(res => res.json());
-  const sorted = manifest.slice().sort((a, b) => a.order - b.order);
-  return Promise.all(sorted.map(m => fetch(`data/recipes/${m.slug}/recipe.json`).then(res => res.json())));
+  const data = await fetch('api/recipes.php').then(res => res.json());
+  return data.recipes;
 }
 
+function getStoredToken(){
+  return localStorage.getItem(TOKEN_KEY) || '';
+}
+
+function forgetToken(){
+  localStorage.removeItem(TOKEN_KEY);
+}
+
+/** Holt das gespeicherte API-Token oder fragt es einmalig per prompt() ab und merkt es sich in localStorage. */
+function requireToken(){
+  let token = getStoredToken();
+  if(!token){
+    token = (window.prompt('API-Token für Änderungen eingeben:') || '').trim();
+    if(token) localStorage.setItem(TOKEN_KEY, token);
+  }
+  return token;
+}
+
+/**
+ * fetch()-Wrapper für schreibende API-Aufrufe: hängt das Token an, wirft bei
+ * 401 (und vergisst dann das falsche Token) bzw. anderen Fehlerstatus mit der
+ * Server-Fehlermeldung als Error.
+ */
+async function apiWrite(url, options){
+  const token = requireToken();
+  if(!token){
+    throw new Error('Ohne Token sind keine Änderungen möglich.');
+  }
+  options = options || {};
+  options.headers = Object.assign({}, options.headers, {'X-API-Token': token});
+
+  const res = await fetch(url, options);
+  if(res.status === 401){
+    forgetToken();
+    throw new Error('Token wurde vom Server abgelehnt. Bitte erneut versuchen.');
+  }
+  const body = await res.json().catch(() => ({}));
+  if(!res.ok){
+    const msg = body.details ? body.details.join('; ') : (body.error || `HTTP ${res.status}`);
+    throw new Error(msg);
+  }
+  return body;
+}
+
+// data/ liegt außerhalb des Document Root, Bilder laufen deshalb über api/image.php statt über eine statische URL.
 function thumbSrc(r){
-  const file = r.thumb || r.image;
-  return file ? `data/recipes/${r.slug}/${file}` : null;
+  if(!r.image) return null;
+  const type = r.thumb ? 'thumb' : 'image';
+  return `api/image.php?slug=${encodeURIComponent(r.slug)}&type=${type}`;
 }
 
 function imageSrc(r){
-  return r.image ? `data/recipes/${r.slug}/${r.image}` : null;
+  return r.image ? `api/image.php?slug=${encodeURIComponent(r.slug)}&type=image` : null;
 }
 
 function cardHtml(r, idx){
@@ -391,6 +522,10 @@ function openRecipe(idx){
         <div class="persons">${escapeHtml(r.servings || '')}${r.category ? ' &middot; ' + escapeHtml(r.category) : ''}</div>
       </div>
     </div>
+    <div class="btn-row toolbar">
+      <button class="btn" id="editBtn" type="button">Bearbeiten</button>
+      <button class="btn btn-danger" id="deleteBtn" type="button">Löschen</button>
+    </div>
     <h4>Zutaten</h4>
     ${ingredientsHtml || '<p><em>keine erfasst</em></p>'}
     ${stepsHtml}
@@ -398,11 +533,187 @@ function openRecipe(idx){
   `;
   overlay.classList.add('open');
   document.getElementById('closeBtn').addEventListener('click', closeRecipe);
+  document.getElementById('editBtn').addEventListener('click', () => openEditForm(r));
+  document.getElementById('deleteBtn').addEventListener('click', () => deleteRecipeUI(r));
 }
 
 function closeRecipe(){
   overlay.classList.remove('open');
   sheet.innerHTML = '';
+}
+
+/** Ein leeres bzw. mit Werten aus $group vorbefülltes Editor-Element für eine Zutatengruppe. */
+function groupEditorHtml(group){
+  const name = group && group.group ? group.group : '';
+  const text = group && group.text ? group.text.join('\n') : '';
+  return `<div class="group-editor">
+    <div class="group-head">
+      <input type="text" class="group-name" placeholder="Gruppenname (leer = ohne Überschrift)" value="${escapeHtml(name)}">
+      <button class="btn remove-group" type="button" title="Gruppe entfernen">&times;</button>
+    </div>
+    <textarea class="group-text" placeholder="Eine Zutat pro Zeile">${escapeHtml(text)}</textarea>
+  </div>`;
+}
+
+/** Zeigt das Anlege-/Bearbeitungsformular. $r === null bedeutet: neues Rezept. */
+function openEditForm(r){
+  const isEdit = r !== null;
+  const groups = isEdit && r.ingredients.length ? r.ingredients : [null];
+  const groupsHtml = groups.map(groupEditorHtml).join('');
+  const stepsText = isEdit ? r.steps.join('\n') : '';
+  const notesText = isEdit ? (r.notes || []).join('\n') : '';
+  const src = isEdit ? imageSrc(r) : null;
+  const previewHtml = src
+    ? `<div class="form-preview"><div class="ratio-box"><img id="imgPreview" src="${escapeHtml(src)}" alt=""></div></div>`
+    : `<div class="form-preview" id="previewWrap" style="display:none"><div class="ratio-box"><img id="imgPreview" src="" alt=""></div></div>`;
+
+  sheet.innerHTML = `
+    <button class="close" id="closeBtn" aria-label="Schließen">&times;</button>
+    <h2>${isEdit ? 'Rezept bearbeiten' : 'Neues Rezept'}</h2>
+    <div id="formError"></div>
+    <div class="form-field">
+      <label for="titleInput">Titel</label>
+      <input type="text" id="titleInput" value="${isEdit ? escapeHtml(r.title) : ''}">
+    </div>
+    <div class="form-field">
+      <label for="categoryInput">Kategorie</label>
+      <input type="text" id="categoryInput" value="${isEdit ? escapeHtml(r.category || '') : ''}">
+    </div>
+    <div class="form-field">
+      <label for="servingsInput">Personen</label>
+      <input type="text" id="servingsInput" value="${isEdit ? escapeHtml(r.servings || '') : ''}" placeholder="z. B. für 4 Personen">
+    </div>
+    <div class="form-field">
+      <label>Bild</label>
+      ${previewHtml}
+      <input type="file" id="imageInput" accept="image/jpeg,image/png,image/webp">
+      <div class="hint">Wird erst nach dem Speichern hochgeladen. Erzeugt automatisch ein Thumbnail.</div>
+    </div>
+    <div class="form-field">
+      <label>Zutaten</label>
+      <div id="groupsContainer">${groupsHtml}</div>
+      <button class="btn" id="addGroupBtn" type="button">+ Zutatengruppe</button>
+    </div>
+    <div class="form-field">
+      <label for="stepsInput">Zubereitung (ein Schritt pro Zeile)</label>
+      <textarea id="stepsInput">${escapeHtml(stepsText)}</textarea>
+    </div>
+    <div class="form-field">
+      <label for="notesInput">Notizen (eine pro Zeile)</label>
+      <textarea id="notesInput">${escapeHtml(notesText)}</textarea>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="saveBtn" type="button">Speichern</button>
+      <button class="btn" id="cancelBtn" type="button">Abbrechen</button>
+    </div>
+  `;
+  overlay.classList.add('open');
+
+  document.getElementById('closeBtn').addEventListener('click', closeRecipe);
+  document.getElementById('cancelBtn').addEventListener('click', () => {
+    isEdit ? openRecipe(RECIPES.indexOf(r)) : closeRecipe();
+  });
+  document.getElementById('addGroupBtn').addEventListener('click', () => {
+    document.getElementById('groupsContainer').insertAdjacentHTML('beforeend', groupEditorHtml(null));
+  });
+  document.getElementById('groupsContainer').addEventListener('click', e => {
+    if(e.target.closest('.remove-group')) e.target.closest('.group-editor').remove();
+  });
+  document.getElementById('imageInput').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      let wrap = document.getElementById('previewWrap');
+      if(wrap){ wrap.style.display = ''; }
+      document.getElementById('imgPreview').src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+  document.getElementById('saveBtn').addEventListener('click', () => saveRecipe(isEdit ? r.slug : null));
+}
+
+/** Liest die Formularfelder aus und baut daraus den API-Payload (ohne leere Zutatengruppen/-zeilen). */
+function collectFormData(){
+  const title = document.getElementById('titleInput').value.trim();
+  const category = document.getElementById('categoryInput').value.trim();
+  const servings = document.getElementById('servingsInput').value.trim();
+
+  const ingredients = [...document.querySelectorAll('#groupsContainer .group-editor')].map(el => {
+    const group = el.querySelector('.group-name').value.trim();
+    const text = el.querySelector('.group-text').value.split('\n').map(s => s.trim()).filter(Boolean);
+    return {group: group || null, text};
+  }).filter(g => g.text.length > 0);
+
+  const steps = document.getElementById('stepsInput').value.split('\n').map(s => s.trim()).filter(Boolean);
+  const notes = document.getElementById('notesInput').value.split('\n').map(s => s.trim()).filter(Boolean);
+
+  return {title, category, servings, ingredients, steps, notes};
+}
+
+async function saveRecipe(slug){
+  const payload = collectFormData();
+  const errorBox = document.getElementById('formError');
+  errorBox.innerHTML = '';
+
+  if(!payload.title){
+    errorBox.innerHTML = '<div class="error-box">Titel ist erforderlich.</div>';
+    return;
+  }
+
+  const saveBtn = document.getElementById('saveBtn');
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Speichert …';
+
+  let saved;
+  try {
+    const url = slug ? `api/recipes.php?slug=${encodeURIComponent(slug)}` : 'api/recipes.php';
+    saved = await apiWrite(url, {
+      method: slug ? 'PUT' : 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload),
+    });
+  } catch(err){
+    errorBox.innerHTML = `<div class="error-box">${escapeHtml(err.message)}</div>`;
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'Speichern';
+    return;
+  }
+
+  // Text-Teil ist ab hier gespeichert. Ein evtl. folgender Bild-Upload-Fehler
+  // darf diesen Erfolg nicht mehr verschlucken (sonst wirkt es, als sei nichts gespeichert).
+  let imageError = null;
+  const fileInput = document.getElementById('imageInput');
+  if(fileInput.files[0]){
+    try {
+      const fd = new FormData();
+      fd.append('slug', saved.slug);
+      fd.append('image', fileInput.files[0]);
+      saved = await apiWrite('api/upload.php', {method: 'POST', body: fd});
+    } catch(err){
+      imageError = err.message;
+    }
+  }
+
+  RECIPES = RECIPES.filter(x => x.slug !== slug && x.slug !== saved.slug);
+  RECIPES.push(saved);
+  renderGrid();
+  openRecipe(RECIPES.indexOf(saved));
+  if(imageError){
+    alert('Rezept gespeichert, aber Bild-Upload fehlgeschlagen: ' + imageError);
+  }
+}
+
+async function deleteRecipeUI(r){
+  if(!window.confirm(`"${r.title}" wirklich unwiderruflich löschen?`)) return;
+  try {
+    await apiWrite(`api/recipes.php?slug=${encodeURIComponent(r.slug)}`, {method: 'DELETE'});
+    RECIPES = RECIPES.filter(x => x.slug !== r.slug);
+    closeRecipe();
+    renderGrid();
+  } catch(err){
+    alert('Löschen fehlgeschlagen: ' + err.message);
+  }
 }
 
 grid.addEventListener('click', e => {
@@ -418,6 +729,7 @@ document.addEventListener('keydown', e => {
 searchInput.addEventListener('input', renderGrid);
 sortSel.addEventListener('change', renderGrid);
 catSel.addEventListener('change', renderGrid);
+newRecipeBtn.addEventListener('click', () => openEditForm(null));
 
 async function init(){
   try {

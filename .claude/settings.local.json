@@ -9,7 +9,21 @@
       "Bash(curl -sk -o /dev/null -w \"data/recipes/kartoffelcremesuppe/recipe.json: %{http_code}\\\\n\" https://kochbuch.test/data/recipes/kartoffelcremesuppe/recipe.json)",
       "Bash(curl -sk -o /dev/null -w \"data/recipes/kartoffelcremesuppe/image.jpg: %{http_code}\\\\n\" https://kochbuch.test/data/recipes/kartoffelcremesuppe/image.jpg)",
       "Bash(curl -sk -o /dev/null -w \"data/kartoffelcremesuppe \\(alt, sollte 404 sein\\): %{http_code}\\\\n\" https://kochbuch.test/data/kartoffelcremesuppe/recipe.json)",
-      "Bash(curl -sk -o /dev/null -w \"index.html: %{http_code}\\\\n\" https://kochbuch.test/index.html)"
+      "Bash(curl -sk -o /dev/null -w \"index.html: %{http_code}\\\\n\" https://kochbuch.test/index.html)",
+      "Bash(php *)",
+      "Bash(tasklist //FI \"IMAGENAME eq httpd.exe\")",
+      "Bash(sc query *)",
+      "Bash(cmd //c apache_stop.bat)",
+      "Bash(cmd //c apache_start.bat)",
+      "Bash(cmd //c \"C:\\\\xampp\\\\apache_stop.bat\")",
+      "Bash(cmd //c \"C:\\\\xampp\\\\apache_start.bat\")",
+      "Bash(taskkill //F //IM httpd.exe)",
+      "Bash(curl -sk -o /dev/null -w \"kochbuch.test: %{http_code}\\\\n\" https://kochbuch.test/index.html --max-time 5)",
+      "Bash(curl *)",
+      "Bash(git -C \"C:\\\\Users\\\\frank\\\\Source\\\\PhpStorm\\\\kochbuch\" mv public/api/lib/recipe_store.php public/api/lib/crud.php)",
+      "Bash(node -e ' *)",
+      "Bash(node --check /tmp/_extracted.js)",
+      "Bash(node --check 'C:\\\\Users\\\\frank\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-frank-Source-PhpStorm-kochbuch\\\\48819b69-3732-4669-961f-1772feb8a50b\\\\scratchpad/_extracted.js')"
     ]
   }
 }

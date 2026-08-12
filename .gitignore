@@ -1,4 +1,5 @@
 /.env
 /.idea
+/data
 .DS_Store
 config.php
