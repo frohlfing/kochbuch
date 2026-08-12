@@ -295,20 +295,8 @@
     resize:vertical;
   }
   .form-field textarea{min-height:4.2rem;}
+  .form-field textarea#ingredientsInput{min-height:9rem;}
   .form-field .hint{font-size:.72rem; color:var(--ink-soft); margin-top:.3rem;}
-  .group-editor{
-    border:1px dotted var(--rule);
-    border-radius:3px;
-    padding:.8rem;
-    margin-bottom:.8rem;
-  }
-  .group-editor .group-head{
-    display:flex;
-    gap:.5rem;
-    align-items:center;
-    margin-bottom:.5rem;
-  }
-  .group-editor .group-name{flex:1 1 auto;}
   .form-preview{
     width:150px;
     margin-bottom:.6rem;
@@ -542,24 +530,53 @@ function closeRecipe(){
   sheet.innerHTML = '';
 }
 
-/** Ein leeres bzw. mit Werten aus $group vorbefülltes Editor-Element für eine Zutatengruppe. */
-function groupEditorHtml(group){
-  const name = group && group.group ? group.group : '';
-  const text = group && group.text ? group.text.join('\n') : '';
-  return `<div class="group-editor">
-    <div class="group-head">
-      <input type="text" class="group-name" placeholder="Gruppenname (leer = ohne Überschrift)" value="${escapeHtml(name)}">
-      <button class="btn remove-group" type="button" title="Gruppe entfernen">&times;</button>
-    </div>
-    <textarea class="group-text" placeholder="Eine Zutat pro Zeile">${escapeHtml(text)}</textarea>
-  </div>`;
+/**
+ * Formatiert die gruppierten ingredients (API-Format) als einfachen Text fürs Formular:
+ * eine Zutat pro Zeile, eine Zeile mit führendem "#" markiert eine neue Gruppenüberschrift.
+ * Vor jeder Gruppenüberschrift (außer ganz am Anfang) steht zur besseren Lesbarkeit eine
+ * Leerzeile; parseIngredientsText() ignoriert Leerzeilen beim Zurückparsen wieder.
+ */
+function formatIngredientsText(ingredients){
+  return ingredients.map((g, i) => {
+    const lines = g.group ? [`# ${g.group}:`, ...g.text] : g.text.slice();
+    if(g.group && i > 0) lines.unshift('');
+    return lines.join('\n');
+  }).join('\n');
+}
+
+/**
+ * Parst den einfachen Zutaten-Text zurück ins gruppierte API-Format. Zeilen mit führendem "#"
+ * eröffnen eine neue Gruppe (Text danach = Gruppenname, ein optionaler abschließender Doppelpunkt
+ * wird entfernt; "#" allein bzw. ohne Text danach = zurück zu "ohne Überschrift"). Leere Zeilen
+ * und Gruppen ohne Zutaten werden verworfen.
+ */
+function parseIngredientsText(text){
+  const groups = [];
+  let currentGroup = null;
+  let bucket = [];
+  const flush = () => {
+    if(bucket.length) groups.push({group: currentGroup, text: bucket});
+    bucket = [];
+  };
+  for(const raw of text.split('\n')){
+    const line = raw.trim();
+    if(line.startsWith('#')){
+      flush();
+      let name = line.slice(1).trim();
+      if(name.endsWith(':')) name = name.slice(0, -1).trim();
+      currentGroup = name || null;
+    } else if(line){
+      bucket.push(line);
+    }
+  }
+  flush();
+  return groups;
 }
 
 /** Zeigt das Anlege-/Bearbeitungsformular. $r === null bedeutet: neues Rezept. */
 function openEditForm(r){
   const isEdit = r !== null;
-  const groups = isEdit && r.ingredients.length ? r.ingredients : [null];
-  const groupsHtml = groups.map(groupEditorHtml).join('');
+  const ingredientsText = isEdit ? formatIngredientsText(r.ingredients) : '';
   const stepsText = isEdit ? r.steps.join('\n') : '';
   const notesText = isEdit ? (r.notes || []).join('\n') : '';
   const src = isEdit ? imageSrc(r) : null;
@@ -590,9 +607,9 @@ function openEditForm(r){
       <div class="hint">Wird erst nach dem Speichern hochgeladen. Erzeugt automatisch ein Thumbnail.</div>
     </div>
     <div class="form-field">
-      <label>Zutaten</label>
-      <div id="groupsContainer">${groupsHtml}</div>
-      <button class="btn" id="addGroupBtn" type="button">+ Zutatengruppe</button>
+      <label for="ingredientsInput">Zutaten</label>
+      <textarea id="ingredientsInput">${escapeHtml(ingredientsText)}</textarea>
+      <div class="hint">Eine Zutat pro Zeile. Eine Zeile mit # markiert eine neue Gruppenüberschrift, z. B. "# Für die Soße:"</div>
     </div>
     <div class="form-field">
       <label for="stepsInput">Zubereitung (ein Schritt pro Zeile)</label>
@@ -612,12 +629,6 @@ function openEditForm(r){
   document.getElementById('closeBtn').addEventListener('click', closeRecipe);
   document.getElementById('cancelBtn').addEventListener('click', () => {
     isEdit ? openRecipe(RECIPES.indexOf(r)) : closeRecipe();
-  });
-  document.getElementById('addGroupBtn').addEventListener('click', () => {
-    document.getElementById('groupsContainer').insertAdjacentHTML('beforeend', groupEditorHtml(null));
-  });
-  document.getElementById('groupsContainer').addEventListener('click', e => {
-    if(e.target.closest('.remove-group')) e.target.closest('.group-editor').remove();
   });
   document.getElementById('imageInput').addEventListener('change', e => {
     const file = e.target.files[0];
@@ -639,11 +650,7 @@ function collectFormData(){
   const category = document.getElementById('categoryInput').value.trim();
   const servings = document.getElementById('servingsInput').value.trim();
 
-  const ingredients = [...document.querySelectorAll('#groupsContainer .group-editor')].map(el => {
-    const group = el.querySelector('.group-name').value.trim();
-    const text = el.querySelector('.group-text').value.split('\n').map(s => s.trim()).filter(Boolean);
-    return {group: group || null, text};
-  }).filter(g => g.text.length > 0);
+  const ingredients = parseIngredientsText(document.getElementById('ingredientsInput').value);
 
   const steps = document.getElementById('stepsInput').value.split('\n').map(s => s.trim()).filter(Boolean);
   const notes = document.getElementById('notesInput').value.split('\n').map(s => s.trim()).filter(Boolean);

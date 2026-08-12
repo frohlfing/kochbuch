@@ -48,9 +48,16 @@ function write_recipe_json(string $slug, array $recipe): void
     );
 }
 
-/** Alle Unterordner von RECIPES_DIR (= alle Slugs), unsortiert. @return string[] */
+/**
+ * Alle Unterordner von RECIPES_DIR (= alle Slugs), unsortiert. Leeres Array, falls RECIPES_DIR
+ * noch gar nicht existiert (frische Installation, bevor das erste Rezept angelegt wurde).
+ * @return string[]
+ */
 function list_recipe_slugs(): array
 {
+    if (!is_dir(RECIPES_DIR)) {
+        return [];
+    }
     $slugs = [];
     foreach (scandir(RECIPES_DIR) ?: [] as $entry) {
         if ($entry !== '.' && $entry !== '..' && is_dir(RECIPES_DIR . '/' . $entry)) {
