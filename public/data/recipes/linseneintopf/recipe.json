@@ -1,0 +1,47 @@
+{
+  "title": "Linseneintopf",
+  "slug": "linseneintopf",
+  "category": "Fleisch",
+  "servings": "für 4 Personen",
+  "order": 53,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "250 g Tellerlinsen",
+        "1 Liter Gemüse- oder Rinderbrühe",
+        "1 EL Butter(-schmalz)",
+        "350 g Kartoffeln, gewürfelt",
+        "125 g Speck, gewürfelt",
+        "2 Möhren, gewürfelt",
+        "1 Stück Knollensellerie (150 g), gewürfelt",
+        "1 Zwiebel, gewürfelt",
+        "6 Wiener Würstchen, gewürfelt",
+        "4 EL scharfer Senf",
+        "4 EL Weinessig",
+        "1 TL Salz",
+        "1 Prise Pfeffer",
+        "1 Prise Cayennepfeffer",
+        "1 Prise Muskat"
+      ]
+    },
+    {
+      "group": "Optional zum garnieren",
+      "text": [
+        "Petersilie",
+        "Schnittlauch"
+      ]
+    }
+  ],
+  "steps": [
+    "Linsen waschen, abtropfen lassen und 15 Minuten in der Gemüsebrühe kochen.",
+    "Währenddessen Butter in einer beschichteten Pfanne erhitzen. Kartoffeln, Speck sowie Möhren, Sellerie und Zwiebel darin andünsten.",
+    "Das Pfannengemüse in die Brühe geben. Bei mäßiger Hitze köcheln lassen, bis die Kartoffeln und Möhren gut sind (ca. 10-30 Minuten).",
+    "Die Würstchen dazu geben und mit Senf, Essig und den Gewürzen abschmecken.",
+    "Nach Belieben mit Petersilie und Schnittlauch garnieren."
+  ],
+  "notes": []
+}

@@ -1,0 +1,38 @@
+{
+  "title": "Pizza",
+  "slug": "pizza",
+  "category": "Vegetarisch",
+  "servings": "für 4 Personen",
+  "order": 28,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": "Für den Pizzateig",
+      "text": [
+        "1 Pck. (7g) Trockenhefe",
+        "250 ml Wasser, lauwarm",
+        "3 EL Olivenöl",
+        "500 g Mehl",
+        "1 TL Salz"
+      ]
+    },
+    {
+      "group": "Für den Belag",
+      "text": [
+        "1 Dose Pizza-Sauce",
+        "1 Pck. (250g) Käse (z.B. Mozzarella), gerieben",
+        "Extras nach Belieben (z.B. Salami, Schinken, Mais, Knoblauch, Zwiebeln, Paprika, Jalapeño oder Peperoni, Oregano, Balsamico-Blätter, Rucola, Gorgonzola, Rinderhack)"
+      ]
+    }
+  ],
+  "steps": [
+    "Die Hefe im Wasser und dem Olivenöl auflösen.",
+    "Mehl, Salz und Hefegemisch zum Teig kneten.",
+    "Mit einem Handtuch abgedeckt an einem warmen Ort 1 Stunde gehen lassen.",
+    "Nochmal mit der Hand durchkneten und mindestens eine weitere Stunde ruhen lassen. Währenddessen Pizzastein bei 250 °C Ober-/Unterhitze vorheizen.",
+    "Je 200 g zur Pizza ausrollen, belegen und für 8 - 15 Min. auf dem Pizzastein backen."
+  ],
+  "notes": []
+}

@@ -1,0 +1,33 @@
+{
+  "title": "Speckdatteln",
+  "slug": "speckdatteln",
+  "category": "Snacks",
+  "servings": "für 25 Personen",
+  "order": 11,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "200 g Datteln, getrocknet, ohne Stein",
+        "250 g Speck (Frühstücksspeck)",
+        "1 Pck. Doppelrahmfrischkäse",
+        "125 g Crème fraîche, mit Kräutern",
+        "etwas Zitronensaft",
+        "½ Bund Schnittlauch oder 20 Bärlauchblätter, klitzeklein geschnitten",
+        "Zahnstocher (einen pro Dattel)",
+        "1 EL Butter",
+        "2 Orangen"
+      ]
+    }
+  ],
+  "steps": [
+    "Schnittlauch bzw. Bärlauchblätter, Frischkäse und Crème fraîche gründlich mischen und mit etwas Zitronensaft abschmecken.",
+    "Datteln mit dieser Mischung füllen, in Frühstücksspeck einwickeln und mit einem Zahnstocher feststecken. Die Päckchen etwas flach drücken.",
+    "Butter in einer beschichteten Pfanne erhitzen und die Datteln bei mittlerer Hitze ca. 10 Minuten braten.",
+    "Von den Orangen auf der Stielseite eine Scheibe abschneiden, so dass sie einen festen Stand haben. Die Dattelsticker ringsherum, igelförmig in die Orangen stechen und servieren."
+  ],
+  "notes": []
+}

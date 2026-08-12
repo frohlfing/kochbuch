@@ -1,0 +1,36 @@
+{
+  "title": "Frikadellen",
+  "slug": "frikadellen",
+  "category": "Snacks",
+  "servings": "für 4 Personen",
+  "order": 10,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "1 altbackenes Brötchen",
+        "1 große Zwiebel, feingehackt",
+        "500 g Hackfleisch, gemischt",
+        "1 Ei",
+        "1 Knoblauchzehe",
+        "1 TL Salz",
+        "Pfeffer",
+        "2 TL Petersilie",
+        "1 TL Majoran (optional)",
+        "1 TL Paprikapulver (optional)",
+        "1 TL Senf (optional)",
+        "Margarine zum Braten"
+      ]
+    }
+  ],
+  "steps": [
+    "Brötchen in Wasser einweichen.",
+    "Die Zwiebel in Butter glasig dünsten.",
+    "Das Hackfleisch mit dem ausgedrückten Brötchen, der Zwiebeln, dem Ei und den Gewürzen gut verkneten und Frikadellen formen.",
+    "Margarine in einer Pfanne erhitzen und die Frikadellen in ca. 7 Minuten braun braten."
+  ],
+  "notes": []
+}

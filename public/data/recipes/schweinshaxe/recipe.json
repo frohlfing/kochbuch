@@ -1,0 +1,38 @@
+{
+  "title": "Schweinshaxe",
+  "slug": "schweinshaxe",
+  "category": "Fleisch",
+  "servings": "für 2 Personen",
+  "order": 56,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "2 rohe Schweinshaxen, je 700g (nicht geräuchert oder gepökelt)",
+        "Grobes Meersalz",
+        "½ TL Majoran",
+        "Salz und Pfeffer",
+        "Dunkles Bier",
+        "Salz und Pfeffer"
+      ]
+    },
+    {
+      "group": "Beilage",
+      "text": [
+        "Laugengebäck",
+        "Sauerkraut",
+        "Senf"
+      ]
+    }
+  ],
+  "steps": [
+    "Mit einem scharfen Messer die Schwarte karoförmig einschneiden (etwa 3 cm x 3 cm). Dabei nicht die Fettschicht durchtrennen, sonst wird die Haxe beim Braten trocken.",
+    "Reichlich Meersalz in die entstandenen Zwischenräume der Schwarte massieren. Den restlichen Teil der Haxen mit Majoran, Salz und Pfeffer würzen.",
+    "Im Backofen den Rost in die mittlere Schiene schieben und darunter eine Fettpfanne oder Auflaufform stellen, die das Fett auffängt. Die Haxen auf den Rost legen und bei 180°C ca. 1,5 Stunden im Ofen braten. Ab und an mit Bier betäufeln. Die Kerntemperatur sollte 80 bis 85 °C erreichen. Das Fleisch lässt sich dann ganz leicht vom Knochen lösen.",
+    "Haxen-Saft durch ein Sieb gießen. Evtl. etwas binden und reduzieren."
+  ],
+  "notes": []
+}

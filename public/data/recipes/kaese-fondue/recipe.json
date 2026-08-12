@@ -1,0 +1,37 @@
+{
+  "title": "Käse-Fondue",
+  "slug": "kaese-fondue",
+  "category": "Snacks",
+  "servings": "für 4 Personen",
+  "order": 17,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "300 ml Weißwein",
+        "300 g Gruyère oder Cheddar, fein gerieben",
+        "300 g Emmentaler, fein gerieben",
+        "1 Knoblauchzehe",
+        "1 EL Speisestärke",
+        "2 EL Kirschwasser",
+        "Pfeffer, Paprikapulver, Muskat"
+      ]
+    },
+    {
+      "group": "Beilage",
+      "text": [
+        "2 Baguettes, in Stücke geschnitten"
+      ]
+    }
+  ],
+  "steps": [
+    "Wein in den Fonduetopf gießen und bei kleiner Hitze langsam erwärmen.",
+    "Ist der Wein heiß, den Käse portionsweise hineingeben und unter ständigem Rühren schmelzen lassen.",
+    "Knoblauchzehe pressen und zum Käse geben.",
+    "Speisestärke mit dem Kirschwasser verrühren, zum Käse geben und unter Rühren noch mal aufkochen lassen. Mit Pfeffer, Paprika und Muskat würzen."
+  ],
+  "notes": []
+}

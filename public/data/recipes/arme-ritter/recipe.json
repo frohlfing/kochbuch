@@ -1,0 +1,26 @@
+{
+  "title": "Arme Ritter",
+  "slug": "arme-ritter",
+  "category": "Vegetarisch",
+  "servings": "für 4 Personen",
+  "order": 39,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "4 alte Brötchen, gewürfelt",
+        "400 ml Milch",
+        "2 Eier, gequirlt",
+        "60 g Butter"
+      ]
+    }
+  ],
+  "steps": [
+    "Brötchen in Milch einweichen und in den Eiern wenden",
+    "Butter in der Pfanne erhitzen und die Brötchen darin goldgelb anbraten."
+  ],
+  "notes": []
+}

@@ -1,0 +1,30 @@
+{
+  "title": "Anstellgut für Sauerteig",
+  "slug": "anstellgut-fuer-sauerteig",
+  "category": "Gebäck",
+  "servings": null,
+  "order": 74,
+  "created": null,
+  "image": "image.png",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "200 g Roggen-Vollkorn-Mehl",
+        "160 ml Wasser (lauwarm, ca. 30-35 °C)",
+        "1 Glas mit Deckel (abgekocht)"
+      ]
+    }
+  ],
+  "steps": [
+    "aus Roggenmehl Anstellgut füttern Spätesten nach 1 Woche brauchen die Mikroorganismen neues Futter. Hierzu ca. 100 g aus dem Glas nehmen (daraus ein Brot backen oder wegwerfen) und mit der gleichen Menge aus Mehl und Wasser (oder aus dem fertigen Sauerteig) wieder auffüllen.",
+    "Anstellgut herstellen 25 g Mehl (2 gehäufte EL) mit ca. 20 ml Wasser (1 Schnapsglas) in das Glas füllen und zum Brei verrühren. Bei ca. 28 °C abgedeckt ca. 13 Stunden ruhen lassen. Wenn der Teig aufgegangen ist und beginnt, wieder zusammenzufallen, mit dem nächsten Schritt beginnen.",
+    "Nochmal die gleiche Menge Brei hinzufügen und durchrühren. Weitere 15 Stunden ruhen lassen, bis der Teig wieder zusammenfällt.",
+    "Die Menge im Glas auf 180 ml verdoppeln, also 50 g Mehl und ca. 40 ml Wasser hinzufügen. Ungefähr 21 Stunden Teigruhe.",
+    "Die Menge ein letztes Mal mit 100 g Mehl und ca. 80 ml Wasser verdoppeln. Ca. 9 Stunden Teigruhe.",
+    "2 EL Mehl hinzufügen. 19 Stunden ruhen lassen, aber nur noch bei Zimmertemperatur (20-23 °C).",
+    "Das Anstellgut fest verschlossen im Kühlschrank lagern."
+  ],
+  "notes": []
+}

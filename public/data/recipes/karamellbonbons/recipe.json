@@ -1,0 +1,29 @@
+{
+  "title": "Karamellbonbons",
+  "slug": "karamellbonbons",
+  "category": "Desserts",
+  "servings": "für 4 Personen",
+  "order": 73,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "Alufolie und Backpapier",
+        "300 g Zucker",
+        "6 EL Wasser",
+        "100 g Sahne"
+      ]
+    }
+  ],
+  "steps": [
+    "Die Alufolie mehrmals falten, mit Backpapier belegen und daraus eine lange schmale Backform basteln.",
+    "Zucker und Wasser zusammen in einen Topf geben und bei mittlerer Hitze so lange köcheln lassen, bis ein goldgelber Karamell entsteht. Dabei nicht rühren.",
+    "Die Sahne unter Rühren langsam zufügen, bis die Masse schön gleichmäßig ist. Je mehr Sahne verwendet wird, desto weicher bzw. flüssiger wird anschließend das Karamell.",
+    "Die fertige Karamellmasse in die selbstgebastelte Backform gießen und für 1-2 Stunden im Kühlschrank aushärten lassen.",
+    "Das Karamell aus der Form lösen und mit einem breiten Messer in mundgerechte Stücke zerteilen."
+  ],
+  "notes": []
+}

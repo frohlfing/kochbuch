@@ -1,0 +1,48 @@
+{
+  "title": "Semmelknödel mit Rahmschwammerl",
+  "slug": "semmelknoedel-mit-rahmschwammerl",
+  "category": "Vegetarisch",
+  "servings": "für 14 Knödel",
+  "order": 37,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "1 Zwiebel, fein gehackt",
+        "3 EL Petersilie, gehackt",
+        "10 g Butter",
+        "200 ml Sahne",
+        "50 ml Milch",
+        "6 alte Brötchen, in kleiner Würfel geschnitten",
+        "3 Eier",
+        "1 TL Salz und Pfeffer",
+        "Bei Bedarf Paniermehl"
+      ]
+    },
+    {
+      "group": "Für die Sauce",
+      "text": [
+        "500 g braune Champignons, halbiert",
+        "1 Zwiebel, gehackt",
+        "1 EL Butter",
+        "2 EL Mehl",
+        "250 ml Weißwein (trocken)",
+        "300 ml Wasser",
+        "1 TL Salz und Pfeffer"
+      ]
+    }
+  ],
+  "steps": [
+    "Die Zwiebel mit der Petersilie in Butter anschwitzen. Mit der Sahne und Milch ablöschen.",
+    "Die Brötchen untermengen und 10 Minuten quellen lassen.",
+    "Die Eier mit Salz und Pfeffer dazugeben und zu einem festen Teig verrühren. Bei Bedarf mit Paniermehl andicken.",
+    "Mit nassen Händen die Knödel formen und in nicht sprudelnd kochendes Wasser 20 Minuten gar ziehen lassen.",
+    "Für die Sauce: Pilze mit den Zwiebeln in Butter 10 Minuten dünsten.",
+    "Eine Mehlschwitze herstellen (die Butter erhitzen und nach und nach Mehl, Wein und Wasser unterrühren).",
+    "Pilze zur Mehlschwitze hinzufügen und mit Salz und Pfeffer abschmecken."
+  ],
+  "notes": []
+}

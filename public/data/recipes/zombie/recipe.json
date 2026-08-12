@@ -1,0 +1,39 @@
+{
+  "title": "Zombie",
+  "slug": "zombie",
+  "category": "Getränke",
+  "servings": "für 1 Person",
+  "order": 98,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "4 cl brauner Rum",
+        "4 cl weißer Rum",
+        "2 cl Cointreau",
+        "2 cl Grenadine",
+        "2 cl Maracujasirup",
+        "4 cl Ananassaft",
+        "4 cl Zitronensaft",
+        "4 cl Orangensaft",
+        "2 cl Overproof Rum (57 % vol.)",
+        "Eiswürfel"
+      ]
+    },
+    {
+      "group": "Zum Garnieren",
+      "text": [
+        "Ananasscheibe"
+      ]
+    }
+  ],
+  "steps": [
+    "Ein Longdrink-Glas und den Shaker mit ein paar Eiswürfeln füllen.",
+    "Dann alle Zutaten bis auf den Overproof Rum in den Shaker geben und kräftig schütteln.",
+    "Alles in das Glas abseihen und den Overproof Rum über den Zombie fließen lassen."
+  ],
+  "notes": []
+}

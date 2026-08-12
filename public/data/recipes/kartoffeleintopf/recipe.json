@@ -1,0 +1,40 @@
+{
+  "title": "Kartoffeleintopf",
+  "slug": "kartoffeleintopf",
+  "category": "Vegetarisch",
+  "servings": "für 8 Personen",
+  "order": 22,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "2 EL Öl",
+        "4 Zwiebeln, klein geschnitten",
+        "10 g Ingwerwurzel, klein geschnitten",
+        "2 EL Tomatenmark",
+        "2 Liter Gemüsebrühe",
+        "1 kg Kartoffeln, gewürfelt",
+        "4 Lorbeerblätter",
+        "2 rote Chilischoten, längs aufgeschnitten (ohne zu teilen) und entkernt",
+        "500 g rote Linsen",
+        "4 Möhren, klein geschnitten",
+        "2 Paprika, klein geschnitten",
+        "1 TL Garam Masala",
+        "2 TL Salz",
+        "340 g Ananas , aus der Dose",
+        "6 TL Essig, (Granatapfel-Balsamico oder weißer Balsamico)"
+      ]
+    }
+  ],
+  "steps": [
+    "Das Öl in einem großen Topf erhitzen und Zwiebeln und Ingwer dünsten. Das Tomatenmark dazugeben, anbraten. Alles mit der Gemüsebrühe ablöschen.",
+    "Kartoffeln, Lorbeerblätter und Chilischote hinzugeben und alles 10-15 Minuten kochen lassen.",
+    "Linsen sowie Möhren, Paprikas, Garam Masala und Salz hinzugeben. Alles nun noch mal 10 Minuten kochen lassen.",
+    "Ananas mit etwas Saft und den Essig hinzugeben und 5 Minuten weiter köcheln lassen.",
+    "Lorbeerblätter und Chilischoten wieder herausfischen."
+  ],
+  "notes": []
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Cannabis-Butter",
+  "slug": "cannabis-butter",
+  "category": "Dips",
+  "servings": "für 16 Personen",
+  "order": 92,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "1 g Cannabisblüten (s. Dosierung oben)",
+        "64 g Butter"
+      ]
+    }
+  ],
+  "steps": [
+    "Cannabis decarboxylieren (THC aktivieren): Bei 110 °C (+- 5 °C) Ober-/Unterhitze für 40 Minuten (+- 5 Min.) im Ofen backen.",
+    "THC extrahieren: Butter im Wasserbad schmelzen. Cannabis hinzufügen und 5 Stunden oder länger bei Kochstufe 3 einwirken lassen. Die Temperatur darf nicht über 90°C steigen! Unsere Kochplatte schaltet bei Kochstufe 3 automatisch nach 5 Stunden ab.",
+    "Grasreste mit einem kleinen Sieb herausfiltern."
+  ],
+  "notes": [
+    "Wirkungsdauer: Die Wirkung tritt ungefähr nach 1,5 bis 3 Stunden ein und hält bis zu 8 Stunden an. Anzahl Portionen berechnen: Cannabis-Menge * (THC-Gehalt der Cannabisblüte) / (gewünschte THC-Dosierung einer Portion) Bei 1 g Cannabis mit 20% THC-Gehalt (guter Wert, wenn unbekannt) und 12,5 mg THC/Portion (das ist eine moderate Dosis) erhält man 1000mg * 0,20 / 12,5mg = 16 Portionen Die Menge der Butter ist so kalkuliert, dass 1 gestrichener TL (4 mg) eine Portion entspricht. Warum Butter? THC ist nicht wasserlöslich, weshalb eine fetthaltige Substanz benötigt wird. Quelle: https://www.royalqueenseeds.de/blog-wie-man-sehr-potente-cannabutter-macht-n208",
+    "Die Basis für Hasch-Kekse."
+  ]
+}

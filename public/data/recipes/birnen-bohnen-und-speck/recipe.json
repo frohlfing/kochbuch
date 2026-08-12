@@ -1,0 +1,38 @@
+{
+  "title": "Birnen, Bohnen und Speck",
+  "slug": "birnen-bohnen-und-speck",
+  "category": "Fleisch",
+  "servings": "für 4 Personen",
+  "order": 44,
+  "created": null,
+  "image": "image.png",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "3/4 l Wasser",
+        "500 g durchwachsener (Bauch-)Speck",
+        "1 kg grüne Bohnen, Spitzen abgeschnitten, in Stücke gebrochen",
+        "2 Stängel Bohnenkraut",
+        "500 g kleine Kochbirnen, mit Schale und Stiel",
+        "Salz und Pfeffer",
+        "1 Bund Petersilie, fein gehackt"
+      ]
+    },
+    {
+      "group": "Beilage",
+      "text": [
+        "Kartoffeln"
+      ]
+    }
+  ],
+  "steps": [
+    "Das Wasser aufkochen. Den Speck einlegen und 15 Minuten weiterkochen.",
+    "Bohnen und Bohnenkraut zum Speck geben. Weitere 15 Minuten kochen lassen.",
+    "Die Birnen auf die Bohnen legen und weitere 20 Minuten kochen lassen.",
+    "Birnen, Bohne. und Speck auf eine vorgewärmte Platte legen. Bohnen salzen, pfeffern und mit Petersilie bestreuen.",
+    "Den Koch-Sud bei starker Hitze etwas einkochen und über das Gericht gießen."
+  ],
+  "notes": []
+}

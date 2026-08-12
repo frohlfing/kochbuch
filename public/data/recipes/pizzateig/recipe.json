@@ -1,0 +1,30 @@
+{
+  "title": "Pizzateig",
+  "slug": "pizzateig",
+  "category": "Gebäck",
+  "servings": "für 4 Personen",
+  "order": 80,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "250 g Weizenmehl Type 450",
+        "250 g Weizenmehl Type 550",
+        "250 ml Wasser, lauwarm",
+        "80 g Anstellgut",
+        "3 EL Olivenöl",
+        "2 TL Salz"
+      ]
+    }
+  ],
+  "steps": [
+    "Das Mehl mit dem Wasser und dem Anstellgut zum Teig kneten und 6 bis 12 Stunden gehen lassen.",
+    "Das Olivenöl und das Salz hinzugeben, den Teig falten und eine weitere Stunde ruhen lassen.",
+    "Pizzastein bei 250 °C Ober-/Unterhitze vorheizen.",
+    "Je 200 g zur Pizza ausrollen, belegen und für 8 - 15 Min. auf dem Pizzastein backen."
+  ],
+  "notes": []
+}

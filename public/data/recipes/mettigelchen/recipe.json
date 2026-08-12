@@ -1,0 +1,27 @@
+{
+  "title": "Mettigelchen",
+  "slug": "mettigelchen",
+  "category": "Snacks",
+  "servings": "für 1 Tablett",
+  "order": 15,
+  "created": null,
+  "image": "image.png",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "250 g Pumpernickel, in 24 Scheiben geschnitten",
+        "Butter",
+        "500 g Mett",
+        "1 Zwiebel, in Stifte geschnitten",
+        "48 Pfefferkörner",
+        "Oliven (schwarze)"
+      ]
+    }
+  ],
+  "steps": [
+    "Die Pumpernickel in mit Butter beschmieren und wie abgebildet die Igel kreieren (ca. 1 gehäufter TL Mett pro Häppchen)."
+  ],
+  "notes": []
+}

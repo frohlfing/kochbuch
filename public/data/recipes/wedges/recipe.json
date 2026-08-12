@@ -1,0 +1,37 @@
+{
+  "title": "Wedges",
+  "slug": "wedges",
+  "category": "Beilagen",
+  "servings": "für 4 Personen",
+  "order": 85,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "8 große Kartoffeln, ungeschält"
+      ]
+    },
+    {
+      "group": "Für die Marinade",
+      "text": [
+        "5 EL Öl",
+        "4 Knoblauchzehen",
+        "1 TL Rosmarin, getrocknet",
+        "1 TL Oregano, getrocknet",
+        "1 TL Thymian, getrocknet",
+        "1 TL Paprikapulver (edelsüß oder scharf)",
+        "1 TL Pfeffer, schwarzer (frisch gemahlen)",
+        "2 TL Salz"
+      ]
+    }
+  ],
+  "steps": [
+    "Die ungeschälten Kartoffeln gründlich waschen, abtropfen lassen und achteln.",
+    "Knoblauch pressen, die Marinade anrühren und mit den Kartoffelachteln gut vermischen.",
+    "Die Kartoffeln mit der Schale nach unten auf ein mit Backpapier ausgelegtes Backblech stellen. Bei 200 - 220 Grad (Umluft) etwa 35 Minuten backen."
+  ],
+  "notes": []
+}

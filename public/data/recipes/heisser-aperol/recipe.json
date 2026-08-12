@@ -1,0 +1,32 @@
+{
+  "title": "Heißer Aperol",
+  "slug": "heisser-aperol",
+  "category": "Getränke",
+  "servings": "für 1 Person",
+  "order": 99,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "250 ml trockener Weißwein",
+        "100 ml Apfelsaft",
+        "200 ml Aperol"
+      ]
+    },
+    {
+      "group": "Deko",
+      "text": [
+        "Orangenscheibe"
+      ]
+    }
+  ],
+  "steps": [
+    "Den Apfelsaft bei mittlerer Hitze 5-10 erwärmen.",
+    "Weißwein hinzufügen und erneut erwärmen (aber nicht kochen!).",
+    "Aperol hinzufügen"
+  ],
+  "notes": []
+}

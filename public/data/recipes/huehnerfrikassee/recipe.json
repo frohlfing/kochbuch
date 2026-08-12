@@ -1,0 +1,52 @@
+{
+  "title": "Hühnerfrikassee",
+  "slug": "huehnerfrikassee",
+  "category": "Fleisch",
+  "servings": "für 4 Personen",
+  "order": 50,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "1 Suppenhuhn (1,2kg)",
+        "1,5 Liter Wasser",
+        "1 Zwiebel, gewürfelt",
+        "1 Lorbeerblatt",
+        "5 Pfefferkörner",
+        "3 TL Salz"
+      ]
+    },
+    {
+      "group": "Für das Frikassee",
+      "text": [
+        "40 g Butter",
+        "40 g Mehl",
+        "1 Dose (200 g) Erbsen und Möhren",
+        "1 Dose (200 g) Spargelstücke",
+        "1 Dose (200 g) Champignons"
+      ]
+    },
+    {
+      "group": "Für die Hühnersuppe",
+      "text": [
+        "1 Bund Suppengrün, klein geschnitten"
+      ]
+    },
+    {
+      "group": "Beilage",
+      "text": [
+        "Reis"
+      ]
+    }
+  ],
+  "steps": [
+    "Das Huhn in einen großen Topf geben. Wasser, Zwiebel, Lorbeerblatt, Pfefferkörner und Salz zugeben, zum Kochen bringen und 2 bis 2 1/2 Stunden bei geschlossenem Deckel auf mittlerer Stufe garen.",
+    "Das Huhn aus der Brühe nehmen, das Fleisch von den Knochen lösen und in mundgerechte Stücke schneiden.",
+    "In einem Topf die Butter flüssig werden lassen, dann das Mehl mit einem Schneebesen einrühren und unter Rühren ca. 0,5 Liter Hühnerbrühe hinzufügen. Die Erbsen, den Spargel, die Champignons und das Hühnerfleisch unterheben.",
+    "Die verbliebene Brühe mit Suppengrün zu einer Hühnersuppe aufpeppen."
+  ],
+  "notes": []
+}

@@ -1,0 +1,29 @@
+{
+  "title": "Guacamole-Dip",
+  "slug": "guacamole-dip",
+  "category": "Dips",
+  "servings": "für 2 Schälchen",
+  "order": 89,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "2 Avocados, entkernt",
+        "2 Tomaten, sehr fein gewürfelte",
+        "2 Knoblauchzehen, gepresst",
+        "1 EL Naturjoghurt",
+        "Salz und Pfeffer",
+        "1/2 Zitrone, Saft davon"
+      ]
+    }
+  ],
+  "steps": [
+    "Das Fruchtfleisch der Avocados mit einer Gabel zu feinem Mus zerdrücken.",
+    "Die Tomaten, Knoblauch und Joghurt einrühren und abschmecken.",
+    "Mit Zitronensaft beträufeln, damit der Dip nicht braun wird."
+  ],
+  "notes": []
+}

@@ -1,0 +1,43 @@
+{
+  "title": "Grünkohl",
+  "slug": "gruenkohl",
+  "category": "Fleisch",
+  "servings": "für 4 Personen",
+  "order": 62,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "25 g Butter",
+        "2 Zwiebeln, fein gewürfelt",
+        "250 g geräucherter Bauchspeck, in Scheiben geschnitten",
+        "1,2 kg Grünkohl, frisch (oder tiefgefroren, geht etwas schneller)",
+        "500 ml Gemüsebrühe",
+        "1 EL mittelscharfer Senf",
+        "1 TL Salz",
+        "Pfeffer",
+        "4 Mettenden (Pinkelwürste)",
+        "4 Scheiben Kasseler Koteletts"
+      ]
+    },
+    {
+      "group": "Beilagen",
+      "text": [
+        "Salzkartoffeln oder karamellisierte Kartoffeln"
+      ]
+    }
+  ],
+  "steps": [
+    "Falls der Grünkohl frisch ist (entfällt bei TK): a. die dicken Stiele in der Mitte der Blätter entfernen in Salzwasser kurz aufkochen und durch ein Sieb abtropfen lassen",
+    "Butter im Bräter erhitzen, Zwiebelwürfel und Speckscheiben darin anbraten.",
+    "Grünkohl zufügen und etwas angehen lassen. Mit der Brühe ablöschen. Senf zufügen und mit Salz und Pfeffer abschmecken.",
+    "2 Stunden mit Deckel garen (bei TK-Ware reichen 45 Minuten).",
+    "Mettenden dazu geben. Weitere 30 Minuten garen.",
+    "Grünkohl einige Stunden (über Nacht) ziehen lassen.",
+    "Grünkohl wieder erhitzen, Kasseler Koteletts dazugeben und 20 Minuten garen."
+  ],
+  "notes": []
+}

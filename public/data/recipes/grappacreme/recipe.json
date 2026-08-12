@@ -1,0 +1,34 @@
+{
+  "title": "Grappacreme",
+  "slug": "grappacreme",
+  "category": "Desserts",
+  "servings": "für 8 Personen",
+  "order": 72,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "200 g Amarettini",
+        "30 g Butter",
+        "250 g Schlagsahne / Schlagrahm",
+        "500 g Mascarpone",
+        "500 g Sahnequark / Speisequark",
+        "100 g Zucker",
+        "1 TL Vanillearoma",
+        "120 ml Amaretto",
+        "40 ml Grappa"
+      ]
+    }
+  ],
+  "steps": [
+    "Amarettini im Mixer zerkleinern.",
+    "Butter in einer Pfanne schmelzen und die Kekskrümel vorsichtig darin anrösten. Danach abkühlen lassen.",
+    "Die Schlagsahne steif schlagen.",
+    "Mascarpone, Sahnequark, Zucker, Vanillearoma und Amaretto verrühren. Sahne unterheben.",
+    "1/3 der Creme in eine Glasschüssel füllen, mit 1/3 der Amarettini-Brösel bestreuen und mit ca. 1/3 des Grappas beträufeln. In dieser Reihenfolge noch zwei weitere Schichten einfüllen."
+  ],
+  "notes": []
+}

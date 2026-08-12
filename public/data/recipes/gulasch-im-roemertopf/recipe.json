@@ -1,0 +1,42 @@
+{
+  "title": "Gulasch im Römertopf",
+  "slug": "gulasch-im-roemertopf",
+  "category": "Fleisch",
+  "servings": "für 4 Personen",
+  "order": 63,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "1 kg Rindfleisch für Gulasch",
+        "75 g Butter",
+        "125 g Speckwürfel, mager",
+        "3 Zwiebeln, gewürfelt",
+        "4 Karotten, gewürfelt",
+        "3 rote Paprikaschoten, gewürfelt",
+        "100 g Tomatenmark",
+        "1 Fl. (750 ml) Rotwein, halbtrocken",
+        "100 ml Wasser",
+        "3 TL Paprikapulver, edelsüß",
+        "2 TL Salz und Pfeffer"
+      ]
+    },
+    {
+      "group": "Beilage",
+      "text": [
+        "Ringelnudeln"
+      ]
+    }
+  ],
+  "steps": [
+    "Römertopf wässern",
+    "Nacheinander in einer Pfanne das Fleisch mit Speck, dann das Gemüse in der Butter anbraten und anschließend in den Römertopf füllen.",
+    "Das Tomatenmark in der Pfanne leicht anrösten, mit Rotwein ablöschen und wieder aufkochen lassen.",
+    "Das Wasser hinzufügen, mit Paprika, Salz und Pfeffer würzen und den Topf schließen.",
+    "Im Backofen bei 180 Grad Ober-/Unterhitze 3 Stunden garen."
+  ],
+  "notes": []
+}

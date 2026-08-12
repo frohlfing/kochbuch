@@ -1,0 +1,42 @@
+{
+  "title": "Miesmuscheln",
+  "slug": "miesmuscheln",
+  "category": "Fisch",
+  "servings": "für 4 Personen",
+  "order": 68,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "2 kg Miesmuscheln",
+        "1 große Zwiebel, grob gewürfelt",
+        "1 Stange Lauch, grob gewürfelt",
+        "2 Möhren, grob gewürfelt",
+        "1 EL Oregano",
+        "1 Prise Chilipulver",
+        "1 Lorbeerblatt",
+        "6 Knoblauchzehen, fein gehackt",
+        "2 EL Tomatenmark",
+        "300 ml Weißwein, trocken",
+        "1 Glas Gemüsefond",
+        "Salz und Pfeffer"
+      ]
+    },
+    {
+      "group": "Beilage",
+      "text": [
+        "Baguette"
+      ]
+    }
+  ],
+  "steps": [
+    "Muscheln waschen. Offene und beschädigte Muscheln wegwerfen. In einem Sieb abtropfen lassen.",
+    "Zwiebeln, Lauch und Möhren mit dem Oregano, Chili und Lorbeerblatt andünsten. Dann Knoblauch und Tomatenmark dazugeben.",
+    "Nach ca. 5 Minuten mit Wein und Fond ablöschen und nochmal aufköcheln.",
+    "Die Muscheln dazugeben und 10 Minuten kochen lassen. Mit Salz und Pfeffer abschmecken."
+  ],
+  "notes": []
+}

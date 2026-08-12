@@ -1,0 +1,37 @@
+{
+  "title": "Lauchsuppe",
+  "slug": "lauchsuppe",
+  "category": "Suppen",
+  "servings": "für 4 Personen",
+  "order": 3,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "3 EL Öl",
+        "500 g Hackfleisch, gemischtes",
+        "3 Stangen Lauch (=Porree), in Ringe geschnitten",
+        "700 ml Wasser",
+        "3 Gemüsebrühwürfel",
+        "250 g Schmelzkäse",
+        "150 g Crème fraîche",
+        "Salz und Pfeffer",
+        "Muskat",
+        "Knoblauchpulver",
+        "Zwiebelpulver"
+      ]
+    }
+  ],
+  "steps": [
+    "Öl in einen großen Topf geben, das Hackfleisch darin anbraten und mit Salz und Pfeffer würzen.",
+    "Den Lauch zum Hackfleisch geben und 5 Minuten mit anbraten.",
+    "Das Wasser zugießen, Brühwürfel hineingeben und alles 10 Minuten auf kleiner Flamme köcheln lassen.",
+    "Den Schmelzkäse einrühren und schmelzen lassen.",
+    "Crème fraîche untermengen und noch einmal kurz aufkochen lassen.",
+    "Mit Salz, Pfeffer, Muskat, Knoblauch- und Zwiebelpulver abschmecken."
+  ],
+  "notes": []
+}

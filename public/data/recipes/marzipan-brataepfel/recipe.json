@@ -1,0 +1,35 @@
+{
+  "title": "Marzipan-Bratäpfel",
+  "slug": "marzipan-brataepfel",
+  "category": "Desserts",
+  "servings": "für 4 Personen",
+  "order": 71,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "4 Äpfel",
+        "100 g Marzipanrohmasse",
+        "1 EL Rosinen",
+        "2 EL Amaretto",
+        "4 EL Zitronensaft",
+        "125 ml Apfelsaft",
+        "1 Pck. Vanillesaucenpulver",
+        "½ Liter Milch",
+        "2 EL Zucker",
+        "3 EL Mandeln, gehackt"
+      ]
+    }
+  ],
+  "steps": [
+    "Äpfel waschen und den Deckel abschneiden. Kerngehäuse mit einem Apfelausstecher ausstechen.",
+    "Marzipan, Rosinen u. Amaretto verkneten und in die Äpfel drücken.",
+    "Zitronen- und Apfelsaft auf die Äpfel pinseln.",
+    "Äpfel ca. 25 Minuten bei 200 °C Ober-/Unterhitze backen.",
+    "Apfeldeckel dazulegen und weitere 5 Minuten braten."
+  ],
+  "notes": []
+}

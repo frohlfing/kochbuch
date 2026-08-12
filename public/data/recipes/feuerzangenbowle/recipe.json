@@ -1,0 +1,33 @@
+{
+  "title": "Feuerzangenbowle",
+  "slug": "feuerzangenbowle",
+  "category": "Getränke",
+  "servings": "für 4 Personen",
+  "order": 95,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "2 Liter Rotwein, z.B. Spätburgunder",
+        "500 ml Orangensaft",
+        "1 Zimtstange",
+        "6 Gewürznelken",
+        "4 Sternanis",
+        "1 Zitrone",
+        "1 Orange, in Scheiben geschnitten",
+        "1 Zuckerhut",
+        "350 ml Rum, 54%"
+      ]
+    }
+  ],
+  "steps": [
+    "Den Rotwein und den Orangensaft in einem Topf erhitzen (nicht kochen!). Zimtstange, Gewürznelken und Sternanis hinzufügen.",
+    "Die Schale der Zitrone möglichst am Stück dünn abschneiden und beiseite legen. Den Saft der Zitrone auspressen und zum Rotwein geben.",
+    "Die Weinmischung in einen Topf umgießen und auf ein Stövchen stellen. Die Orangenscheiben in die Bowle geben und mit der Zitronenspirale verzieren.",
+    "Eine Feuerzange mit dem Zuckerhut über den Bowle-Topf legen und den Zuckerhut mit dem Rum abbrennen."
+  ],
+  "notes": []
+}

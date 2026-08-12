@@ -1,0 +1,70 @@
+{
+  "title": "Fondue mit Brühe",
+  "slug": "fondue-mit-bruehe",
+  "category": "Snacks",
+  "servings": "für 8 Personen",
+  "order": 19,
+  "created": null,
+  "image": "image.png",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": "Für die Brühe",
+      "text": [
+        "1 Zwiebel",
+        "1 Möhre, fein gewürfelt",
+        "100 g Knollensellerie, gewürfelt",
+        "100 g Porree, klein geschnitten",
+        "2 Lorbeerblätter",
+        "1/2 TL Pfefferkörner",
+        "1,5 Liter Gemüsebrühe"
+      ]
+    },
+    {
+      "group": "Fleisch (alles klein geschnitten)",
+      "text": [
+        "350 g Hühner- oder Putenfilet",
+        "350 g Rinderfilet",
+        "350 g Schweinefilet",
+        "350 g Lammlachse oder Lammfilet",
+        "2 Bratwürstchen (gebrühte)"
+      ]
+    },
+    {
+      "group": "Meeresfrüchte",
+      "text": [
+        "350 g Garnelen oder Gambas"
+      ]
+    },
+    {
+      "group": "Gemüse (alles gewürfelt)",
+      "text": [
+        "Champions",
+        "Zucchini",
+        "Brokkoli",
+        "Rosenkohl",
+        "Paprikaschote",
+        "Peperoni",
+        "Aubergine",
+        "Zwiebel",
+        "Knoblauch"
+      ]
+    },
+    {
+      "group": "Sonstige Beilagen",
+      "text": [
+        "4 Schälchen mit Dips",
+        "1 Baguette, gewürfelt",
+        "3 Kartoffeln, vorgekocht, gewürfelt",
+        "Silberzwiebeln im Glas",
+        "Maiskölbchen im Glas"
+      ]
+    }
+  ],
+  "steps": [
+    "Zubereitung der Brühe Die Zwiebel halbieren und mit der Schnittfläche in einer beschichteten Pfanne bei mittlerer Hitze braun rösten.",
+    "Die Zutaten für die Brühe samt geröstete Zwiebel in einen Topf geben und bei schwacher Hitze ca. 15 Minuten kochen.",
+    "Die Brühe durch ein Sieb in den Fonduetopf gießen und auf das Rechaud stellen."
+  ],
+  "notes": []
+}

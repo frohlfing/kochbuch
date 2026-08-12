@@ -1,0 +1,108 @@
+{
+  "title": "Kölsche Tapas",
+  "slug": "koelsche-tapas",
+  "category": "Snacks",
+  "servings": "für 8 Personen",
+  "order": 18,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": "Mettbrötchen",
+      "text": [
+        "Mett",
+        "Roggenbrot",
+        "1 Zwiebel, in Ringe geschnitten",
+        "Butter",
+        "Salz und Pfeffer"
+      ]
+    },
+    {
+      "group": "Halve Hahn",
+      "text": [
+        "mittelalterlicher Gouda",
+        "Roggenbrot",
+        "Gewürzgurken",
+        "Mittelscharfer Senf"
+      ]
+    },
+    {
+      "group": "Wurstplatte",
+      "text": [
+        "Pfefferbeißer",
+        "Kleine Frikadellen",
+        "Blutwurst (Flänz)",
+        "luftgetrocknete Salami",
+        "Pfefferbeißer",
+        "Roastbeef"
+      ]
+    },
+    {
+      "group": "Rohkostplatte",
+      "text": [
+        "Blumenkohl",
+        "Paprika",
+        "Kohlrabi",
+        "Salatgurke",
+        "Möhre"
+      ]
+    },
+    {
+      "group": "Kalte Schnitzel",
+      "text": [
+        "Kleine Schnitzel, paniert",
+        "Zitrone, in Scheiben geschnitten",
+        "Mittelscharfer Senf"
+      ]
+    },
+    {
+      "group": "Kartoffelsalat im Glas",
+      "text": [
+        "Kartoffel, gekocht und klein geschnitten"
+      ]
+    },
+    {
+      "group": "Ädäppelschlot",
+      "text": [
+        "Kartoffeln, gekocht und gestampft",
+        "Äpfel, gekocht und gestampft"
+      ]
+    },
+    {
+      "group": "Rosenkohl mit Mandeln",
+      "text": [
+        "Rosenkohl",
+        "Mandeln"
+      ]
+    },
+    {
+      "group": "Tomaten-Mozzarella-Spieße",
+      "text": [
+        "Kleine Tomaten",
+        "Mozzarella-Kugeln",
+        "Basilikum-Blätter"
+      ]
+    },
+    {
+      "group": "Champignon in Sahnesoße",
+      "text": [
+        "(s. Rezept)"
+      ]
+    },
+    {
+      "group": "Sonstiges",
+      "text": [
+        "Rollmöpse",
+        "Gekochte Eier (oder Soleier)",
+        "Oliven",
+        "Weintrauben",
+        "Melonen",
+        "Schafskäse (Feta)",
+        "Salzstangen"
+      ]
+    }
+  ],
+  "steps": [],
+  "notes": []
+}

@@ -1,0 +1,33 @@
+{
+  "title": "Spargel mit Lachs, Schinken und Butter",
+  "slug": "spargel-mit-lachs-schinken-und-butter",
+  "category": "Fleisch",
+  "servings": "für 4 Personen",
+  "order": 59,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "2 kg Spargel",
+        "Eier",
+        "Räucherlachs, klein geschnitten",
+        "Dill",
+        "Salz und Pfeffer",
+        "Kartoffeln",
+        "Butter",
+        "Kochschinken oder roher (Katen-)Schinken"
+      ]
+    }
+  ],
+  "steps": [
+    "Den Spargel schälen, die Enden abschneiden und in Salzwasser bissfest kochen. Je nach Stangendicke 10 - 12 Minuten. Bei grünem Spargel weniger.",
+    "Eier hart kochen und in Würfel schneiden. Räucherlachs untermischen. Mit Dill, Salz und Pfeffer würzen.",
+    "Kartoffeln kochen.",
+    "Butter erhitzen.",
+    "Alles zusammen mit dem Schinken servieren."
+  ],
+  "notes": []
+}

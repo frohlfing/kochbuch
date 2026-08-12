@@ -1,0 +1,56 @@
+{
+  "title": "Spinat-Lasagne",
+  "slug": "spinat-lasagne",
+  "category": "Vegetarisch",
+  "servings": "für 4 Personen",
+  "order": 27,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": "Für die Spinatsauce",
+      "text": [
+        "2 Zwiebeln, gehackt",
+        "3 Karotten, gehackt",
+        "3 Champions, gehackt",
+        "900 g Rahmspinat, TK",
+        "200 g Frischkäse, gekörnt",
+        "1 EL Gemüsebrühpulver",
+        "1 Knoblauchzehe, gehackt",
+        "1 TL Oregano",
+        "1 TL Chilipulver",
+        "1 TL Salz",
+        "Pfeffer"
+      ]
+    },
+    {
+      "group": "Für die Tomatensauce",
+      "text": [
+        "3 EL Butter",
+        "mind. 2 EL Mehl",
+        "500 ml Passierte Tomaten",
+        "150 ml Kochsahne",
+        "1 Knoblauchzehe, gepresst",
+        "1 TL Salz, Pfeffer"
+      ]
+    },
+    {
+      "group": "Außerdem",
+      "text": [
+        "12 Lasagneplatten (200 g)",
+        "200 g Käse (z.B. Emmental), geriebener",
+        "1 Becher Crème fraîche (200 g)"
+      ]
+    }
+  ],
+  "steps": [
+    "Zwiebel glasig anbraten. Karotten und Champions dazugeben und kurz mitbraten. Spinat dazugeben und erhitzen, bis der Spinat nicht mehr gefroren ist.",
+    "Frischkäse, Gemüsebrühpulver und Knoblauch dazugeben. 5 Minten köcheln lassen, bis die Spinatsoße eingedickt. Mit Oregano, Chilipulver, Salz und Pfeffer würzen.",
+    "Im einem separaten Topf die Butter erhitzen und 2 EL Mehl einrühren. Tomaten und Sahne hinzufügen und kurz aufkochen. Soviel Mehl hinzufügen, bis daraus quasi eine Creme wird. Mit Knoblauch, Salz und Pfeffer würzen.",
+    "In einer Auflaufform abwechselnd Tomatensauce, Spinatsauce und Lasagneplatten schichten. Mit der Tomatensauce beginnen und abschließen. Käse und Crème fraîche darüber gleichmäßig verteilen.",
+    "Bei 180 Grad Umluft ca. 30 Minuten backen, bis der Käse goldbraun ist.",
+    "Weitere 5 bis 10 Minuten im ausgeschalteten Ofen stehen lassen, dann bleibt die Lasagne in Form und zerläuft nicht."
+  ],
+  "notes": []
+}

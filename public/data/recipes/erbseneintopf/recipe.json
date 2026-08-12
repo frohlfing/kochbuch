@@ -1,0 +1,38 @@
+{
+  "title": "Erbseneintopf",
+  "slug": "erbseneintopf",
+  "category": "Fleisch",
+  "servings": "für 4 Personen",
+  "order": 67,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "20 g Butter",
+        "100 g Bauchspeck, geräuchert",
+        "2 Zwiebeln, kleingehackt",
+        "100 g Karotten, in Scheiben geschnitten",
+        "100 g Knollensellerie, klein geschnitten",
+        "1 Stange Porree/Lauch, klein geschnitten",
+        "500 g Schälerbsen",
+        "2 Liter Wasser",
+        "8 TL Gemüsebrühepulver",
+        "300 g Kartoffeln",
+        "1 TL Majoran",
+        "Salz und Pfeffer",
+        "2 Stängel Petersilie"
+      ]
+    }
+  ],
+  "steps": [
+    "Butter im Topf schmelzen, Bauchspeck dazugeben und auslassen.",
+    "Zwiebeln, Karotten, Knollensellerie und Porree dazugeben und kurz andünsten.",
+    "Erbsen, Wasser und Gemüsebrühepulver hinzugeben und 20 Minuten köcheln lassen.",
+    "Kartoffeln hinzugeben und weitere 40 Minuten köcheln lassen. Mehrmals zwischendurch umrühren!",
+    "Mit Majoran, Salz und Pfeffer abschmecken. Mit Petersilie bestreuen."
+  ],
+  "notes": []
+}

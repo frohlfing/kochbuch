@@ -1,0 +1,37 @@
+{
+  "title": "Pilzpfanne",
+  "slug": "pilzpfanne",
+  "category": "Vegetarisch",
+  "servings": "für 4 Personen",
+  "order": 23,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "400 g Champignons, geviertelt",
+        "1 große Zwiebel, in Ringe geschnitten",
+        "2 Knoblauchzehen, gehackt",
+        "Tomatenmark",
+        "1 Becher Sahne (alpro Cooking Light)",
+        "Salz und Pfeffer",
+        "Cayennepfeffer",
+        "1 Handvoll Petersilie, gehackt"
+      ]
+    },
+    {
+      "group": "Beilage",
+      "text": [
+        "Brötchen"
+      ]
+    }
+  ],
+  "steps": [
+    "Pilze, Zwiebeln und Knoblauchzehen in die Pfanne geben und scharf anbraten. Dazu ein wenig Tomatenmark für die Farbe mit anbraten. Deckel drauf und köcheln lassen.",
+    "Nach einer Weile mit Sahne ablöschen und Salz, Pfeffer und Kräuter der Provence hinzugeben. Aufkochen und köcheln lassen.",
+    "Eine gute Handvoll gehackte Petersilie darüber streuen und servieren."
+  ],
+  "notes": []
+}

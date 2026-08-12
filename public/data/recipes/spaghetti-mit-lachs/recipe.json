@@ -1,0 +1,32 @@
+{
+  "title": "Spaghetti mit Lachs",
+  "slug": "spaghetti-mit-lachs",
+  "category": "Fisch",
+  "servings": "für 2 Personen",
+  "order": 69,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "250 g Spaghetti",
+        "2 EL Olivenöl",
+        "1 Knoblauchzehe, fein gewürfelt",
+        "250 g Lachsfilet",
+        "1 Schuss Weißwein, oder Prosecco oder Sekt, nach Geschmack",
+        "250 g Kirschtomaten, geviertelt",
+        "2 EL Pesto (Basilikum-Pesto)",
+        "Salz und Pfeffer"
+      ]
+    }
+  ],
+  "steps": [
+    "Die Spaghetti in reichlich kochendem Salzwasser bissfest garen.",
+    "In einer Pfanne 1 EL Olivenöl erhitzen, Tomaten und Knoblauch kurz darin andünsten, dann aus der Pfanne nehmen und beiseite stellen.",
+    "Das Lachsfilet grob würfeln und in 1 EL Olivenöl unter Wenden ca. 5-6 min. braten. Mit einem Schuss Wein ablöschen. Tomaten und Pesto vorsichtig untermischen und mit Pfeffer und Salz abschmecken.",
+    "Die Spaghetti abgießen und auf einem Teller anrichten. Die Lachs-Tomaten-Mischung in die Mitte geben und servieren."
+  ],
+  "notes": []
+}

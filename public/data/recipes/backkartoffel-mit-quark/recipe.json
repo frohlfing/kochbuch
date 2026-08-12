@@ -1,0 +1,33 @@
+{
+  "title": "Backkartoffel mit Quark",
+  "slug": "backkartoffel-mit-quark",
+  "category": "Beilagen",
+  "servings": "für 4 Personen",
+  "order": 86,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "4 große Kartoffeln ( à 200 g, mehligkochend)",
+        "2 Eier",
+        "500 g (Frühlings-)Quark",
+        "1 EL Mineralwasser mit Kohlensäure",
+        "1 EL Öl",
+        "1 Bund Radieschen, in Stifte geschnitten",
+        "1 Bund Schnittlauch, gehackt",
+        "1 Bund Petersilie, gehackt",
+        "Salz und Pfeffer"
+      ]
+    }
+  ],
+  "steps": [
+    "Kartoffeln auf ein Backblech legen und im Backofen bei 200 °C Ober-/Unterhitze backen bis sie gar sind (ca. 1 Stunde).",
+    "Eier ca. 10 min kochen, abschrecken, auskühlen lassen, schälen und hacken.",
+    "Quark, Wasser und Öl glatt verrühren. Eier, Radieschen und Kräuter untermischen. Mit Pfeffer und Salz abschmecken.",
+    "Kartoffeln kreuzweise einschneiden und etwas auseinander drücken. Mit dem Frühlingsquark anrichten."
+  ],
+  "notes": []
+}

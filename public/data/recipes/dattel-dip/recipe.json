@@ -1,0 +1,29 @@
+{
+  "title": "Dattel-Dip",
+  "slug": "dattel-dip",
+  "category": "Dips",
+  "servings": "für 3 Schälchen",
+  "order": 88,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "300 g Frischkäse",
+        "200 g Schmand",
+        "150-200 g Datteln, entsteint, klein gehäckselt",
+        "1 Knoblauchzehe, gepresst",
+        "1/2 TL Currypulver",
+        "1 TL Chilipaste oder Harissapaste (alternativ Paprikapulver)"
+      ]
+    }
+  ],
+  "steps": [
+    "Den Frischkäse mit dem Schmand glatt rühren.",
+    "Die übrigen Zutaten einrühren und abschmecken.",
+    "Einige Stunden (über Nacht) ziehen lassen."
+  ],
+  "notes": []
+}

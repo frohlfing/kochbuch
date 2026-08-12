@@ -1,0 +1,48 @@
+{
+  "title": "Chili con Soja",
+  "slug": "chili-con-soja",
+  "category": "Vegetarisch",
+  "servings": "für 6 Personen",
+  "order": 31,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "200 g Sojagranulat",
+        "400 ml Brühe",
+        "1 große Zwiebel, fein gehackt",
+        "5 Knoblauchzehen, fein gehackt",
+        "Etwas Olivenöl",
+        "1 grüne Paprika, gewürfelt",
+        "1 kg gehackte Tomaten aus der Dose",
+        "1 Lorbeerblatt",
+        "1/2 TL Oregano, getrocknet",
+        "2 getrocknete Chilischoten, fein gehackt",
+        "500 g Kidneybohnen aus der Dose",
+        "250 g Mais aus der Dose",
+        "1 TL Cayennepfeffer",
+        "3 TL Salz, 1 TL Pfeffer"
+      ]
+    },
+    {
+      "group": "Beilage",
+      "text": [
+        "Tortilla Chips (Tacos)",
+        "Crème fraîche"
+      ]
+    }
+  ],
+  "steps": [
+    "Sojagranulat in 400 ml Brühe einweichen.",
+    "Zwiebel und Knoblauch in Öl glasig braten. Sojagranulat und Paprika dazugeben und bei starker Hitze 5 Minuten anbraten.",
+    "Tomaten, Lorbeerblatt, Oregano und die Chilischoten dazugeben. Alles 15 Minuten bei milder Hitze kochen lassen.",
+    "Bohnen abtropfen und mit dem Mais dazugeben. Weitere 10 Minuten köcheln lassen.",
+    "Mit Cayennepfeffer, Salz und Pfeffer abschmecken."
+  ],
+  "notes": [
+    "ersetzt 500 g Hackfleisch"
+  ]
+}

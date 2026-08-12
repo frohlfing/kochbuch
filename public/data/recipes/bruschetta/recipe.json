@@ -1,0 +1,32 @@
+{
+  "title": "Bruschetta",
+  "slug": "bruschetta",
+  "category": "Snacks",
+  "servings": "für 4 Personen",
+  "order": 8,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "350 g Tomaten, klein geschnitten",
+        "1/2 Zwiebel, klein gehackt",
+        "1 Knoblauchzehe",
+        "2 EL Olivenöl",
+        "Meersalz und Pfeffer",
+        "1 Baguette (rustikales Weißbrot)",
+        "Parmesan",
+        "6 Blätter frisches Basilikum, klein geschnitten"
+      ]
+    }
+  ],
+  "steps": [
+    "Tomaten und Zwiebel vermengen. Die Knoblauchzehe darüber auspressen. Mit Öl, Meersalz und Pfeffer würzen.",
+    "Das Baguette schräg in 8 Scheiben schneiden und mit etwas Olivenöl beträufeln.",
+    "Die Scheiben auf einem Backblech bei 200°C Ober-Unterhitze in ca. 8 Minuten kross backen.",
+    "Die Tomatenmasse auf das geröstete Brot geben, mit Parmesan bereuen und Basilikum-Blätter verzieren."
+  ],
+  "notes": []
+}

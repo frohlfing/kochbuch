@@ -1,0 +1,43 @@
+{
+  "title": "Rinderschmorbraten",
+  "slug": "rinderschmorbraten",
+  "category": "Fleisch",
+  "servings": "für 6 Personen",
+  "order": 54,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "1 kg Rinderbraten",
+        "2 Möhren, gewürfelt",
+        "1/4 Knollensellerie, gewürfelt",
+        "1 Zwiebel, gewürfelt",
+        "2 Knoblauchzehen, gewürfelt",
+        "75 g Butter",
+        "1 EL Tomatenmark",
+        "250 ml trockener Rotwein",
+        "250 ml Rinderfond",
+        "2 TL Salz",
+        "1 TL Paprikapulver, edelsüß"
+      ]
+    },
+    {
+      "group": "Beilage",
+      "text": [
+        "Spätzle oder Knödel",
+        "Rotkohl",
+        "Feldsalat",
+        "Orangenscheibe, Erdbeere"
+      ]
+    }
+  ],
+  "steps": [
+    "Die Butter in einem Bräter erhitzen und das Fleisch rundherum scharf anbraten und wieder aus dem Bräter herausnehmen.",
+    "Das Gemüse inkl. Knoblauch in dem heißen Bratfett 4-5 Minuten anbraten. Tomatenmark zugeben, kurz Farbe nehmen lassen und mit Wein und Fond ablöschen. Mit Salz und Paprikapulver abschmecken.",
+    "Das Fleisch zurück in den Bräter legen und zugedeckt 2,5 Stunden bei mittlerer Hitze (Stufe 3) schmoren lassen."
+  ],
+  "notes": []
+}

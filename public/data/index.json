@@ -1,0 +1,402 @@
+[
+  {
+    "slug": "kartoffelcremesuppe",
+    "order": 1
+  },
+  {
+    "slug": "zwiebelsuppe",
+    "order": 2
+  },
+  {
+    "slug": "lauchsuppe",
+    "order": 3
+  },
+  {
+    "slug": "leberknoedelsuppe",
+    "order": 4
+  },
+  {
+    "slug": "nierensuppe",
+    "order": 5
+  },
+  {
+    "slug": "melonen-salat",
+    "order": 6
+  },
+  {
+    "slug": "feldsalat-mit-roten-bohnen-und-schafskaese",
+    "order": 7
+  },
+  {
+    "slug": "bruschetta",
+    "order": 8
+  },
+  {
+    "slug": "chicken-wings",
+    "order": 9
+  },
+  {
+    "slug": "frikadellen",
+    "order": 10
+  },
+  {
+    "slug": "speckdatteln",
+    "order": 11
+  },
+  {
+    "slug": "zupfbrot",
+    "order": 12
+  },
+  {
+    "slug": "falafel",
+    "order": 13
+  },
+  {
+    "slug": "bitterballen",
+    "order": 14
+  },
+  {
+    "slug": "mettigelchen",
+    "order": 15
+  },
+  {
+    "slug": "kaeseigel",
+    "order": 16
+  },
+  {
+    "slug": "kaese-fondue",
+    "order": 17
+  },
+  {
+    "slug": "koelsche-tapas",
+    "order": 18
+  },
+  {
+    "slug": "fondue-mit-bruehe",
+    "order": 19
+  },
+  {
+    "slug": "soleier",
+    "order": 20
+  },
+  {
+    "slug": "gyros-auf-sojabasis",
+    "order": 21
+  },
+  {
+    "slug": "kartoffeleintopf",
+    "order": 22
+  },
+  {
+    "slug": "pilzpfanne",
+    "order": 23
+  },
+  {
+    "slug": "reibekuchen",
+    "order": 24
+  },
+  {
+    "slug": "senfeier",
+    "order": 25
+  },
+  {
+    "slug": "spaghetti-aglio-e-olio",
+    "order": 26
+  },
+  {
+    "slug": "spinat-lasagne",
+    "order": 27
+  },
+  {
+    "slug": "pizza",
+    "order": 28
+  },
+  {
+    "slug": "blumenkohlschnitzel-mit-senfsauce",
+    "order": 29
+  },
+  {
+    "slug": "paella",
+    "order": 30
+  },
+  {
+    "slug": "chili-con-soja",
+    "order": 31
+  },
+  {
+    "slug": "spargel-kartoffelpfanne",
+    "order": 32
+  },
+  {
+    "slug": "thaicurry-mit-tofu",
+    "order": 33
+  },
+  {
+    "slug": "ratatouille",
+    "order": 34
+  },
+  {
+    "slug": "kaese-makkaroni",
+    "order": 35
+  },
+  {
+    "slug": "kohlsaeckchen",
+    "order": 36
+  },
+  {
+    "slug": "semmelknoedel-mit-rahmschwammerl",
+    "order": 37
+  },
+  {
+    "slug": "kartoffelsuppe",
+    "order": 38
+  },
+  {
+    "slug": "arme-ritter",
+    "order": 39
+  },
+  {
+    "slug": "kartoffelgratin",
+    "order": 40
+  },
+  {
+    "slug": "spinat-kichererbsen-pfanne",
+    "order": 41
+  },
+  {
+    "slug": "indisches-butter-chicken",
+    "order": 42
+  },
+  {
+    "slug": "weihnachtsganz",
+    "order": 43
+  },
+  {
+    "slug": "birnen-bohnen-und-speck",
+    "order": 44
+  },
+  {
+    "slug": "curry-haehnchen-japanisches-watsu-chicken",
+    "order": 45
+  },
+  {
+    "slug": "chili-con-carne",
+    "order": 46
+  },
+  {
+    "slug": "cordon-bleu",
+    "order": 47
+  },
+  {
+    "slug": "curry-reis-pfanne-mit-pulled-chicken",
+    "order": 48
+  },
+  {
+    "slug": "gefuellte-paprika",
+    "order": 49
+  },
+  {
+    "slug": "huehnerfrikassee",
+    "order": 50
+  },
+  {
+    "slug": "koenigsberger-klopse",
+    "order": 51
+  },
+  {
+    "slug": "lasagne",
+    "order": 52
+  },
+  {
+    "slug": "linseneintopf",
+    "order": 53
+  },
+  {
+    "slug": "rinderschmorbraten",
+    "order": 54
+  },
+  {
+    "slug": "rouladen",
+    "order": 55
+  },
+  {
+    "slug": "schweinshaxe",
+    "order": 56
+  },
+  {
+    "slug": "wildschweinbraten",
+    "order": 57
+  },
+  {
+    "slug": "spaghetti-carbonara",
+    "order": 58
+  },
+  {
+    "slug": "spargel-mit-lachs-schinken-und-butter",
+    "order": 59
+  },
+  {
+    "slug": "steak",
+    "order": 60
+  },
+  {
+    "slug": "zwiebelkuchen",
+    "order": 61
+  },
+  {
+    "slug": "gruenkohl",
+    "order": 62
+  },
+  {
+    "slug": "gulasch-im-roemertopf",
+    "order": 63
+  },
+  {
+    "slug": "peking-ente",
+    "order": 64
+  },
+  {
+    "slug": "toast-hawaii",
+    "order": 65
+  },
+  {
+    "slug": "spaghetti-bolognese",
+    "order": 66
+  },
+  {
+    "slug": "erbseneintopf",
+    "order": 67
+  },
+  {
+    "slug": "miesmuscheln",
+    "order": 68
+  },
+  {
+    "slug": "spaghetti-mit-lachs",
+    "order": 69
+  },
+  {
+    "slug": "banane-mit-honig",
+    "order": 70
+  },
+  {
+    "slug": "marzipan-brataepfel",
+    "order": 71
+  },
+  {
+    "slug": "grappacreme",
+    "order": 72
+  },
+  {
+    "slug": "karamellbonbons",
+    "order": 73
+  },
+  {
+    "slug": "anstellgut-fuer-sauerteig",
+    "order": 74
+  },
+  {
+    "slug": "apfelkuchen",
+    "order": 75
+  },
+  {
+    "slug": "bauernbrot",
+    "order": 76
+  },
+  {
+    "slug": "fladenbrot",
+    "order": 77
+  },
+  {
+    "slug": "haferbrot-ein-groesseres-bauernbrot-mit-hafer",
+    "order": 78
+  },
+  {
+    "slug": "moehrenbrot",
+    "order": 79
+  },
+  {
+    "slug": "pizzateig",
+    "order": 80
+  },
+  {
+    "slug": "gebratener-reis",
+    "order": 81
+  },
+  {
+    "slug": "rosenkohl-orientalisch",
+    "order": 82
+  },
+  {
+    "slug": "kartoffel-moehren-stampf",
+    "order": 83
+  },
+  {
+    "slug": "karamellisierte-kartoffeln",
+    "order": 84
+  },
+  {
+    "slug": "wedges",
+    "order": 85
+  },
+  {
+    "slug": "backkartoffel-mit-quark",
+    "order": 86
+  },
+  {
+    "slug": "spaetzle",
+    "order": 87
+  },
+  {
+    "slug": "dattel-dip",
+    "order": 88
+  },
+  {
+    "slug": "guacamole-dip",
+    "order": 89
+  },
+  {
+    "slug": "paprika-feta-dip",
+    "order": 90
+  },
+  {
+    "slug": "tsatsiki",
+    "order": 91
+  },
+  {
+    "slug": "cannabis-butter",
+    "order": 92
+  },
+  {
+    "slug": "instant-gemuesebruehe",
+    "order": 93
+  },
+  {
+    "slug": "cannabis-tee",
+    "order": 94
+  },
+  {
+    "slug": "feuerzangenbowle",
+    "order": 95
+  },
+  {
+    "slug": "kuh-elsa",
+    "order": 96
+  },
+  {
+    "slug": "schwarze-sau",
+    "order": 97
+  },
+  {
+    "slug": "zombie",
+    "order": 98
+  },
+  {
+    "slug": "heisser-aperol",
+    "order": 99
+  },
+  {
+    "slug": "mirabellenlikoer",
+    "order": 100
+  }
+]

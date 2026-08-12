@@ -1,0 +1,32 @@
+{
+  "title": "Banane mit Honig",
+  "slug": "banane-mit-honig",
+  "category": "Desserts",
+  "servings": "für 4 Personen",
+  "order": 70,
+  "created": null,
+  "image": "image.png",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "80 g Mehl",
+        "1 TL Backpulver",
+        "1 Prise Salz",
+        "1 EL Zucker",
+        "Etwas Wasser",
+        "2 große Bananen",
+        "Honig",
+        "Öl zum Frittieren"
+      ]
+    }
+  ],
+  "steps": [
+    "Mehl, Backpulver, Salz und Zucker in einer kleinen Schüssel vermischen, Wasser dazugeben und zu einem dickflüssigen Teig verrühren.",
+    "Die Bananen in dicke Scheiben schneiden und stückweise durch den Teig ziehen.",
+    "Bananen frittieren, bis sie goldbraun sind. Anschließend kurz auf Küchenpapier abtropfen lassen",
+    "Mit Honig beträufeln und genießen."
+  ],
+  "notes": []
+}

@@ -1,0 +1,32 @@
+{
+  "title": "Fladenbrot",
+  "slug": "fladenbrot",
+  "category": "Gebäck",
+  "servings": "für 4 Personen",
+  "order": 77,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "1 Tüte Trockenhefe",
+        "500 g Mehl",
+        "1 ½ TL Salz",
+        "2 ELOlivenöl",
+        "60 ml Wasser, lauwarm",
+        "240 ml Mineralwasser mit Kohlensäure",
+        "Mehl für die Arbeitsfläche"
+      ]
+    }
+  ],
+  "steps": [
+    "Die Hefe in dem lauwarmen Wasser auflösen und 5 Min. ruhen lassen.",
+    "Alle Zutaten mit der Hefemischung in der Küchenmaschine für 5 Min. zum Teig kneten und in einer abgedeckten Schüssel 1,5 Stunden gehen lassen.",
+    "Den Teig in 9 gleichgroße Portionen teilen und diese zu kleinen Bällen formen. Auf einer leicht bemehlten Arbeitsplatte die Teigbälle zu Kreisen ausrollen (ca. 16 - 18 cm im Durchmesser).",
+    "Eine emaillierte Pfanne mindestens 5 Min. vorheizen, einen Fladen hineinlegen und unter häufigem Wenden etwa 4 - 5 Min. braten.",
+    "Die fertigen Fladen übereinanderstapeln und mit einem Tuch abdecken, damit sie warm und weich bleiben."
+  ],
+  "notes": []
+}

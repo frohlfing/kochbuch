@@ -1,0 +1,34 @@
+{
+  "title": "Mirabellenlikör",
+  "slug": "mirabellenlikoer",
+  "category": "Getränke",
+  "servings": "für 3 Flaschen",
+  "order": 100,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "Mirabellenlikör",
+        "1,8 kg Mirabellen",
+        "3 Flaschen Wodka (a’ 700ml, 38%vol)",
+        "500 g brauner Kandis",
+        "1 Vanilleschote (optional)"
+      ]
+    },
+    {
+      "group": "Zubehör",
+      "text": [
+        "4250 ml -Gefäß"
+      ]
+    }
+  ],
+  "steps": [
+    "Mirabellen entkernen",
+    "Mit Wodka, Kandis und Vanilleschoten ansetzen.",
+    "Nach 6 Wochen filtern."
+  ],
+  "notes": []
+}

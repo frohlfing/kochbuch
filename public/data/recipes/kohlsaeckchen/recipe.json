@@ -1,0 +1,53 @@
+{
+  "title": "Kohlsäckchen",
+  "slug": "kohlsaeckchen",
+  "category": "Vegetarisch",
+  "servings": "für 6 Personen",
+  "order": 36,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": "Für die Füllung",
+      "text": [
+        "200 g Räuchertofu, gewürfelt",
+        "450 ml Gemüsebrühe",
+        "200 g Polenta",
+        "75 g Käse, gerieben",
+        "1 Ei",
+        "2 EL Petersilie, gehackt",
+        "Salz und Pfeffer",
+        "Muskat",
+        "Zahnstocher"
+      ]
+    },
+    {
+      "group": "Für die Sauce",
+      "text": [
+        "1 EL Butter",
+        "1 Zwiebel, gewürfelt",
+        "125 ml Weißwein",
+        "100 g Sahne",
+        "300 ml Gemüsebrühe",
+        "1 TL Thymian"
+      ]
+    },
+    {
+      "group": "Beilage",
+      "text": [
+        "Reis",
+        "1 Kopf Wirsing - ohne Strunk, die einzelnen Blätter abgelöst"
+      ]
+    }
+  ],
+  "steps": [
+    "Reichlich Salzwasser in einem großen Topf aufkochen lassen, die Kohlblätter darin ca. 1 Min. blanchieren. Dann herausnehmen, kalt abschrecken und abtropfen lassen. 12 große Blätter zur Seite legen und die restlichen Blätter in feine Streifen schneiden.",
+    "Den Tofu in einer Pfanne anbraten.",
+    "Für die Füllung die Gemüsebrühe aufkochen, die Polenta unterrühren und 10 Min. zu einem dicklichen Brei kochen. Die Kohlstreifen mit Tofu, Käse, Ei und Petersilie unter den Polenta-Brei rühren. Mit Salz, Pfeffer und Muskat abschmecken.",
+    "Jeweils 2 gehäufte EL Füllung auf die Wirsingblätter geben und die Blätter über der Füllung mit Zahnstochern zu Säckchen binden.",
+    "Wasser ca. 3 cm hoch in einen Topf füllen, die Säckchen hineinsetzen und zugedeckt 10 Min. garen.",
+    "Für die Sauce die Butter erhitzen, Zwiebel zugeben und glasig dünsten. Mit Wein ablöschen, mit Sahne und Brühe aufgießen. Alles aufkochen und ca. 15 Min. einkochen lassen. Mit Salz, Pfeffer und Thymian abschmecken."
+  ],
+  "notes": []
+}

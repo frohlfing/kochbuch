@@ -1,0 +1,29 @@
+{
+  "title": "Steak",
+  "slug": "steak",
+  "category": "Fleisch",
+  "servings": "für 1 Person",
+  "order": 60,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "200 g Rumpsteak, Entrecôte, Hüftsteak oder Rinderfilet, ca. 3 cm dick",
+        "Öl",
+        "Meersalz",
+        "Bunter Pfeffer"
+      ]
+    }
+  ],
+  "steps": [
+    "Das Öl in einer unbeschichteten Pfanne stark erhitzen. Die Steaks auf beiden Seiten jeweils 1 Minute anbraten.",
+    "Den Ofen auf 30% der Heizleistung runterdrehen und beide Seiten jeweils weitere 2 Minuten braten. Beim Wenden auf der bereits angebratenen Seite salzen.",
+    "Mit dem Bratenwender leicht in das Fleisch drücken. Tritt noch roter Fleischsaft aus, nennt man es rare (blutig). Gibt es auf Druck stark nach, ist es medium. Gibt es nur wenig nach, ist es durch (well-done).",
+    "Das Fleisch aus der Pfanne nehmen, in Alufolie wickeln und 4 Minuten ruhen lassen.",
+    "Den dunklen Fleischsaft, der sich in der Folie angesammelt hat, über die Steaks geben und mit Pfeffer bestreuen."
+  ],
+  "notes": []
+}

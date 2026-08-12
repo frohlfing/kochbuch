@@ -1,0 +1,35 @@
+{
+  "title": "Spinat-Kichererbsen-Pfanne",
+  "slug": "spinat-kichererbsen-pfanne",
+  "category": "Vegetarisch",
+  "servings": "für 4 Personen",
+  "order": 41,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "2 EL Kokosöl",
+        "2 Zwiebeln, gewürfelt",
+        "Knoblauch, fein gehackt",
+        "1 cm Stück Ingwer, fein gehackt",
+        "450 g Blattspinat, TK",
+        "1 Dose (200 g) Tomaten, gehackt",
+        "1 Dose (400 g) Kokosmilch",
+        "1/2 TL Salz",
+        "1/2 TL Paprikapulver",
+        "1/2 TL Kurkumapulver",
+        "1 Dose (400 g) Kichererbsen"
+      ]
+    }
+  ],
+  "steps": [
+    "In der Pfanne das Kokosöl erhitzen.",
+    "Zwiebel, Knoblauch und Ingwer hineingeben und glasig dünsten.",
+    "Spinat, Tomaten, Kokosmilch und Gewürze hineingeben und 10 Minuten köcheln lassen.",
+    "Kichererbsen dazugeben und ziehen lassen."
+  ],
+  "notes": []
+}

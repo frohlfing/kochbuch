@@ -1,0 +1,62 @@
+{
+  "title": "Peking Ente",
+  "slug": "peking-ente",
+  "category": "Fleisch",
+  "servings": "für 4 Personen",
+  "order": 64,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "1 Ente, 1.5 kg, Federkiele mit der Pinzette gezupft"
+      ]
+    },
+    {
+      "group": "Für die Füllung",
+      "text": [
+        "2 TL Meersalz",
+        "1/2 TL Pfeffer",
+        "2 Knoblauchzehen, gewürfelt",
+        "1/2 Apfel",
+        "1 Lauchzwiebel",
+        "2 Scheiben Ingwer"
+      ]
+    },
+    {
+      "group": "Beilagen",
+      "text": [
+        "Klöße, Rotkohl"
+      ]
+    },
+    {
+      "group": "Für die Glasur",
+      "text": [
+        "2 EL Honig",
+        "4 EL lauwarmes Bier",
+        "2 EL Sojasauce",
+        "2 TL Salz",
+        "1/2 TL Chilipulver",
+        "1 Knoblauchzehe, gepresst"
+      ]
+    },
+    {
+      "group": "Besonderes Equipment",
+      "text": [
+        "Haken, Luftpumpe, Ventilator"
+      ]
+    }
+  ],
+  "steps": [
+    "Mit einer Ballluftpumpe unter die Haut der Ente stechen und pumpen, damit sich die Haut vom Fleisch löst.",
+    "Die Ente an einem Haken hängen und mehrmals mit kochendem Wasser übergießen. Dadurch zieht sich die Haut wieder zusammen und nimmt eine dunklere Farbe an.",
+    "Die Füllung in die Ente stopfen und zubinden.",
+    "Glasur auftragen: Die Ente mit dem Haken über eine Schüssel hängen. Die Haut mit einem Ventilator trocknen föhnen (1/2 Std.), dann mit der Glasur wieder anfeuchten. Dies wiederholen, bis die gesamte Glasuren verbraucht ist (ca. 10 mal, also 5 Stunden lang). - Die Ente über Nacht gut trocknen lassen (mind. 8 Std.).",
+    "Die Ente mit dem Haken an einem Rost an die Decke des Ofens hängen, darunter eine Schale mit etwas Wasser stellen. 20 Minuten bei 200°C Umluft braten. Die Haut wird gebräunt.",
+    "Weitere 2,5 Std. bei 90°C braten. Das Fleisch wird weich.",
+    "Dann 1 Std. bei 140°C braten. Die Haut wird knusprig. Kerntemperatur: 75°C"
+  ],
+  "notes": []
+}

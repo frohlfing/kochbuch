@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(awk '{ print length, NR }' index.html)",
+      "Bash(.venv/Scripts/python.exe scripts/migrate_data.py)",
+      "Bash(.venv/Scripts/python.exe \"C:\\\\Users\\\\frank\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-frank-Source-PhpStorm-kochbuch\\\\48819b69-3732-4669-961f-1772feb8a50b\\\\scratchpad\\\\patch_index.py\")",
+      "Bash(.venv/Scripts/python.exe -c ' *)",
+      "Bash(curl -sk -o /dev/null -w \"data/index.json: %{http_code}\\\\n\" https://kochbuch.test/data/index.json)",
+      "Bash(curl -sk -o /dev/null -w \"data/recipes/kartoffelcremesuppe/recipe.json: %{http_code}\\\\n\" https://kochbuch.test/data/recipes/kartoffelcremesuppe/recipe.json)",
+      "Bash(curl -sk -o /dev/null -w \"data/recipes/kartoffelcremesuppe/image.jpg: %{http_code}\\\\n\" https://kochbuch.test/data/recipes/kartoffelcremesuppe/image.jpg)",
+      "Bash(curl -sk -o /dev/null -w \"data/kartoffelcremesuppe \\(alt, sollte 404 sein\\): %{http_code}\\\\n\" https://kochbuch.test/data/kartoffelcremesuppe/recipe.json)",
+      "Bash(curl -sk -o /dev/null -w \"index.html: %{http_code}\\\\n\" https://kochbuch.test/index.html)"
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "title": "Paella",
+  "slug": "paella",
+  "category": "Vegetarisch",
+  "servings": "für 4 Personen",
+  "order": 30,
+  "created": null,
+  "image": "image.jpg",
+  "thumb": null,
+  "ingredients": [
+    {
+      "group": null,
+      "text": [
+        "1 Zwiebel, gehackt",
+        "2 Knoblauchzehen, gehackt",
+        "Olivenöl",
+        "2 Paprikaschoten (rot und grün), klein geschnitten",
+        "1 Stange Lauch, in Scheiben geschnitten",
+        "250 g Risottoreis",
+        "600 ml Gemüsebrühe",
+        "100 ml Weißwein",
+        "1 TL Salz und Pfeffer",
+        "½ TL Paprikapulver (edelsüß)",
+        "1 Pck. (0,1 g) Safranpulver (alternativ Kurkuma)",
+        "1 Tomate, klein geschnitten",
+        "120 g Erbsen (TK)",
+        "8 Oliven (schwarze), halbiert",
+        "200 g Räuchertofu, in 1,5 cm Würfel geschnitten",
+        "1 Bio-Zitrone, in Scheiben geschnitten"
+      ]
+    },
+    {
+      "group": "Optional",
+      "text": [
+        "1 Pck. (ca. 300g) Meeresfrüchte"
+      ]
+    }
+  ],
+  "steps": [
+    "Im Wok die Zwiebel und Knoblauch mit 2 EL Olivenöl glasig dünsten.",
+    "Paprikaschoten, Lauch und Reis zugeben und 3 Minuten mitdünsten.",
+    "Gemüsebrühe, Wein, Salz, Pfeffer, Paprikapulver und Safran hinzufügen und zugedeckt 10 Minuten köcheln lassen.",
+    "Tomate, Erbsen und Oliven zugeben und weitere 10 Minuten garen.",
+    "Den Tofu mit 2 EL Öl in einer separaten Pfanne 3 Minuten anbraten und anschließend unter die Paella mischen.",
+    "Die Zitronenscheiben auflegen und zugedeckt 5 Minuten ziehen lassen.",
+    "Meeresfrüchte in einer separaten Pfanne zubereiten und getrennt servieren."
+  ],
+  "notes": []
+}
