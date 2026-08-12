@@ -119,14 +119,27 @@ TODO
 
 ### Druckfunktion
 
-TODO
+Rein clientseitig über `@media print`-CSS, kein PHP-PDF-Generator. Der "Drucken"-Button in der
+Rezept-Detailansicht ruft `printRecipe()` auf; die Print-Styles blenden Header, Suchleiste,
+Kartenraster und alle Formular-/Aktions-Buttons aus und lassen nur das offene Rezept übrig
+(Foto oben links, Titel/Portionen oben rechts, Zutaten als Liste, Schritte nummeriert –
+angelehnt an die ursprüngliche PDF-Vorlage). Der Browser-Dialog "Drucken → Als PDF speichern"
+reicht für einen PDF-Export.
+
+**Zweispaltige Zutaten bei langen Rezepten:** `printRecipe()` rendert den Rezeptinhalt vor dem
+eigentlichen Druck unsichtbar in der ungefähren Breite/Höhe einer A4-Druckseite
+(`measurePrintHeight()`) und schätzt so ab, ob es auf eine Seite passt. Falls nicht, wird die
+Zutatenliste für den Ausdruck zweispaltig dargestellt (`.ingredients-wrap.two-col`, nur unter
+`@media print` wirksam), um mehr auf die erste Seite zu bekommen – z. B. bei "Peking Ente".
+Das ist eine Annäherung (Messung im Bildschirm-DOM, nicht die tatsächliche Browser-Paginierung),
+kein Garant für exakt eine Seite bei sehr langen Rezepten.
 
 ## Stand / Roadmap
 
 - ✅ Datenmigration aus dem OneNote-Export (100 Rezepte)
 - ✅ JSON-API (CRUD + Bild-Upload mit automatischem Thumbnail)
 - ✅ Frontend auf die API umgestellt, inkl. Anlegen/Bearbeiten/Löschen
-- ⏳ Druckansicht (eine A4-Seite pro Rezept, `@media print`)
+- ✅ Druckansicht (eine A4-Seite pro Rezept, `@media print`)
 - ⏳ Rezept-Import per URL (chefkoch.de u. Ä. über `schema.org/Recipe`-JSON-LD)
 
 ## Lizenz

@@ -329,6 +329,37 @@
     .sheet{padding:1.3rem 1.1rem 1.6rem;}
     .sheet .hero-img{width:150px;}
   }
+
+  /* Druckansicht: nur das offene Rezept, eine A4-Seite, angelehnt an die alte PDF-Vorlage
+     (Foto oben links, Titel oben rechts, Zutaten als Liste, Schritte nummeriert). */
+  @media print{
+    @page{size:A4; margin:1.5cm;}
+    header, .controls, .count, .grid{display:none !important;}
+    body{background:none !important;}
+    .overlay.open{
+      position:static !important;
+      display:block !important;
+      background:none !important;
+      padding:0 !important;
+      inset:auto !important;
+    }
+    .sheet{
+      max-width:100% !important;
+      width:auto !important;
+      padding:0 !important;
+      border:none !important;
+      background:#fff !important;
+    }
+    .sheet .close, .sheet .btn-row{display:none !important;}
+    .sheet .hero-img{width:200px;}
+    .ingredients-wrap.two-col{
+      columns:2;
+      column-gap:1.8rem;
+    }
+    .ingredients-wrap.two-col .group-label{break-inside:avoid; break-after:avoid;}
+    .ingredients-wrap.two-col ul.ingredients{break-inside:avoid;}
+    .ingredients-wrap.two-col ul.ingredients li{break-inside:avoid;}
+  }
 </style>
 </head>
 <body>
@@ -485,9 +516,12 @@ function renderGrid(){
     : '<p class="empty">Keine Rezepte gefunden.</p>';
 }
 
-function openRecipe(idx){
-  const r = RECIPES[idx];
-
+/**
+ * Baut den Inhalt, der sowohl in der Lese-Ansicht als auch beim Drucken sichtbar ist
+ * (Hero-Bild/Titel, Zutaten, Zubereitung, Notizen — ohne Toolbar/Schließen-Button).
+ * Wird auch fürs unsichtbare Vermessen der Druckhöhe in printRecipe() wiederverwendet.
+ */
+function printableSheetHtml(r){
   const ingredientsHtml = r.ingredients.map(g => `
     ${g.group ? `<div class="group-label">${escapeHtml(g.group)}</div>` : ''}
     <ul class="ingredients">${g.text.map(t => `<li>${escapeHtml(t)}</li>`).join('')}</ul>
@@ -507,8 +541,7 @@ function openRecipe(idx){
     ? `<div class="hero-img"><div class="ratio-box"><img src="${escapeHtml(src)}" alt="${escapeHtml(r.title)}"></div></div>`
     : '';
 
-  sheet.innerHTML = `
-    <button class="close" id="closeBtn" aria-label="Schließen">&times;</button>
+  return `
     <div class="hero">
       ${imgHtml}
       <div class="titles">
@@ -516,19 +549,81 @@ function openRecipe(idx){
         <div class="persons">${escapeHtml(r.servings || '')}${r.category ? ' &middot; ' + escapeHtml(r.category) : ''}</div>
       </div>
     </div>
-    <div class="btn-row toolbar">
-      <button class="btn" id="editBtn" type="button">Bearbeiten</button>
-      <button class="btn btn-danger" id="deleteBtn" type="button">Löschen</button>
-    </div>
     <h4>Zutaten</h4>
-    ${ingredientsHtml || '<p><em>keine erfasst</em></p>'}
+    <div class="ingredients-wrap" id="ingredientsWrap">${ingredientsHtml || '<p><em>keine erfasst</em></p>'}</div>
     ${stepsHtml}
     ${notesHtml}
   `;
+}
+
+function openRecipe(idx){
+  const r = RECIPES[idx];
+
+  sheet.innerHTML = `
+    <button class="close" id="closeBtn" aria-label="Schließen">&times;</button>
+    <div class="btn-row toolbar">
+      <button class="btn" id="printBtn" type="button">Drucken</button>
+      <button class="btn" id="editBtn" type="button">Bearbeiten</button>
+      <button class="btn btn-danger" id="deleteBtn" type="button">Löschen</button>
+    </div>
+    ${printableSheetHtml(r)}
+  `;
   overlay.classList.add('open');
   document.getElementById('closeBtn').addEventListener('click', closeRecipe);
+  document.getElementById('printBtn').addEventListener('click', () => printRecipe(r));
   document.getElementById('editBtn').addEventListener('click', () => openEditForm(r));
   document.getElementById('deleteBtn').addEventListener('click', () => deleteRecipeUI(r));
+}
+
+// A4 (21 x 29,7cm) minus je 1,5cm Rand (siehe @page-Regel), umgerechnet in CSS-px (96dpi, 1cm = 37.8px)
+const PRINT_CONTENT_WIDTH_PX = Math.round((21 - 2 * 1.5) * 37.8);
+const PRINT_CONTENT_HEIGHT_PX = Math.round((29.7 - 2 * 1.5) * 37.8);
+
+/**
+ * Rendert $html unsichtbar (außerhalb des Viewports) in der Zielbreite einer Druckseite
+ * und liefert die resultierende Höhe in px. Reine Schätzung zur Layout-Entscheidung, nicht
+ * die exakte Höhe, mit der der Browser am Ende paginiert.
+ */
+function measurePrintHeight(html, twoColIngredients){
+  const probe = document.createElement('div');
+  probe.className = 'sheet';
+  probe.style.position = 'absolute';
+  probe.style.left = '-9999px';
+  probe.style.top = '0';
+  probe.style.visibility = 'hidden';
+  probe.style.width = PRINT_CONTENT_WIDTH_PX + 'px';
+  probe.style.padding = '0';
+  probe.style.border = 'none';
+  probe.style.boxSizing = 'border-box';
+  probe.innerHTML = html;
+
+  if(twoColIngredients){
+    const wrap = probe.querySelector('.ingredients-wrap');
+    if(wrap){
+      wrap.style.columns = '2';
+      wrap.style.columnGap = '1.8rem';
+    }
+  }
+
+  document.body.appendChild(probe);
+  const height = probe.scrollHeight;
+  probe.remove();
+  return height;
+}
+
+/**
+ * Prüft (näherungsweise, siehe measurePrintHeight), ob das Rezept auf eine A4-Druckseite passt.
+ * Falls nicht, werden die Zutaten für den Ausdruck zweispaltig dargestellt (nur beim Drucken
+ * sichtbar, siehe .ingredients-wrap.two-col in @media print), um mehr auf die Seite zu bekommen.
+ */
+function printRecipe(r){
+  const html = printableSheetHtml(r);
+  const fitsOneColumn = measurePrintHeight(html, false) <= PRINT_CONTENT_HEIGHT_PX;
+
+  const wrap = document.getElementById('ingredientsWrap');
+  if(wrap) wrap.classList.toggle('two-col', !fitsOneColumn);
+
+  window.print();
 }
 
 function closeRecipe(){

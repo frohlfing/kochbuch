@@ -27,7 +27,8 @@
       "Bash(rm -rf data)",
       "Bash(mv data_backup data)",
       "Bash(cd \"C:\\\\Users\\\\frank\\\\Source\\\\PhpStorm\\\\kochbuch\\\\public\")",
-      "Bash(echo \"JS OK\")"
+      "Bash(echo \"JS OK\")",
+      "Bash(node -e \"require\\('jsdom'\\); console.log\\('jsdom verfuegbar'\\)\")"
     ]
   }
 }
