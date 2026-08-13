@@ -57,8 +57,9 @@ function http_get_curl(string $url, int $timeoutSeconds, int $maxBytes): string
     $body = curl_exec($ch);
     $error = curl_error($ch);
     $status = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
-    curl_close($ch);
 
+    // Kein curl_close(): CurlHandle-Objekte (seit PHP 8.0) werden automatisch per GC freigegeben,
+    // der Aufruf ist seit PHP 8.5 deprecated.
     if ($body === false) {
         throw new RuntimeException("Abruf fehlgeschlagen: $error");
     }
@@ -80,7 +81,7 @@ function http_get_stream(string $url, int $timeoutSeconds, int $maxBytes): strin
             'timeout' => $timeoutSeconds,
             'follow_location' => 1,
             'max_redirects' => 5,
-            // Damit wir den Status selbst auswerten (und eine sprechende Fehlermeldung geben)
+            // Damit wir den Status selbst auswerten (und eine sprechende Fehlermeldung geben),
             // statt dass file_get_contents() bei 4xx/5xx nur eine PHP-Warning wirft.
             'ignore_errors' => true,
         ],

@@ -13,8 +13,7 @@ interface RecipeParserInterface
     /**
      * Lädt die Seite und extrahiert die Rezeptdaten.
      *
-     * @return array{title:string, category:?string, servings:?string, image_url:?string,
-     *               ingredients:string[], steps:string[], notes:?string}
+     * @return array{title: string, category: ?string, servings: ?string, image_url: ?string, ingredients: string[], steps: string[], notes: ?string}
      * @throws RuntimeException wenn die Seite nicht geladen werden konnte oder kein Rezept gefunden wurde
      */
     public function parse(string $url): array;

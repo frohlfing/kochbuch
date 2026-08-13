@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/thumbnail.php';
 
-/** Bilddatei entspricht nicht ALLOWED_IMAGE_TYPES (geprüft am tatsächlichen Dateiinhalt, nicht an Endung/Content-Type). */
+/** Die Bilddatei entspricht nicht ALLOWED_IMAGE_TYPES (geprüft am tatsächlichen Dateiinhalt, nicht an Endung/Content-Type). */
 class ImageValidationException extends RuntimeException
 {
 }

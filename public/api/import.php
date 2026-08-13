@@ -41,7 +41,7 @@ if ($url === '' || !filter_var($url, FILTER_VALIDATE_URL)) {
 
 $parsers = [
     new ChefkochParser(),
-    new GenericSchemaOrgParser(), // Fallback, muss zuletzt stehen (supports() ist immer true)
+    new GenericSchemaOrgParser(), // Fallback; muss zuletzt stehen (supports() ist immer true)
 ];
 
 $parser = null;

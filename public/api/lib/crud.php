@@ -120,7 +120,7 @@ function validate_recipe_input(array $data): array
             $errors[] = "$field muss ein Array sein";
         }
     }
-    if (isset($data['notes']) && $data['notes'] !== null && !is_string($data['notes'])) {
+    if (isset($data['notes']) && !is_string($data['notes'])) {
         $errors[] = 'notes muss ein Text sein';
     }
     foreach ($data['ingredients'] ?? [] as $group) {

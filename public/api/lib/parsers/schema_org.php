@@ -1,12 +1,11 @@
 <?php
 
 /**
- * Sucht in allen <script type="application/ld+json">-Blöcken der Seite nach einem
- * schema.org/Recipe-Knoten (auch verschachtelt in einer @graph-Struktur, wie chefkoch.de sie
- * verwendet) und übersetzt ihn in unser internes Rohformat. Null, wenn kein Recipe gefunden wurde.
+ * Sucht in allen <script type="application/ld+json">-Blöcken der Seite nach einem schema.org/Recipe-Knoten
+ * (auch verschachtelt in einer @graph-Struktur, wie chefkoch.de sie verwendet) und übersetzt ihn
+ * in unser internes Rohformat. Null, wenn kein Recipe gefunden wurde.
  *
- * @return array{title:string, category:?string, servings:?string, image_url:?string,
- *               ingredients:string[], steps:string[], notes:?string}|null
+ * @return array{title: string, category: ?string, servings: ?string, image_url: ?string, ingredients: string[], steps: string[], notes: ?string}|null
  */
 function extract_schema_org_recipe(string $html): ?array
 {
@@ -37,12 +36,12 @@ function extract_schema_org_recipe(string $html): ?array
     }
 
     // "headline" (CreativeWork) ist, wenn vorhanden, oft der sauberere Anzeigetitel; "name" ist bei
-    // manchen Portalen (z. B. lecker.de: "... Rezept" angehaengt) SEO-optimiert. chefkoch.de liefert
-    // gar kein headline, faellt also automatisch auf name zurueck.
+    // manchen Portalen SEO-optimiert (z. B. hängt lecker.de "Rezept" an, etwa "Spareribs mit BBQ-Soße Rezept").
+    // chefkoch.de liefert gar kein `headline`, fällt also automatisch auf `name` zurück.
     $title = schema_org_text($recipeNode['headline'] ?? null) ?? schema_org_text($recipeNode['name'] ?? null) ?? '';
-    // Manche Portale (u. a. chefkoch.de) haengen an den Titel " von <Autor>" an. Nur entfernen,
-    // wenn es exakt mit dem ueber "author" verlinkten Namen uebereinstimmt (kein Raten anhand
-    // von Textmustern), damit echte Titel wie "Involtini von Huhn" unangetastet bleiben.
+    // Manche Portale (u. a. chefkoch.de) hängen an den Titel "von <Autor>" an. Nur entfernen, wenn
+    // es exakt mit dem über "author" verlinkten Namen übereinstimmt (kein Raten anhand von Textmustern) –
+    // damit echte Titel wie "Involtini von Huhn" unangetastet bleiben.
     $authorName = schema_org_resolve_author_name($recipeNode['author'] ?? null, $nodesById);
     if ($authorName !== null && str_ends_with($title, ' von ' . $authorName)) {
         $title = substr($title, 0, -strlen(' von ' . $authorName));
@@ -55,7 +54,7 @@ function extract_schema_org_recipe(string $html): ?array
         'image_url' => schema_org_resolve_image($recipeNode['image'] ?? null, $nodesById),
         'ingredients' => schema_org_string_list($recipeNode['recipeIngredient'] ?? $recipeNode['ingredients'] ?? []),
         'steps' => schema_org_flatten_instructions($recipeNode['recipeInstructions'] ?? []),
-        // Bewusst nicht aus "description" befüllt: bei chefkoch.de u.a. steht dort SEO-Marketingtext,
+        // Bewusst nicht aus "description" befüllt: Bei chefkoch.de u. a. steht dort SEO-Marketingtext,
         // kein echter Rezept-Hinweis. Notizen müssen nach dem Import ggf. manuell ergänzt werden.
         'notes' => null,
     ];
@@ -161,7 +160,7 @@ function schema_org_string_list(mixed $value): array
 
 /**
  * recipeInstructions kommt in der Praxis als String, Array von Strings, Array von HowToStep
- * ({"@type":"HowToStep","text":...}) oder verschachtelt als HowToSection mit itemListElement vor
+ * ({"@type":"HowToStep","text": ...}) oder verschachtelt als HowToSection mit itemListElement vor
  * (so bei chefkoch.de) – wird rekursiv zu einer flachen Liste von Schritt-Texten aufgelöst.
  *
  * @return string[]
@@ -195,7 +194,7 @@ function schema_org_flatten_instructions(mixed $value): array
     return $out;
 }
 
-/** author kann String, Person-Objekt (inline oder @id-Referenz ins @graph) sein. */
+/** Der Wert von "author" kann ein String oder ein Person-Objekt sein (inline oder @id-Referenz ins @graph). */
 function schema_org_resolve_author_name(mixed $value, array $nodesById): ?string
 {
     if (is_string($value)) {
@@ -212,7 +211,7 @@ function schema_org_resolve_author_name(mixed $value, array $nodesById): ?string
     return null;
 }
 
-/** image kann String, Array von Strings, ImageObject (inline oder @id-Referenz ins @graph) sein. */
+/** Der Wert von "image" kann ein String, ein Array von Strings oder ein ImageObject sein (inline oder @id-Referenz ins @graph). */
 function schema_org_resolve_image(mixed $value, array $nodesById): ?string
 {
     if (is_string($value)) {
