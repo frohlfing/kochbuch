@@ -401,6 +401,11 @@
 
 <script>
 let RECIPES = [];
+// true während openEditForm()/openImportForm() offen ist (ungespeicherte Eingaben möglich).
+// Verhindert, dass ein Klick neben das Formular oder Escape die Eingaben versehentlich verwirft
+// (siehe overlay-Klick-Handler und keydown-Handler weiter unten) — nur die expliziten Buttons
+// "Abbrechen"/"×"/"Speichern" schließen das Formular dann noch.
+let formIsOpen = false;
 
 const grid = document.getElementById('grid');
 const overlay = document.getElementById('overlay');
@@ -498,6 +503,25 @@ function knownCategories(){
   return [...new Set(RECIPES.map(r => r.category).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'de'));
 }
 
+/**
+ * Baut die Kategorien-Filter-Optionen aus dem aktuellen RECIPES-Stand neu auf (nötig nach jedem
+ * Anlegen/Bearbeiten/Löschen/Import, da dabei Kategorien hinzukommen oder wegfallen können).
+ * Behält die aktuelle Auswahl bei, falls sie noch existiert, sonst zurück auf "Alle Kategorien" —
+ * eine Auswahl auf eine verschwundene Kategorie würde sonst zu einem leeren, unerklärten
+ * Ergebnis führen.
+ */
+function refreshCategoryFilter(){
+  const cats = knownCategories();
+  const current = catSel.value;
+  catSel.innerHTML = '<option value="">Alle Kategorien</option>' + cats.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+  catSel.value = cats.includes(current) ? current : '';
+}
+
+/** Aktualisiert die Gesamtanzahl im Header (nötig nach jedem Anlegen/Löschen/Import). */
+function updateHeaderCount(){
+  subCount.textContent = `${RECIPES.length} Rezepte`;
+}
+
 function renderGrid(){
   const q = searchInput.value.trim().toLowerCase();
   const cat = catSel.value;
@@ -536,7 +560,7 @@ function renderGrid(){
  */
 function printableSheetHtml(r){
   const ingredientsHtml = r.ingredients.map(g => `
-    ${g.group ? `<div class="group-label">${escapeHtml(g.group)}</div>` : ''}
+    ${g.group ? `<div class="group-label">${escapeHtml(g.group)}:</div>` : ''}
     <ul class="ingredients">${g.text.map(t => `<li>${escapeHtml(t)}</li>`).join('')}</ul>
   `).join('');
 
@@ -571,6 +595,7 @@ function printableSheetHtml(r){
 
 function openRecipe(idx){
   const r = RECIPES[idx];
+  formIsOpen = false;
 
   sheet.innerHTML = `
     <button class="close" id="closeBtn" aria-label="Schließen">&times;</button>
@@ -603,6 +628,7 @@ function printRecipe(r){
 }
 
 function closeRecipe(){
+  formIsOpen = false;
   overlay.classList.remove('open');
   sheet.innerHTML = '';
 }
@@ -668,6 +694,7 @@ function parseIngredientsText(text){
 
 /** Zeigt das Anlege-/Bearbeitungsformular. $r === null bedeutet: neues Rezept. */
 function openEditForm(r){
+  formIsOpen = true;
   const isEdit = r !== null;
   const ingredientsText = isEdit ? formatIngredientsText(r.ingredients) : '';
   const stepsText = isEdit ? formatStepsText(r.steps) : '';
@@ -805,6 +832,8 @@ async function saveRecipe(slug){
 
   RECIPES = RECIPES.filter(x => x.slug !== slug && x.slug !== saved.slug);
   RECIPES.push(saved);
+  refreshCategoryFilter();
+  updateHeaderCount();
   renderGrid();
   openRecipe(RECIPES.indexOf(saved));
   if(imageError){
@@ -817,6 +846,8 @@ async function deleteRecipeUI(r){
   try {
     await apiWrite(`api/recipes.php?slug=${encodeURIComponent(r.slug)}`, {method: 'DELETE'});
     RECIPES = RECIPES.filter(x => x.slug !== r.slug);
+    refreshCategoryFilter();
+    updateHeaderCount();
     closeRecipe();
     renderGrid();
   } catch(err){
@@ -829,10 +860,10 @@ grid.addEventListener('click', e => {
   if(card) openRecipe(parseInt(card.dataset.idx, 10));
 });
 overlay.addEventListener('click', e => {
-  if(e.target === overlay) closeRecipe();
+  if(e.target === overlay && !formIsOpen) closeRecipe();
 });
 document.addEventListener('keydown', e => {
-  if(e.key === 'Escape') closeRecipe();
+  if(e.key === 'Escape' && !formIsOpen) closeRecipe();
 });
 searchInput.addEventListener('input', renderGrid);
 sortSel.addEventListener('change', renderGrid);
@@ -842,6 +873,7 @@ importRecipeBtn.addEventListener('click', () => openImportForm());
 
 /** Zeigt das Formular zum Rezept-Import per URL (chefkoch.de u. Ä. mit schema.org/Recipe). */
 function openImportForm(){
+  formIsOpen = true;
   sheet.innerHTML = `
     <button class="close" id="closeBtn" aria-label="Schließen">&times;</button>
     <h2>Rezept importieren</h2>
@@ -888,6 +920,8 @@ async function runImport(){
     });
     RECIPES = RECIPES.filter(x => x.slug !== saved.slug);
     RECIPES.push(saved);
+    refreshCategoryFilter();
+    updateHeaderCount();
     renderGrid();
     openRecipe(RECIPES.indexOf(saved));
     if(saved.import_warning){
@@ -910,10 +944,8 @@ async function init(){
     return;
   }
 
-  const cats = knownCategories();
-  catSel.innerHTML = '<option value="">Alle Kategorien</option>' + cats.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
-
-  subCount.textContent = `${RECIPES.length} Rezepte`;
+  refreshCategoryFilter();
+  updateHeaderCount();
   renderGrid();
 }
 
