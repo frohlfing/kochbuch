@@ -31,7 +31,11 @@
       "Bash(node -e \"require\\('jsdom'\\); console.log\\('jsdom verfuegbar'\\)\")",
       "Read(//c/xampp/php/ext/**)",
       "Read(//c/xampp/php/**)",
-      "PowerShell(Get-Process *)"
+      "PowerShell(Get-Process *)",
+      "Bash(npm init *)",
+      "Bash(npm install *)",
+      "Bash(node -e \"require\\('jsdom'\\); console.log\\('jsdom ok'\\)\" --experimental-vm-modules)",
+      "Bash(node *)"
     ]
   }
 }

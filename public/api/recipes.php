@@ -67,4 +67,9 @@ try {
     json_error(404, $e->getMessage());
 } catch (ConflictException $e) {
     json_error(409, $e->getMessage());
+} catch (RuntimeException $e) {
+    // Fängt u. a. fehlgeschlagenes mkdir()/rename() (create_recipe()/update_recipe()) und
+    // fehlgeschlagenes unlink()/rmdir() (delete_recipe()) ab, statt eines rohen PHP-Fatals mit
+    // kaputtem JSON-Body (siehe Kommentar an remove_directory_recursive() in crud.php).
+    json_error(500, $e->getMessage());
 }

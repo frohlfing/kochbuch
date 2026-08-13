@@ -36,7 +36,10 @@ function extract_schema_org_recipe(string $html): ?array
         return null;
     }
 
-    $title = schema_org_text($recipeNode['name'] ?? null) ?? '';
+    // "headline" (CreativeWork) ist, wenn vorhanden, oft der sauberere Anzeigetitel; "name" ist bei
+    // manchen Portalen (z. B. lecker.de: "... Rezept" angehaengt) SEO-optimiert. chefkoch.de liefert
+    // gar kein headline, faellt also automatisch auf name zurueck.
+    $title = schema_org_text($recipeNode['headline'] ?? null) ?? schema_org_text($recipeNode['name'] ?? null) ?? '';
     // Manche Portale (u. a. chefkoch.de) haengen an den Titel " von <Autor>" an. Nur entfernen,
     // wenn es exakt mit dem ueber "author" verlinkten Namen uebereinstimmt (kein Raten anhand
     // von Textmustern), damit echte Titel wie "Involtini von Huhn" unangetastet bleiben.

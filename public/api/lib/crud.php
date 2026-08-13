@@ -146,7 +146,7 @@ function validate_recipe_input(array $data): array
     return $errors;
 }
 
-/** Baut aus rohen Request-Daten die vom Store verwalteten Felder (title/category/servings/ingredients/steps/notes), mit Defaults/Typumwandlung. */
+/** Baut aus rohen Request-Daten die vom Store verwalteten Felder (title/category/servings/ingredients/steps/notes/twoColumnPrint), mit Defaults/Typumwandlung. */
 function normalize_recipe_fields(array $data): array
 {
     $notes = trim((string) ($data['notes'] ?? ''));
@@ -164,6 +164,10 @@ function normalize_recipe_fields(array $data): array
         ),
         'steps' => array_values(array_map('strval', $data['steps'] ?? [])),
         'notes' => $notes !== '' ? $notes : null,
+        // Manueller Override fürs Frontend, falls die automatische Zeilen-Schätzung beim Drucken
+        // danebenliegt (siehe estimatePrintLines() in index.html). Default false, kein Migrationsbedarf
+        // für Altdaten ohne dieses Feld.
+        'twoColumnPrint' => !empty($data['twoColumnPrint']),
     ];
 }
 
@@ -249,7 +253,7 @@ function update_recipe(string $slug, array $data): array
     return $recipe;
 }
 
-/** Entfernt den kompletten Rezeptordner (recipe.json + Bilder verschwinden automatisch mit). @throws NotFoundException */
+/** Entfernt den kompletten Rezeptordner (recipe.json + Bilder verschwinden automatisch mit). @throws NotFoundException|RuntimeException */
 function delete_recipe(string $slug): void
 {
     $dir = recipe_dir($slug);
@@ -259,7 +263,15 @@ function delete_recipe(string $slug): void
     remove_directory_recursive($dir);
 }
 
-/** Löscht einen Ordner samt Inhalt rekursiv (PHP hat dafür keine eingebaute Funktion). */
+/**
+ * Löscht einen Ordner samt Inhalt rekursiv (PHP hat dafür keine eingebaute Funktion).
+ * Prüft die Rückgabewerte von unlink()/rmdir() bewusst: ohne diese Prüfung blieb der Ordner unter
+ * Windows bei einem kurzzeitigen Datei-Lock (z. B. Windows Search/Virenscanner öffnet gerade
+ * thumb.jpg) real bestehen, während die API trotzdem Erfolg meldete – Rezepte "verschwanden" aus
+ * der Liste beim nächsten Request nicht wirklich, sondern tauchten wieder auf.
+ *
+ * @throws RuntimeException wenn eine Datei oder der Ordner selbst nicht gelöscht werden konnte
+ */
 function remove_directory_recursive(string $dir): void
 {
     foreach (scandir($dir) ?: [] as $item) {
@@ -269,9 +281,11 @@ function remove_directory_recursive(string $dir): void
         $path = $dir . '/' . $item;
         if (is_dir($path)) {
             remove_directory_recursive($path);
-        } else {
-            unlink($path);
+        } elseif (!unlink($path)) {
+            throw new RuntimeException("Datei konnte nicht gelöscht werden: $path");
         }
     }
-    rmdir($dir);
+    if (!rmdir($dir)) {
+        throw new RuntimeException("Ordner konnte nicht gelöscht werden: $dir");
+    }
 }

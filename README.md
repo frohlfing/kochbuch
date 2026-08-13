@@ -102,7 +102,8 @@ sonst `401`. Lesende Endpunkte (`GET`) sind offen.
     { "group": "Für die Knödel", "text": ["...", "..."] }
   ],
   "steps": ["..."],
-  "notes": []
+  "notes": null,
+  "twoColumnPrint": false
 }
 ```
 
@@ -168,13 +169,16 @@ Kartenraster und alle Formular-/Aktions-Buttons aus und lassen nur das offene Re
 angelehnt an die ursprüngliche PDF-Vorlage). Der Browser-Dialog "Drucken → Als PDF speichern"
 reicht für einen PDF-Export.
 
-**Zweispaltige Zutaten bei langen Rezepten:** `printRecipe()` rendert den Rezeptinhalt vor dem
-eigentlichen Druck unsichtbar in der ungefähren Breite/Höhe einer A4-Druckseite
-(`measurePrintHeight()`) und schätzt so ab, ob es auf eine Seite passt. Falls nicht, wird die
-Zutatenliste für den Ausdruck zweispaltig dargestellt (`.ingredients-wrap.two-col`, nur unter
-`@media print` wirksam), um mehr auf die erste Seite zu bekommen – z. B. bei "Peking Ente".
-Das ist eine Annäherung (Messung im Bildschirm-DOM, nicht die tatsächliche Browser-Paginierung),
-kein Garant für exakt eine Seite bei sehr langen Rezepten.
+**Zweispaltige Zutaten bei langen Rezepten:** Im Bearbeitungsformular gibt es die Checkbox
+"Zutaten beim Drucken immer zweispaltig darstellen" (Feld `twoColumnPrint` in `recipe.json`,
+Default `false`). Ist sie gesetzt, bekommt `#ingredientsWrap` beim Drucken die Klasse `two-col`
+(`.ingredients-wrap.two-col{columns:2}`, nur unter `@media print` wirksam) – reine manuelle
+Entscheidung, keine Automatik mehr. Zwei automatische Varianten (eine Pixel-Messung im
+unsichtbaren DOM, danach eine Zeilen-/Zeichen-Schätzung) wurden ausprobiert und wieder verworfen:
+Ohne echten Browser ließ sich keine davon zuverlässig verifizieren, und in der Praxis wurde z. B.
+"Peking Ente" nicht zuverlässig erkannt. Bei Bedarf lässt sich anhand des bestehenden Datenbestands
+leicht eine Liste von Kandidaten ermitteln (Zutaten- + Schritt-Umfang zählen) und manuell
+durchgehen, statt sich auf eine unsichere Schätzung zu verlassen.
 
 ## Stand / Roadmap
 

@@ -48,6 +48,11 @@ function http_get_curl(string $url, int $timeoutSeconds, int $maxBytes): string
         CURLOPT_HTTPHEADER => ['Accept-Language: de-DE,de;q=0.9,en;q=0.8'],
         CURLOPT_RANGE => '0-' . $maxBytes, // Kulanz-Bremse, Server kann Range ignorieren
         CURLOPT_SSL_VERIFYPEER => true,
+        // Leerstring = "alle von libcurl unterstützten Kodierungen anbieten und automatisch
+        // dekomprimieren". Manche Server (z. B. lecker.de) liefern gzip auch ohne Nachfrage –
+        // ohne das hier kommt nur der komprimierte Rohinhalt zurück, json_decode() scheitert
+        // dann lautlos (extract_schema_org_recipe() liefert fälschlich null).
+        CURLOPT_ENCODING => '',
     ]);
     $body = curl_exec($ch);
     $error = curl_error($ch);
@@ -69,7 +74,9 @@ function http_get_stream(string $url, int $timeoutSeconds, int $maxBytes): strin
     $context = stream_context_create([
         'http' => [
             'method' => 'GET',
-            'header' => "User-Agent: " . HTTP_FETCH_USER_AGENT . "\r\nAccept-Language: de-DE,de;q=0.9,en;q=0.8\r\n",
+            'header' => "User-Agent: " . HTTP_FETCH_USER_AGENT . "\r\n"
+                . "Accept-Language: de-DE,de;q=0.9,en;q=0.8\r\n"
+                . "Accept-Encoding: gzip, deflate\r\n",
             'timeout' => $timeoutSeconds,
             'follow_location' => 1,
             'max_redirects' => 5,
@@ -89,13 +96,32 @@ function http_get_stream(string $url, int $timeoutSeconds, int $maxBytes): strin
     }
 
     $status = 0;
+    $encoding = null;
     foreach ($http_response_header ?? [] as $header) {
         if (preg_match('#^HTTP/\S+\s+(\d+)#', $header, $m)) {
             $status = (int) $m[1];
         }
+        if (preg_match('#^Content-Encoding:\s*(\S+)#i', $header, $m)) {
+            $encoding = strtolower($m[1]);
+        }
     }
     if ($status >= 400) {
         throw new RuntimeException("Server antwortete mit HTTP $status");
+    }
+
+    // Anders als curl dekomprimiert der http-Stream-Wrapper die Antwort nicht selbst, obwohl wir
+    // oben "Accept-Encoding: gzip, deflate" mitschicken (nötig, weil manche Server ohnehin
+    // komprimieren, siehe Hinweis zu lecker.de oben in http_get()).
+    if ($encoding === 'gzip') {
+        $decoded = @gzdecode($body);
+        return $decoded !== false ? $decoded : $body;
+    }
+    if ($encoding === 'deflate') {
+        $decoded = @gzinflate($body);
+        if ($decoded === false) {
+            $decoded = @gzuncompress($body);
+        }
+        return $decoded !== false ? $decoded : $body;
     }
 
     return $body;
