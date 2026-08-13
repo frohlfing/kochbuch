@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Feuerholz -->
+  <rect x="14" y="85" width="72" height="8" rx="4" fill="#6b4226" transform="rotate(-7 50 89)"/>
+  <rect x="14" y="85" width="72" height="8" rx="4" fill="#7a4c2c" transform="rotate(7 50 89)"/>
+  <!-- Flammen links -->
+  <path d="M17 92 C10 84 12 74 18 66 C22 76 23 86 17 92 Z" fill="#c1440e"/>
+  <path d="M17 90 C12 84 13 77 18 71 C21 78 22 85 17 90 Z" fill="#f07f13"/>
+  <path d="M17 88 C14 84 15 80 18 76 C20 80 20 84 17 88 Z" fill="#ffd23f"/>
+  <!-- Flammen rechts -->
+  <path d="M83 92 C90 84 88 74 82 66 C78 76 77 86 83 92 Z" fill="#c1440e"/>
+  <path d="M83 90 C88 84 87 77 82 71 C79 78 78 85 83 90 Z" fill="#f07f13"/>
+  <path d="M83 88 C86 84 85 80 82 76 C80 80 80 84 83 88 Z" fill="#ffd23f"/>
+  <!-- Topfgriffe -->
+  <rect x="9" y="48" width="13" height="12" rx="6" fill="#efe4cf" stroke="#2c231b" stroke-width="2"/>
+  <rect x="78" y="48" width="13" height="12" rx="6" fill="#efe4cf" stroke="#2c231b" stroke-width="2"/>
+  <!-- Topf, flacher Boden ruht direkt auf dem Holz -->
+  <path d="M20 34 L80 34 L80 80 Q80 88 72 88 L28 88 Q20 88 20 80 Z" fill="#efe4cf" stroke="#2c231b" stroke-width="2"/>
+  <!-- Topföffnung -->
+  <ellipse cx="50" cy="34" rx="30" ry="6" fill="#d8c9a8" stroke="#2c231b" stroke-width="2"/>
+  <!-- Rauch -->
+  <path d="M35 33 C32 23 48 13 36 6" stroke="#5c6570" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.7"/>
+  <path d="M50 33 C42 23 58 13 50 2" stroke="#5c6570" stroke-width="4.5" fill="none" stroke-linecap="round" opacity="0.85"/>
+  <path d="M65 33 C52 23 68 13 65 4" stroke="#5c6570" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.7"/>
+</svg>

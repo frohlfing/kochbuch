@@ -4,7 +4,7 @@
  * JSON-API für Rezepte: Listen/Lesen, Anlegen, Bearbeiten (inkl. Rename bei Titeländerung)
  * und Löschen. Bild-Upload läuft separat über upload.php.
  *
- * GET    /api/recipes.php            -> {"recipes": [...]}, alle Rezepte, sortiert nach order. Kein Token nötig.
+ * GET    /api/recipes.php            -> {"recipes": [...]}, alle Rezepte, alphabetisch nach Titel sortiert. Kein Token nötig.
  * GET    /api/recipes.php?slug=xyz   -> einzelnes Rezept. Kein Token nötig. 404, falls unbekannt.
  * POST   /api/recipes.php            -> legt ein neues Rezept an. Body: JSON-Objekt mit title (Pflicht),
  *                                        category, servings, ingredients, steps, notes. Token nötig. 201 bei Erfolg.

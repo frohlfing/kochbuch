@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kochbuch &ndash; Rezeptindex</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
   :root{
     --paper:#f6efe2;
@@ -215,6 +216,11 @@
     color:var(--accent);
     font-size:1.1rem;
   }
+  .sheet .created-date{
+    margin-top:.25rem;
+    font-size:.78rem;
+    color:var(--ink-soft);
+  }
   .sheet h4{
     margin:1.3rem 0 .5rem;
     font-size:.8rem;
@@ -385,8 +391,10 @@
   <input type="search" id="search" placeholder="Rezept oder Zutat suchen &hellip;">
   <select id="catSel"><option value="">Alle Kategorien</option></select>
   <select id="sortSel">
-    <option value="page">Reihenfolge im Buch</option>
     <option value="title">Alphabetisch</option>
+    <option value="created-desc">Erstellungsdatum &uarr;</option>
+    <option value="created-asc">Erstellungsdatum &darr;</option>
+    <option value="category">Kategorie</option>
   </select>
   <button class="btn btn-primary" id="newRecipeBtn" type="button">+ Neues Rezept</button>
   <button class="btn" id="importRecipeBtn" type="button">Importieren</button>
@@ -522,6 +530,12 @@ function updateHeaderCount(){
   subCount.textContent = `${RECIPES.length} Rezepte`;
 }
 
+/** Zeitstempel von r.created als Zahl für Sortierung. Fehlt/ungültig -> 0 (sortiert als ältestes). */
+function createdTime(r){
+  const t = r.created ? new Date(r.created).getTime() : NaN;
+  return isNaN(t) ? 0 : t;
+}
+
 function renderGrid(){
   const q = searchInput.value.trim().toLowerCase();
   const cat = catSel.value;
@@ -541,10 +555,28 @@ function renderGrid(){
     });
   }
 
-  if(sortSel.value === 'title'){
-    items.sort((a,b) => a.r.title.localeCompare(b.r.title, 'de'));
-  } else {
-    items.sort((a,b) => (a.r.order ?? 0) - (b.r.order ?? 0));
+  switch(sortSel.value){
+    case 'title':
+      items.sort((a,b) => a.r.title.localeCompare(b.r.title, 'de'));
+      break;
+    case 'category':
+      // Rezepte ohne Kategorie ans Ende, innerhalb einer Kategorie alphabetisch nach Titel.
+      items.sort((a,b) => {
+        const catA = a.r.category, catB = b.r.category;
+        if(!catA && !catB) return a.r.title.localeCompare(b.r.title, 'de');
+        if(!catA) return 1;
+        if(!catB) return -1;
+        const catCompare = catA.localeCompare(catB, 'de');
+        return catCompare !== 0 ? catCompare : a.r.title.localeCompare(b.r.title, 'de');
+      });
+      break;
+    case 'created-asc':
+      items.sort((a,b) => createdTime(a.r) - createdTime(b.r));
+      break;
+    case 'created-desc':
+    default:
+      items.sort((a,b) => createdTime(b.r) - createdTime(a.r));
+      break;
   }
 
   resultCount.textContent = `${items.length} von ${RECIPES.length} Rezepten`;
@@ -578,12 +610,19 @@ function printableSheetHtml(r){
     ? `<div class="hero-img"><div class="ratio-box"><img src="${escapeHtml(src)}" alt="${escapeHtml(r.title)}"></div></div>`
     : '';
 
+  // Wird sowohl in der Leseansicht als auch im Ausdruck angezeigt (kein @media-print-Ausblenden mehr).
+  const createdDate = r.created ? new Date(r.created) : null;
+  const createdHtml = createdDate && !isNaN(createdDate.getTime())
+    ? `<div class="created-date">Erstellt am ${escapeHtml(createdDate.toLocaleDateString('de-DE'))}</div>`
+    : '';
+
   return `
     <div class="hero">
       ${imgHtml}
       <div class="titles">
         <h2>${escapeHtml(r.title)}</h2>
         <div class="persons">${escapeHtml(r.servings || '')}${r.category ? ' &middot; ' + escapeHtml(r.category) : ''}</div>
+        ${createdHtml}
       </div>
     </div>
     <h4>Zutaten</h4>
@@ -865,9 +904,33 @@ overlay.addEventListener('click', e => {
 document.addEventListener('keydown', e => {
   if(e.key === 'Escape' && !formIsOpen) closeRecipe();
 });
-searchInput.addEventListener('input', renderGrid);
-sortSel.addEventListener('change', renderGrid);
-catSel.addEventListener('change', renderGrid);
+const VIEW_STATE_KEY = 'kochbuch_view_state';
+
+/** Speichert Suchbegriff, Kategorie-Filter und Sortierung, damit sie einen Reload überstehen. */
+function saveViewState(){
+  localStorage.setItem(VIEW_STATE_KEY, JSON.stringify({
+    search: searchInput.value,
+    category: catSel.value,
+    sort: sortSel.value,
+  }));
+}
+
+function loadViewState(){
+  try {
+    return JSON.parse(localStorage.getItem(VIEW_STATE_KEY) || '{}');
+  } catch(err) {
+    return {};
+  }
+}
+
+function onFilterChange(){
+  saveViewState();
+  renderGrid();
+}
+
+searchInput.addEventListener('input', onFilterChange);
+sortSel.addEventListener('change', onFilterChange);
+catSel.addEventListener('change', onFilterChange);
 newRecipeBtn.addEventListener('click', () => openEditForm(null));
 importRecipeBtn.addEventListener('click', () => openImportForm());
 
@@ -946,6 +1009,15 @@ async function init(){
 
   refreshCategoryFilter();
   updateHeaderCount();
+
+  // Suchbegriff/Filter/Sortierung vom letzten Besuch wiederherstellen. Kategorie nur übernehmen,
+  // wenn es diese Option nach dem Neuaufbau der Liste (refreshCategoryFilter) noch gibt — sonst
+  // bleibt es bei "Alle Kategorien", statt eine verschwundene Kategorie stumm auszuwählen.
+  const saved = loadViewState();
+  if(saved.search) searchInput.value = saved.search;
+  if(saved.sort && [...sortSel.options].some(o => o.value === saved.sort)) sortSel.value = saved.sort;
+  if(saved.category && [...catSel.options].some(o => o.value === saved.category)) catSel.value = saved.category;
+
   renderGrid();
 }
 

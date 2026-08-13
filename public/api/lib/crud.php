@@ -77,7 +77,7 @@ function get_recipe(string $slug): ?array
     return ensure_thumbnail(recipe_dir($slug), $recipe);
 }
 
-/** @return array[] Nach order sortiert. */
+/** @return array[] Alphabetisch nach Titel sortiert (das Frontend sortiert clientseitig ggf. um, siehe index.html). */
 function list_recipes(): array
 {
     $recipes = [];
@@ -87,7 +87,7 @@ function list_recipes(): array
             $recipes[] = $recipe;
         }
     }
-    usort($recipes, fn(array $a, array $b) => ($a['order'] ?? 0) <=> ($b['order'] ?? 0));
+    usort($recipes, fn(array $a, array $b) => strcasecmp((string) $a['title'], (string) $b['title']));
     return $recipes;
 }
 
@@ -105,19 +105,6 @@ function title_exists(string $title, ?string $excludeSlug = null): bool
         }
     }
     return false;
-}
-
-/** Höchste vergebene order über alle Rezepte, plus 1 (für neu angelegte Rezepte). */
-function next_order(): int
-{
-    $max = 0;
-    foreach (list_recipe_slugs() as $slug) {
-        $r = read_recipe_json($slug);
-        if ($r !== null) {
-            $max = max($max, (int) ($r['order'] ?? 0));
-        }
-    }
-    return $max + 1;
 }
 
 /** @return string[] Fehlermeldungen, leer wenn valide. */
@@ -171,7 +158,7 @@ function normalize_recipe_fields(array $data): array
     ];
 }
 
-/** Legt ein neues Rezept an: validiert, vergibt Slug/order/created, erstellt den Ordner und schreibt recipe.json. @throws ValidationException */
+/** Legt ein neues Rezept an: validiert, vergibt Slug/created, erstellt den Ordner und schreibt recipe.json. @throws ValidationException */
 function create_recipe(array $data): array
 {
     $errors = validate_recipe_input($data);
@@ -196,7 +183,6 @@ function create_recipe(array $data): array
 
     $recipe = array_merge($fields, [
         'slug' => $slug,
-        'order' => next_order(),
         'created' => date('c'),
         'image' => null,
         'thumb' => null,

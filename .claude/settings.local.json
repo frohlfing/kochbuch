@@ -35,7 +35,13 @@
       "Bash(npm init *)",
       "Bash(npm install *)",
       "Bash(node -e \"require\\('jsdom'\\); console.log\\('jsdom ok'\\)\" --experimental-vm-modules)",
-      "Bash(node *)"
+      "Bash(node *)",
+      "Bash(python3 *)",
+      "Bash(C:\\\\Users\\\\frank\\\\Source\\\\PhpStorm\\\\kochbuch\\\\.venv\\\\Scripts\\\\python.exe *)",
+      "Bash(where inkscape *)",
+      "Bash(where chrome *)",
+      "Read(//c/Program Files/Google/Chrome/Application/**)",
+      "Read(//c/Program Files \\\\\\(x86\\\\\\)/Microsoft/Edge/Application/**)"
     ]
   }
 }

@@ -18,24 +18,18 @@ Ein privates Familien-Kochbuch, digitalisiert als kleine PHP/JSON-API mit einer 
    php -r "echo bin2hex(random_bytes(32));"
    ```
 3. Webserver mit Document Root `public/` auf ein Verzeichnis zeigen lassen (z. B. XAMPP-vHost).
-4. GD-Extension für PHP aktivieren. Unter XAMPP geht das so:
+4. GD-Extension für PHP aktivieren. Zur Prüfung gibt es `public/dev/info.php` (ruft `phpinfo()`
+   auf, im Browser aufrufen und nach "gd" suchen) – siehe auch Abschnitt "Admin-/Dev-Skripte"
+   unter Projektstruktur.
 
-    Testdatei:
-    ```php
-    <?php
-    // Nur zur manuellen Prüfung der PHP-Konfiguration (z. B. GD-Verfügbarkeit) nach dem Deploy.
-    // Danach wieder löschen - phpinfo() gibt Server-Interna preis.
-    phpinfo();
-    ```
-
-   Unter XAMPP:  
+   Unter XAMPP:
    - `C:\xampp\php\php.ini` öffnen und die Zeile `;extension=gd` zu `extension=gd` ändern.
    - Apache neu starten.
 
-   Unter Hetzner-Webspace: 
+   Unter Hetzner-Webspace:
    - GD ist standardmäßig aktiviert. Falls nicht, kann dies per KonsoleH eingerichtet werden.
 
-4. Seite aufrufen – die Rezeptliste lädt sich selbst über `GET /api/recipes.php`.
+5. Seite aufrufen – die Rezeptliste lädt sich selbst über `GET /api/recipes.php`.
 
 ## Projektstruktur
 
@@ -50,6 +44,10 @@ data/                        Außerhalb des Document Root, kein direkter Browser
         └── thumb.<ext>       automatisch generierte Miniatur
 public/                     Document Root
 ├── index.html               Frontend (One-Page-App, lädt/schreibt ausschließlich über /api/*)
+├── favicon.svg               Browser-Tab-Icon
+├── dev/                      Admin-/Wartungsskripte – NICHT dauerhaft auf dem Produktivserver lassen (siehe unten)
+│   ├── info.php               phpinfo() zur PHP-Konfigurationsprüfung (z. B. GD-Verfügbarkeit)
+│   └── remove_order_field.php Einmal-Skript: entfernt das veraltete "order"-Feld aus recipe.json
 └── api/
     ├── recipes.php          GET/POST/PUT/DELETE – Rezepte lesen, anlegen, bearbeiten, löschen
     ├── upload.php           POST – Bild-Upload für ein Rezept inkl. Thumbnail-Generierung
@@ -69,6 +67,21 @@ public/                     Document Root
             └── fetch.php                    http_get(): curl, sonst file_get_contents()-Fallback
 ```
 
+### Admin-/Dev-Skripte (`public/dev/`)
+
+Einmalige Wartungs- und Diagnose-Skripte, die (anders als die eigentliche App) direkt im Browser
+aufgerufen werden – auf Hetzner-Shared-Webspace gibt es keinen Terminalzugriff, ein CLI-Pendant
+entfällt daher bewusst. Muster:
+
+- **Diagnose** (`info.php`): offen aufrufbar, aber `phpinfo()` verrät Server-Interna.
+- **Datenändernde Skripte** (z. B. `remove_order_field.php`): durch das API-Token geschützt, als
+  `?token=<API_TOKEN>`-Query-Parameter statt als Header (ein simpler Browser-Aufruf kann keine
+  Custom-Header setzen). Mehrfaches Aufrufen ist jeweils unbedenklich (idempotent).
+
+**Wichtig:** `public/dev/` gehört **nicht dauerhaft** auf den Produktivserver. Nach Gebrauch dort
+löschen – ein Server-Interna preisgebender `phpinfo()`-Endpunkt und ein Token im URL-Query
+(landet in Server-Logs/Browser-Verlauf) sollen keine Dauereinrichtung sein.
+
 ## API
 
 Alle schreibenden Endpunkte (`POST`/`PUT`/`DELETE`) erwarten den Header `X-API-Token: <token>`,
@@ -76,7 +89,7 @@ sonst `401`. Lesende Endpunkte (`GET`) sind offen.
 
 | Methode | Endpunkt                                    | Beschreibung                                                                                                                |
 |---------|---------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| GET     | `/api/recipes.php`                          | Alle Rezepte, sortiert nach `order`                                                                                         |
+| GET     | `/api/recipes.php`                          | Alle Rezepte, alphabetisch nach Titel sortiert (das Frontend sortiert clientseitig ggf. um) |
 | GET     | `/api/recipes.php?slug=xyz`                 | Einzelnes Rezept                                                                                                            |
 | POST    | `/api/recipes.php`                          | Neues Rezept anlegen (JSON-Body)                                                                                            |
 | PUT     | `/api/recipes.php?slug=xyz`                 | Rezept bearbeiten (JSON-Body). Ändert sich der Titel so, dass sich der Slug ändert, wird der Rezeptordner atomar umbenannt. |
@@ -93,7 +106,6 @@ sonst `401`. Lesende Endpunkte (`GET`) sind offen.
   "slug": "leberknoedelsuppe",
   "category": "Suppen",
   "servings": "für 4 Personen",
-  "order": 4,
   "created": "2026-08-12T17:04:58+02:00",
   "image": "image.jpg",
   "thumb": "thumb.jpg",
