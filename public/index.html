@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kochbuch &ndash; Rezeptindex</title>
+<title>Kochbuch</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
   :root{
@@ -302,8 +302,33 @@
     resize:vertical;
   }
   .form-field textarea{min-height:4.2rem;}
-  .form-field textarea#ingredientsInput{min-height:9rem;}
+  .form-field textarea#ingredientsInput{min-height:14.5rem;}
+  .form-field textarea#stepsInput{min-height:14.5rem;}
   .form-field .hint{font-size:.72rem; color:var(--ink-soft); margin-top:.3rem;}
+
+  /* Eigene Vorschlagsliste fürs Kategorie-Feld statt <datalist> — auf manchen Android-Tastaturen
+     (Gboard-Vorschlagsleiste) blieben datalist-Chips trotz korrekter Optionen leer. */
+  .autocomplete-wrap{position:relative;}
+  .autocomplete-list{
+    display:none;
+    position:absolute;
+    left:0; right:0; top:100%;
+    margin-top:2px;
+    background:var(--card);
+    border:1px solid var(--rule);
+    border-radius:2px;
+    max-height:11rem;
+    overflow-y:auto;
+    z-index:60;
+    box-shadow:0 6px 16px rgba(44,35,27,0.14);
+  }
+  .autocomplete-list.open{display:block;}
+  .autocomplete-list div{
+    padding:.5rem .7rem;
+    cursor:pointer;
+    font-size:.95rem;
+  }
+  .autocomplete-list div:hover{background:var(--paper-deep);}
   .form-field.checkbox-field label{
     display:flex;
     align-items:center;
@@ -753,8 +778,10 @@ function openEditForm(r){
     </div>
     <div class="form-field">
       <label for="categoryInput">Kategorie</label>
-      <input type="text" id="categoryInput" list="categoryList" value="${isEdit ? escapeHtml(r.category || '') : ''}">
-      <datalist id="categoryList">${knownCategories().map(c => `<option value="${escapeHtml(c)}">`).join('')}</datalist>
+      <div class="autocomplete-wrap">
+        <input type="text" id="categoryInput" autocomplete="off" value="${isEdit ? escapeHtml(r.category || '') : ''}">
+        <div class="autocomplete-list" id="categorySuggestions"></div>
+      </div>
     </div>
     <div class="form-field">
       <label for="servingsInput">Personen</label>
@@ -782,8 +809,8 @@ function openEditForm(r){
       <div class="hint">Freier Text. In der Leseansicht wird jede Zeile als eigener Absatz dargestellt.</div>
     </div>
     <div class="form-field checkbox-field">
-      <label><input type="checkbox" id="twoColumnPrintInput" ${isEdit && r.twoColumnPrint ? 'checked' : ''}> Zutaten beim Drucken immer zweispaltig darstellen</label>
-      <div class="hint">Nur aktiv, wenn hier angehakt – sinnvoll bei langen Rezepten, die sonst nicht auf eine Druckseite passen.</div>
+      <label><input type="checkbox" id="twoColumnPrintInput" ${isEdit && r.twoColumnPrint ? 'checked' : ''}> Zutaten beim Drucken zweispaltig darstellen</label>
+      <div class="hint">Sinnvoll bei langen Rezepten, die sonst nicht auf eine Druckseite passen.</div>
     </div>
     <div class="btn-row">
       <button class="btn btn-primary" id="saveBtn" type="button">Speichern</button>
@@ -808,6 +835,46 @@ function openEditForm(r){
     reader.readAsDataURL(file);
   });
   document.getElementById('saveBtn').addEventListener('click', () => saveRecipe(isEdit ? r.slug : null));
+  wireCategoryAutocomplete();
+}
+
+/**
+ * Eigene Vorschlagsliste fürs Kategorie-Feld (Ersatz für <datalist>, siehe CSS-Kommentar bei
+ * .autocomplete-list): zeigt beim Fokussieren/Tippen passende, bereits verwendete Kategorien an.
+ */
+function wireCategoryAutocomplete(){
+  const input = document.getElementById('categoryInput');
+  const list = document.getElementById('categorySuggestions');
+  const allCategories = knownCategories();
+
+  function render(){
+    const q = input.value.trim().toLowerCase();
+    const matches = q ? allCategories.filter(c => c.toLowerCase().includes(q)) : allCategories;
+    if(!matches.length){
+      list.classList.remove('open');
+      list.innerHTML = '';
+      return;
+    }
+    list.innerHTML = matches.map(c => `<div data-value="${escapeHtml(c)}">${escapeHtml(c)}</div>`).join('');
+    list.classList.add('open');
+  }
+
+  input.addEventListener('focus', render);
+  input.addEventListener('input', render);
+  input.addEventListener('blur', () => {
+    // Kurze Verzögerung, damit ein Tap auf einen Vorschlag noch ankommt, bevor die Liste verschwindet.
+    setTimeout(() => list.classList.remove('open'), 150);
+  });
+  list.addEventListener('mousedown', e => {
+    // mousedown statt click: feuert vor dem blur-Event des Inputs, verhindert einen Fokus-Verlust
+    // vor der Auswahl (wichtig für Touch-Bedienung).
+    e.preventDefault();
+    const item = e.target.closest('[data-value]');
+    if(item){
+      input.value = item.dataset.value;
+      list.classList.remove('open');
+    }
+  });
 }
 
 /** Liest die Formularfelder aus und baut daraus den API-Payload (ohne leere Zutatengruppen/-zeilen). */

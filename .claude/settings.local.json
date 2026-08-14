@@ -41,7 +41,8 @@
       "Bash(where inkscape *)",
       "Bash(where chrome *)",
       "Read(//c/Program Files/Google/Chrome/Application/**)",
-      "Read(//c/Program Files \\\\\\(x86\\\\\\)/Microsoft/Edge/Application/**)"
+      "Read(//c/Program Files \\\\\\(x86\\\\\\)/Microsoft/Edge/Application/**)",
+      "Bash(grep -o '<datalist id=\"categoryList\">.\\\\{0,120\\\\}')"
     ]
   }
 }
