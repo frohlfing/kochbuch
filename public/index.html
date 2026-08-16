@@ -271,7 +271,6 @@
     background:var(--card);
     color:var(--ink);
     cursor:pointer;
-    height: 43.69px;
   }
   .btn:hover{border-color:var(--accent); color:var(--accent);}
   .btn-primary{background:var(--accent); border-color:var(--accent); color:#fff;}
@@ -305,30 +304,6 @@
   .form-field textarea#ingredientsInput{min-height:14.5rem;}
   .form-field textarea#stepsInput{min-height:14.5rem;}
   .form-field .hint{font-size:.72rem; color:var(--ink-soft); margin-top:.3rem;}
-
-  /* Eigene Vorschlagsliste fürs Kategorie-Feld statt <datalist> — auf manchen Android-Tastaturen
-     (Gboard-Vorschlagsleiste) blieben datalist-Chips trotz korrekter Optionen leer. */
-  .autocomplete-wrap{position:relative;}
-  .autocomplete-list{
-    display:none;
-    position:absolute;
-    left:0; right:0; top:100%;
-    margin-top:2px;
-    background:var(--card);
-    border:1px solid var(--rule);
-    border-radius:2px;
-    max-height:11rem;
-    overflow-y:auto;
-    z-index:60;
-    box-shadow:0 6px 16px rgba(44,35,27,0.14);
-  }
-  .autocomplete-list.open{display:block;}
-  .autocomplete-list div{
-    padding:.5rem .7rem;
-    cursor:pointer;
-    font-size:.95rem;
-  }
-  .autocomplete-list div:hover{background:var(--paper-deep);}
   .form-field.checkbox-field label{
     display:flex;
     align-items:center;
@@ -413,9 +388,9 @@
 </header>
 
 <div class="controls">
-  <input type="search" id="search" placeholder="Rezept oder Zutat suchen &hellip;">
-  <select id="catSel"><option value="">Alle Kategorien</option></select>
-  <select id="sortSel">
+  <input type="search" id="search" placeholder="Rezept oder Zutat suchen &hellip;" aria-label="Rezept oder Zutat suchen">
+  <select id="catSel" aria-label="Nach Kategorie filtern"><option value="">Alle Kategorien</option></select>
+  <select id="sortSel" aria-label="Sortierung">
     <option value="title">Alphabetisch</option>
     <option value="created-desc">Erstellungsdatum &uarr;</option>
     <option value="created-asc">Erstellungsdatum &darr;</option>
@@ -434,7 +409,7 @@
 
 <script>
 let RECIPES = [];
-// true während openEditForm()/openImportForm() offen ist (ungespeicherte Eingaben möglich).
+// `true`, während openEditForm()/openImportForm() offen ist (ungespeicherte Eingaben sind möglich).
 // Verhindert, dass ein Klick neben das Formular oder Escape die Eingaben versehentlich verwirft
 // (siehe overlay-Klick-Handler und keydown-Handler weiter unten) — nur die expliziten Buttons
 // "Abbrechen"/"×"/"Speichern" schließen das Formular dann noch.
@@ -457,7 +432,7 @@ function escapeHtml(str){
   return (str||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-// PHP liefert die Rezeptliste über die JSON-API (api/recipes.php), siehe docs/Arbeitsübergabe.md
+// PHP liefert die Rezeptliste über die JSON-API (api/recipes.php).
 async function loadRecipes(){
   const data = await fetch('api/recipes.php').then(res => res.json());
   return data.recipes;
@@ -539,9 +514,14 @@ function knownCategories(){
 /**
  * Baut die Kategorien-Filter-Optionen aus dem aktuellen RECIPES-Stand neu auf (nötig nach jedem
  * Anlegen/Bearbeiten/Löschen/Import, da dabei Kategorien hinzukommen oder wegfallen können).
- * Behält die aktuelle Auswahl bei, falls sie noch existiert, sonst zurück auf "Alle Kategorien" —
- * eine Auswahl auf eine verschwundene Kategorie würde sonst zu einem leeren, unerklärten
- * Ergebnis führen.
+ * Behält die aktuelle Auswahl bei, falls sie noch existiert, sonst wird sie auf "Alle Kategorien"
+ * zurückgesetzt — eine Auswahl auf eine verschwundene Kategorie würde sonst zu einem leeren,
+ * unerklärten Ergebnis führen.
+ *
+ * In Microsoft Edge für Android (getestet mit Version 140.0.3485.98) tritt ein bekannter, laut
+ * Microsoft noch ungelöster Fehler auf: Die Vorschlagsliste erscheint und funktioniert zwar, alle
+ * Optionen werden darin aber leer angezeigt (Stand 13. Oktober 2025: keine offizielle Lösung).
+ * Quelle: https://learn.microsoft.com/en-us/answers/questions/5583325/datalist-tag-not-properly-rendered-on-microsoft-ed
  */
 function refreshCategoryFilter(){
   const cats = knownCategories();
@@ -571,13 +551,12 @@ function renderGrid(){
   }
 
   if(q){
-    items = items.filter(({r}) => {
-      if(r.title.toLowerCase().includes(q)) return true;
-      if((r.servings||'').toLowerCase().includes(q)) return true;
-      if(r.ingredients.some(g => g.text.some(t => t.toLowerCase().includes(q)))) return true;
-      if(r.steps.some(s => s.toLowerCase().includes(q))) return true;
-      return false;
-    });
+    items = items.filter(({r}) =>
+      r.title.toLowerCase().includes(q)
+      || (r.servings||'').toLowerCase().includes(q)
+      || r.ingredients.some(g => g.text.some(t => t.toLowerCase().includes(q)))
+      || r.steps.some(s => s.toLowerCase().includes(q))
+    );
   }
 
   switch(sortSel.value){
@@ -711,7 +690,7 @@ function formatIngredientsText(ingredients){
   }).join('\n');
 }
 
-/** Nummeriert die Zubereitungsschritte fürs Formular durch ("1. ", "2. ", ...). Umkehrfunktion zu parseStepsText(). */
+/** Nummeriert die Zubereitungsschritte fürs Formular durch. Umkehrfunktion zu parseStepsText(). */
 function formatStepsText(steps){
   return steps.map((s, i) => `${i + 1}. ${s}`).join('\n');
 }
@@ -778,13 +757,11 @@ function openEditForm(r){
     </div>
     <div class="form-field">
       <label for="categoryInput">Kategorie</label>
-      <div class="autocomplete-wrap">
-        <input type="text" id="categoryInput" autocomplete="off" value="${isEdit ? escapeHtml(r.category || '') : ''}">
-        <div class="autocomplete-list" id="categorySuggestions"></div>
-      </div>
+      <input type="text" id="categoryInput" list="categoryList" autocomplete="off" value="${isEdit ? escapeHtml(r.category || '') : ''}">
+      <datalist id="categoryList">${knownCategories().map(c => `<option value="${escapeHtml(c)}">`).join('')}</datalist>
     </div>
     <div class="form-field">
-      <label for="servingsInput">Personen</label>
+      <label for="servingsInput">Portionen</label>
       <input type="text" id="servingsInput" value="${isEdit ? escapeHtml(r.servings || '') : ''}" placeholder="z. B. für 4 Personen">
     </div>
     <div class="form-field">
@@ -835,46 +812,6 @@ function openEditForm(r){
     reader.readAsDataURL(file);
   });
   document.getElementById('saveBtn').addEventListener('click', () => saveRecipe(isEdit ? r.slug : null));
-  wireCategoryAutocomplete();
-}
-
-/**
- * Eigene Vorschlagsliste fürs Kategorie-Feld (Ersatz für <datalist>, siehe CSS-Kommentar bei
- * .autocomplete-list): zeigt beim Fokussieren/Tippen passende, bereits verwendete Kategorien an.
- */
-function wireCategoryAutocomplete(){
-  const input = document.getElementById('categoryInput');
-  const list = document.getElementById('categorySuggestions');
-  const allCategories = knownCategories();
-
-  function render(){
-    const q = input.value.trim().toLowerCase();
-    const matches = q ? allCategories.filter(c => c.toLowerCase().includes(q)) : allCategories;
-    if(!matches.length){
-      list.classList.remove('open');
-      list.innerHTML = '';
-      return;
-    }
-    list.innerHTML = matches.map(c => `<div data-value="${escapeHtml(c)}">${escapeHtml(c)}</div>`).join('');
-    list.classList.add('open');
-  }
-
-  input.addEventListener('focus', render);
-  input.addEventListener('input', render);
-  input.addEventListener('blur', () => {
-    // Kurze Verzögerung, damit ein Tap auf einen Vorschlag noch ankommt, bevor die Liste verschwindet.
-    setTimeout(() => list.classList.remove('open'), 150);
-  });
-  list.addEventListener('mousedown', e => {
-    // mousedown statt click: feuert vor dem blur-Event des Inputs, verhindert einen Fokus-Verlust
-    // vor der Auswahl (wichtig für Touch-Bedienung).
-    e.preventDefault();
-    const item = e.target.closest('[data-value]');
-    if(item){
-      input.value = item.dataset.value;
-      list.classList.remove('open');
-    }
-  });
 }
 
 /** Liest die Formularfelder aus und baut daraus den API-Payload (ohne leere Zutatengruppen/-zeilen). */

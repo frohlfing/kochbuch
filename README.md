@@ -29,7 +29,18 @@ Ein privates Familien-Kochbuch, digitalisiert als kleine PHP/JSON-API mit einer 
    Unter Hetzner-Webspace:
    - GD ist standardmäßig aktiviert. Falls nicht, kann dies per KonsoleH eingerichtet werden.
 
-5. Seite aufrufen – die Rezeptliste lädt sich selbst über `GET /api/recipes.php`.
+5. **HTTP Basic Auth einrichten** (schützt zusätzlich zum API-Token auch die statische `index.html`
+   selbst – ohne diese Auth wäre die leere Seiten-Hülle trotz Token-Schutz der API weiterhin für
+   jeden abrufbar):
+   ```
+   htpasswd -bcB .htpasswd <benutzername> <passwort>
+   ```
+   Die `.htpasswd`-Datei liegt im Projekt-Root (außerhalb des Document Root, neben `config.php`).
+   Danach `public/.htaccess.example` nach `public/.htaccess` kopieren und den `AuthUserFile`-Pfad
+   auf den tatsächlichen absoluten Pfad zur `.htpasswd` auf diesem Server anpassen. Beide Dateien
+   (`.htpasswd`, `public/.htaccess`) sind gitignored und müssen auf jedem Rechner/Server separat
+   eingerichtet werden.
+6. Seite aufrufen – die Rezeptliste lädt sich selbst über `GET /api/recipes.php`.
 
 ## Projektstruktur
 
@@ -85,7 +96,9 @@ löschen – ein Server-Interna preisgebender `phpinfo()`-Endpunkt und ein Token
 ## API
 
 Alle schreibenden Endpunkte (`POST`/`PUT`/`DELETE`) erwarten den Header `X-API-Token: <token>`,
-sonst `401`. Lesende Endpunkte (`GET`) sind offen.
+sonst `401`. Lesende Endpunkte (`GET`) sind ohne eigenes Token offen — Schutz vor öffentlichem
+Zugriff übernimmt stattdessen die HTTP Basic Auth vor der gesamten `public/`-Domain (siehe
+Setup, Schritt 5), die auch die statische `index.html` selbst mit abdeckt.
 
 | Methode | Endpunkt                                    | Beschreibung                                                                                                                |
 |---------|---------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
@@ -124,16 +137,17 @@ sonst `401`. Lesende Endpunkte (`GET`) sind offen.
 ### Token-Authentifizierung
 
 Für Änderungen (Rezept anlegen/bearbeiten/löschen, Bild-Upload) fragt das Frontend beim ersten
-Schreibversuch per `prompt()` nach dem API-Token und merkt es sich in `localStorage`.
-
-Beim ersten Schreibversuch (Anlegen/Bearbeiten/Löschen/Upload) fragt das Frontend per prompt() nach dem Token und legt 
-es danach in `localStorage` unter dem Schlüssel `kochbuch_api_token` ab. Jeder weitere Schreibversuch liest das 
-gespeicherte Token wieder aus und fragt nicht erneut nach.
+Schreibversuch per `prompt()` nach dem API-Token und legt es danach in `localStorage` unter dem
+Schlüssel `kochbuch_api_token` ab. Jeder weitere Schreibversuch liest das gespeicherte Token
+wieder aus und fragt nicht erneut nach.
 
 Es wird nur dann wieder nachgefragt, wenn entweder:
 - der Server das gespeicherte Token ablehnt (401) – dann wird es automatisch aus `localStorage` gelöscht, oder
-- du es manuell löschst, z. B. in den Browser-DevTools mit `localStorage.removeItem('kochbuch_api_token')` oder über 
+- du es manuell löschst, z. B. in den Browser-DevTools mit `localStorage.removeItem('kochbuch_api_token')` oder über
   "Website-Daten löschen".
+
+Lesezugriffe (Rezeptliste, Bilder) brauchen kein App-Token — Schutz vor öffentlichem Zugriff
+übernimmt die HTTP Basic Auth vor der gesamten `public/`-Domain (siehe Setup, Schritt 5).
 
 ### Import-Funktion
 

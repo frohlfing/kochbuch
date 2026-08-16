@@ -42,7 +42,12 @@
       "Bash(where chrome *)",
       "Read(//c/Program Files/Google/Chrome/Application/**)",
       "Read(//c/Program Files \\\\\\(x86\\\\\\)/Microsoft/Edge/Application/**)",
-      "Bash(grep -o '<datalist id=\"categoryList\">.\\\\{0,120\\\\}')"
+      "Bash(grep -o '<datalist id=\"categoryList\">.\\\\{0,120\\\\}')",
+      "Read(//c/xampp/apache/conf/extra/**)",
+      "Read(//c/xampp/apache/bin/**)",
+      "Bash(\"C:\\\\xampp\\\\apache\\\\bin\\\\htpasswd.exe\" -bcB \"C:\\\\Users\\\\frank\\\\Source\\\\PhpStorm\\\\kochbuch\\\\.htpasswd\" frank kochen)",
+      "Bash(git check-ignore *)",
+      "Bash(grep -n \"^\\\\s*\\\\*\\\\|^\\\\s*//\" \"C:\\\\Users\\\\frank\\\\Source\\\\PhpStorm\\\\kochbuch\\\\public\\\\index.html\")"
     ]
   }
 }

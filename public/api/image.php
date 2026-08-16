@@ -36,6 +36,9 @@ $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 $mime = ALLOWED_IMAGE_TYPES[$ext] ?? 'application/octet-stream';
 
 header('Content-Type: ' . $mime);
-header('Cache-Control: public, max-age=604800'); // 1 Woche; ändert sich nur bei erneutem Upload
+// "private" statt "public": Die Seite ist per HTTP Basic Auth geschützt (siehe public/.htaccess),
+// "public" würde Browsern/Proxys erlauben, die Antwort auch außerhalb der Anmeldung zu
+// cachen/weiterzugeben und damit den Zugriffsschutz für dieses Bild faktisch aushebeln.
+header('Cache-Control: private, max-age=604800'); // 1 Woche; ändert sich nur bei erneutem Upload
 header('Content-Length: ' . filesize($path));
 readfile($path);
