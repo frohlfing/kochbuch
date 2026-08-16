@@ -47,7 +47,8 @@
       "Read(//c/xampp/apache/bin/**)",
       "Bash(\"C:\\\\xampp\\\\apache\\\\bin\\\\htpasswd.exe\" -bcB \"C:\\\\Users\\\\frank\\\\Source\\\\PhpStorm\\\\kochbuch\\\\.htpasswd\" frank kochen)",
       "Bash(git check-ignore *)",
-      "Bash(grep -n \"^\\\\s*\\\\*\\\\|^\\\\s*//\" \"C:\\\\Users\\\\frank\\\\Source\\\\PhpStorm\\\\kochbuch\\\\public\\\\index.html\")"
+      "Bash(grep -n \"^\\\\s*\\\\*\\\\|^\\\\s*//\" \"C:\\\\Users\\\\frank\\\\Source\\\\PhpStorm\\\\kochbuch\\\\public\\\\index.html\")",
+      "WebFetch(domain:ipinfo.io)"
     ]
   }
 }

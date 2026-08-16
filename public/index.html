@@ -271,6 +271,7 @@
     background:var(--card);
     color:var(--ink);
     cursor:pointer;
+    height: 43.69px;
   }
   .btn:hover{border-color:var(--accent); color:var(--accent);}
   .btn-primary{background:var(--accent); border-color:var(--accent); color:#fff;}
@@ -518,10 +519,10 @@ function knownCategories(){
  * zurückgesetzt — eine Auswahl auf eine verschwundene Kategorie würde sonst zu einem leeren,
  * unerklärten Ergebnis führen.
  *
- * In Microsoft Edge für Android (getestet mit Version 140.0.3485.98) tritt ein bekannter, laut
- * Microsoft noch ungelöster Fehler auf: Die Vorschlagsliste erscheint und funktioniert zwar, alle
- * Optionen werden darin aber leer angezeigt (Stand 13. Oktober 2025: keine offizielle Lösung).
- * Quelle: https://learn.microsoft.com/en-us/answers/questions/5583325/datalist-tag-not-properly-rendered-on-microsoft-ed
+ * Bekannter Fehler bei Microsoft Edge für Android (Version 140.0.3485.98):
+ * Die Vorschlagsliste erscheint und funktioniert, aber alle Optionen werden als leer angezeigt.
+ * Stand 13. Okt. 2025: keine offizielle Lösung
+ * https://learn.microsoft.com/en-us/answers/questions/5583325/datalist-tag-not-properly-rendered-on-microsoft-ed
  */
 function refreshCategoryFilter(){
   const cats = knownCategories();
