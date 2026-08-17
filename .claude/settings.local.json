@@ -48,7 +48,17 @@
       "Bash(\"C:\\\\xampp\\\\apache\\\\bin\\\\htpasswd.exe\" -bcB \"C:\\\\Users\\\\frank\\\\Source\\\\PhpStorm\\\\kochbuch\\\\.htpasswd\" frank kochen)",
       "Bash(git check-ignore *)",
       "Bash(grep -n \"^\\\\s*\\\\*\\\\|^\\\\s*//\" \"C:\\\\Users\\\\frank\\\\Source\\\\PhpStorm\\\\kochbuch\\\\public\\\\index.html\")",
-      "WebFetch(domain:ipinfo.io)"
+      "WebFetch(domain:ipinfo.io)",
+      "Bash(nohup php -S 127.0.0.1:8099)",
+      "Bash(disown)",
+      "Bash(powershell -NoProfile -Command \"Get-CimInstance Win32_Process -Filter \\\\\"name='php.exe'\\\\\" | Select-Object ProcessId, CommandLine | Format-Table -AutoSize\")",
+      "Bash(powershell -NoProfile -Command \"Stop-Process -Id 17444,9168 -Force -ErrorAction SilentlyContinue; Start-Sleep -Seconds 1; Get-CimInstance Win32_Process -Filter \\\\\"name='php.exe'\\\\\" | Select-Object ProcessId, CommandLine | Format-Table -AutoSize\")",
+      "Bash(/c/xampp/php/php.exe -v)",
+      "Bash(/c/xampp/php/php.exe -m)",
+      "Bash(openssl s_client -connect localhost:443 -servername localhost)",
+      "Bash(openssl s_client -connect localhost:443 -servername kochbuch.test)",
+      "Read(//c/Windows/System32/drivers/etc/**)",
+      "Bash(echo \"127.0.0.1      localhost.test\")"
     ]
   }
 }

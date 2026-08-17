@@ -1,0 +1,372 @@
+:root{
+  --paper:#f6efe2;
+  --paper-deep:#efe4cf;
+  --ink:#2c231b;
+  --ink-soft:#6b5d4c;
+  --rule:#d8c9a8;
+  --accent:#8a2e2e;
+  --accent-soft:#c9d6b8;
+  --card:#fffdf8;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(44,35,27,0.05) 1px, transparent 0);
+  background-size: 22px 22px;
+  color:var(--ink);
+  font-family: "Iowan Old Style","Palatino Linotype", Georgia, "Times New Roman", serif;
+  min-height:100vh;
+}
+header{
+  padding:2.6rem 1.5rem 1.4rem;
+  text-align:center;
+  border-bottom:1px solid var(--rule);
+  background:linear-gradient(180deg, var(--paper-deep), var(--paper));
+}
+header .eyebrow{
+  font-family: "Segoe Script","Bradley Hand", "Comic Sans MS", cursive;
+  color:var(--accent);
+  font-size:1.05rem;
+  letter-spacing:.04em;
+}
+header h1{
+  margin:.25rem 0 .3rem;
+  font-size:2.6rem;
+  font-weight:600;
+  letter-spacing:.01em;
+}
+header p.sub{
+  margin:0;
+  color:var(--ink-soft);
+  font-size:.95rem;
+}
+.controls{
+  max-width:960px;
+  margin:1.4rem auto 0;
+  padding:0 1.5rem;
+  display:flex;
+  gap:.75rem;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:center;
+}
+.controls input[type=search]{
+  flex:1 1 270px;
+  max-width:420px;
+  padding:.6rem .9rem;
+  border:1px solid var(--rule);
+  border-radius:2px;
+  background:var(--card);
+  font-family:inherit;
+  font-size:1rem;
+  color:var(--ink);
+}
+.controls select{
+  padding:.6rem .8rem;
+  border:1px solid var(--rule);
+  border-radius:2px;
+  background:var(--card);
+  font-family:inherit;
+  font-size:.95rem;
+  color:var(--ink);
+}
+.count{
+  text-align:center;
+  color:var(--ink-soft);
+  font-size:.85rem;
+  margin:.6rem 0 0;
+  letter-spacing:.03em;
+}
+.grid{
+  max-width:1180px;
+  margin:1.6rem auto 4rem;
+  padding:0 1.5rem;
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(230px,1fr));
+  gap:1.15rem;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--rule);
+  border-radius:3px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:transform .15s ease, box-shadow .15s ease;
+  display:flex;
+  flex-direction:column;
+}
+.card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 22px rgba(44,35,27,0.14);
+}
+.card .thumb{
+  width:100%;
+  padding-top:75%; /* 4:3 box via the classic padding-hack - works without CSS aspect-ratio support */
+  position:relative;
+  background:var(--paper-deep);
+  display:block;
+  color:var(--ink-soft);
+  font-size:.8rem;
+  overflow:hidden;
+}
+.card .thumb img{
+  position:absolute;
+  top:0; left:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+}
+.card .body{padding:.7rem .85rem .9rem;}
+.card h3{
+  margin:0 0 .2rem;
+  font-size:1.05rem;
+  line-height:1.25;
+}
+.card .meta{
+  color:var(--accent);
+  font-size:.78rem;
+  letter-spacing:.03em;
+  font-family: "Segoe Script","Bradley Hand", "Comic Sans MS", cursive;
+}
+.card .cat-tag{
+  display:inline-block;
+  margin-top:.3rem;
+  font-family: inherit;
+  font-size:.68rem;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--ink-soft);
+  background:var(--paper-deep);
+  border-radius:8px;
+  padding:.1rem .5rem;
+}
+
+/* Detail overlay */
+.overlay{
+  position:fixed;inset:0;
+  background:rgba(30,24,18,0.55);
+  display:none;
+  align-items:flex-start;
+  justify-content:center;
+  padding:3vh 1rem;
+  overflow-y:auto;
+  z-index:50;
+}
+.overlay.open{display:flex;}
+.sheet{
+  background:var(--card);
+  max-width:760px;
+  width:100%;
+  border-radius:4px;
+  border:1px solid var(--rule);
+  padding:1.8rem 1.9rem 2.2rem;
+  position:relative;
+}
+.sheet .close{
+  position:absolute;
+  top:.9rem;right:1rem;
+  background:none;border:none;
+  font-size:1.4rem;
+  color:var(--ink-soft);
+  cursor:pointer;
+  line-height:1;
+}
+.sheet .close:hover{color:var(--accent);}
+.sheet .hero{
+  display:flex;gap:1.2rem;
+  align-items:flex-start;
+  flex-wrap:wrap;
+  margin-bottom:1.1rem;
+}
+.sheet .hero-img{
+  width:220px;max-width:45vw;
+  flex:0 0 auto;
+}
+.sheet .hero-img .ratio-box{
+  width:100%;
+  padding-top:75%; /* 4:3 box, relative to this wrapper's own (fixed) width */
+  height:0;
+  position:relative;
+  border-radius:3px;
+  border:1px solid var(--rule);
+  overflow:hidden;
+  background:var(--paper-deep);
+}
+.sheet .hero-img .ratio-box img{
+  position:absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  object-fit:cover;
+  display:block;
+}
+.sheet .hero .titles{flex:1 1 220px;}
+.sheet h2{margin:.1rem 0 .35rem;font-size:1.9rem;}
+.sheet .persons{
+  font-family: "Segoe Script","Bradley Hand", "Comic Sans MS", cursive;
+  color:var(--accent);
+  font-size:1.1rem;
+}
+.sheet .created-date{
+  margin-top:.25rem;
+  font-size:.78rem;
+  color:var(--ink-soft);
+}
+.sheet h4{
+  margin:1.3rem 0 .5rem;
+  font-size:.8rem;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:var(--ink-soft);
+  border-bottom:1px solid var(--rule);
+  padding-bottom:.25rem;
+}
+.sheet ul.ingredients{list-style:none;margin:0;padding:0;}
+.sheet ul.ingredients li{
+  padding:.28rem 0;
+  border-bottom:1px dotted var(--rule);
+  display:flex;
+  gap:.5rem;
+}
+.sheet ul.ingredients li::before{content:"\2022";color:var(--accent);}
+.sheet .group-label{
+  margin-top:.7rem;
+  font-weight:600;
+  color:var(--ink);
+  font-size:.92rem;
+}
+.sheet ol.steps{margin:0;padding-left:1.3rem;}
+.sheet ol.steps li{padding:.35rem 0;line-height:1.5;}
+.sheet .notes{
+  background:var(--accent-soft);
+  border-radius:3px;
+  padding:.8rem .95rem;
+  font-size:.92rem;
+  line-height:1.5;
+}
+.sheet .notes p{margin:.3rem 0;}
+.empty{
+  text-align:center;
+  color:var(--ink-soft);
+  padding:3rem 1rem;
+  font-style:italic;
+}
+
+/* Buttons */
+.btn{
+  font-family: inherit;
+  font-size: .95rem;
+  padding:.5rem .95rem;
+  border-radius:2px;
+  border:1px solid var(--rule);
+  background:var(--card);
+  color:var(--ink);
+  cursor:pointer;
+  height: 43px;
+}
+.btn:hover{border-color:var(--accent); color:var(--accent);}
+.btn-primary{background:var(--accent); border-color:var(--accent); color:#fff;}
+.btn-primary:hover{opacity:.88; color:#fff;}
+.btn-danger:hover{background:var(--accent); border-color:var(--accent); color:#fff;}
+.btn-row{display:flex; gap:.6rem; flex-wrap:wrap; margin:1rem 0;}
+.sheet .toolbar{margin-bottom:1.1rem;}
+
+/* Formular (Anlegen/Bearbeiten) */
+.form-field{margin-bottom:1rem;}
+.form-field label{
+  display:block;
+  font-size:.78rem;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--ink-soft);
+  margin-bottom:.3rem;
+}
+.form-field input[type=text], .form-field textarea{
+  width:100%;
+  padding:.55rem .7rem;
+  border:1px solid var(--rule);
+  border-radius:2px;
+  background:var(--card);
+  font-family:inherit;
+  font-size:.95rem;
+  color:var(--ink);
+  resize:vertical;
+}
+.form-field textarea{min-height:4.2rem;}
+.form-field textarea#ingredientsInput{min-height:14.5rem;}
+.form-field textarea#stepsInput{min-height:14.5rem;}
+.form-field .hint{font-size:.72rem; color:var(--ink-soft); margin-top:.3rem;}
+.form-field.checkbox-field label{
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+  text-transform:none;
+  font-size:.95rem;
+  color:var(--ink);
+  letter-spacing:normal;
+  cursor:pointer;
+}
+.form-field.checkbox-field input[type=checkbox]{width:auto; margin:0;}
+.form-preview{
+  width:150px;
+  margin-bottom:.6rem;
+}
+.form-preview .ratio-box{
+  width:100%;
+  padding-top:75%;
+  position:relative;
+  border-radius:3px;
+  border:1px solid var(--rule);
+  overflow:hidden;
+  background:var(--paper-deep);
+}
+.form-preview .ratio-box img{
+  position:absolute; top:0; left:0;
+  width:100%; height:100%;
+  object-fit:cover;
+}
+.error-box{
+  background:#fbeaea;
+  border:1px solid var(--accent);
+  color:var(--accent);
+  border-radius:3px;
+  padding:.6rem .8rem;
+  font-size:.85rem;
+  margin-bottom:1rem;
+}
+@media (max-width:520px){
+  header h1{font-size:2rem;}
+  .sheet{padding:1.3rem 1.1rem 1.6rem;}
+  .sheet .hero-img{width:150px;}
+}
+
+/* Druckansicht: nur das offene Rezept, eine A4-Seite, angelehnt an die alte PDF-Vorlage
+   (Foto oben links, Titel oben rechts, Zutaten als Liste, Schritte nummeriert). */
+@media print{
+  @page{size:A4; margin:1.5cm;}
+  header, .controls, .count, .grid{display:none !important;}
+  body{background:none !important;}
+  .overlay.open{
+    position:static !important;
+    display:block !important;
+    background:none !important;
+    padding:0 !important;
+    inset:auto !important;
+  }
+  .sheet{
+    max-width:100% !important;
+    width:auto !important;
+    padding:0 !important;
+    border:none !important;
+    background:#fff !important;
+  }
+  .sheet .close, .sheet .btn-row{display:none !important;}
+  .sheet .hero-img{width:200px;}
+  .ingredients-wrap.two-col{
+    columns:2;
+    column-gap:1.8rem;
+  }
+  .ingredients-wrap.two-col .group-label{break-inside:avoid; break-after:avoid;}
+  .ingredients-wrap.two-col ul.ingredients li{break-inside:avoid;}
+}

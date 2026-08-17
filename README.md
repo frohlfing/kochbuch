@@ -13,11 +13,13 @@ Ein privates Familien-Kochbuch, digitalisiert als kleine PHP/JSON-API mit einer 
 
 1. `config.example.php` nach `config.php` kopieren (liegt im Projekt-Root, **nicht** unter `public/`,
    damit es außerhalb des Document Root und damit nicht direkt aufrufbar ist).
+
 2. In `config.php` ein echtes `API_TOKEN` eintragen, z. B.:
    ```
    php -r "echo bin2hex(random_bytes(32));"
    ```
 3. Webserver mit Document Root `public/` auf ein Verzeichnis zeigen lassen (z. B. XAMPP-vHost).
+
 4. GD-Extension für PHP aktivieren. Zur Prüfung gibt es `public/dev/info.php` (ruft `phpinfo()`
    auf, im Browser aufrufen und nach "gd" suchen) – siehe auch Abschnitt "Admin-/Dev-Skripte"
    unter Projektstruktur.
@@ -40,43 +42,125 @@ Ein privates Familien-Kochbuch, digitalisiert als kleine PHP/JSON-API mit einer 
    auf den tatsächlichen absoluten Pfad zur `.htpasswd` auf diesem Server anpassen. Beide Dateien
    (`.htpasswd`, `public/.htaccess`) sind gitignored und müssen auf jedem Rechner/Server separat
    eingerichtet werden.
+
 6. Seite aufrufen – die Rezeptliste lädt sich selbst über `GET /api/recipes.php`.
+
+## Lokalen Testserver unter XAMPP (Windows) einrichten
+
+1. URL in die Hosts-Datei eintragen
+
+`C:\Windows\System32\drivers\etc\hosts` als Administrator öffnen:
+
+```
+127.0.0.1      kochbuch.test
+```
+
+2. SSL-Zertifikat installieren
+```shell
+cd C:\xampp\apache\bin
+
+.\openssl.exe req -x509 -nodes -newkey rsa:2048 -sha256 `
+ -keyout "C:\xampp\apache\conf\ssl.key\kochbuch.test.key" `
+-out "C:\xampp\apache\conf\ssl.crt\kochbuch.test.crt" `
+ -days 3650 `
+-config "C:\xampp\apache\conf\openssl.cnf" `
+ -subj "/CN=kochbuch.test" `
+-addext "basicConstraints=CA:FALSE" `
+-addext "subjectAltName=DNS:kochbuch.test"
+```
+
+Apache neu starten!
+
+3. VirtualHost hinzufügen
+
+Datei `C:\xampp\apache\conf\extra\httpd-vhosts.conf` bearbeiten:
+
+```
+<VirtualHost *:80>
+    ServerName kochbuch.test
+    ServerAlias 192.168.178.21
+
+    DocumentRoot "C:/Users/frank/Source/PhpStorm/kochbuch/public"
+
+    <Directory "C:/Users/frank/Source/PhpStorm/kochbuch/public">
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName kochbuch.test
+
+    DocumentRoot "C:/Users/frank/Source/PhpStorm/kochbuch/public"
+
+    SSLEngine on
+	SSLCertificateFile "C:/xampp/apache/conf/ssl.crt/kochbuch.test.crt"
+	SSLCertificateKeyFile "C:/xampp/apache/conf/ssl.key/kochbuch.test.key"
+
+    <Directory "C:/Users/frank/Source/PhpStorm/kochbuch/public">
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
+
+Apache neu starten!
+
+4. SSL-Zertifikat in den Browser-Zertifikatsspeicher importieren:
+
+Damit der Browser dem selbstsignierten Zertifikat vertraut, muss es in den Browser-Zertifikatsspeicher importiert werden:
+- Doppelklick auf `C:\xampp\apache\conf\ssl.crt\kochbuch.test.crt`
+    - Zertifikat installieren...,
+        - Lokaler Computer
+        - Zertifikatsspeicher: Vertrauenswürdige Stammzertifizierungsstellen
+
+Browser neu starten!
+
+Die Homepage ist jetzt erreichbar unter: https://kochbuch.test/
 
 ## Projektstruktur
 
-```
-config.php                  Zentrale Konstanten (Pfade, API_TOKEN, Thumbnail-Maße, ...). Gitignored.
-config.example.php          Vorlage dafür, versioniert.
-data/                        Außerhalb des Document Root, kein direkter Browser-Zugriff möglich
-└── recipes/
-    └── <slug>/               Ein Ordner pro Rezept
-        ├── recipe.json
-        ├── image.<ext>       Original-Upload
-        └── thumb.<ext>       automatisch generierte Miniatur
-public/                     Document Root
-├── index.html               Frontend (One-Page-App, lädt/schreibt ausschließlich über /api/*)
-├── favicon.svg               Browser-Tab-Icon
-├── dev/                      Admin-/Wartungsskripte – NICHT dauerhaft auf dem Produktivserver lassen (siehe unten)
-│   ├── info.php               phpinfo() zur PHP-Konfigurationsprüfung (z. B. GD-Verfügbarkeit)
-│   └── remove_order_field.php Einmal-Skript: entfernt das veraltete "order"-Feld aus recipe.json
-└── api/
-    ├── recipes.php          GET/POST/PUT/DELETE – Rezepte lesen, anlegen, bearbeiten, löschen
-    ├── upload.php           POST – Bild-Upload für ein Rezept inkl. Thumbnail-Generierung
-    ├── image.php            GET – liefert image.<ext>/thumb.<ext> aus (siehe data/, oben)
-    ├── import.php           POST – Rezept von externer URL importieren (chefkoch.de u. Ä.)
-    └── lib/
-        ├── crud.php         Read/Write/Rename/Delete-Logik + Validierung
-        ├── slug.php         slugify() + Eindeutigkeits-Check
-        ├── thumbnail.php    Thumbnail-Erzeugung per GD (Center-Crop) + Lazy-Fallback
-        ├── image_store.php  Bild validieren/speichern + Thumbnail (gemeinsam für upload.php und import.php)
-        ├── http.php         JSON-Response- und Token-Check-Helper
-        └── parsers/
-            ├── RecipeParserInterface.php    Vertrag: supports(url), parse(url)
-            ├── ChefkochParser.php           erkennt/parst chefkoch.de
-            ├── GenericSchemaOrgParser.php   Fallback für jede Seite mit schema.org/Recipe
-            ├── schema_org.php               gemeinsame JSON-LD-Extraktion (auch @graph-Strukturen)
-            └── fetch.php                    http_get(): curl, sonst file_get_contents()-Fallback
-```
+<pre>
+kochbuch/                                             # Projektroot
+ ├── data/                                            # Außerhalb des Document Root, kein direkter Browser-Zugriff möglich
+ │    └── recipes/                                    # Ein Unterordner pro Rezept
+ │         └── <slug>/                                # Ein Ordner pro Rezept
+ │              ├── recipe.json                       # Rezeptdaten (Titel, Zutaten, Schritte, ...) – Schema siehe Abschnitt "API"
+ │              ├── image.<ext>                       # Original-Upload
+ │              └── thumb.<ext>                       # automatisch generierte Miniatur
+ ├── docs/                                            # Projektdokumentation (Markdown)
+ ├── public/                                          # Document Root
+ │    ├── api/                                        # API-Endpunkte
+ │    │    └── lib/                                   # Gemeinsam genutzte Hilfsfunktionen der API-Endpunkte
+ │    │    │    ├── crud.php                          # Read/Write/Rename/Delete-Logik + Validierung
+ │    │    │    ├── http.php                          # JSON-Response- und Token-Check-Helper
+ │    │    │    ├── image_store.php                   # Bild validieren/speichern + Thumbnail (gemeinsam für upload.php und import.php)
+ │    │    │    ├── parsers/                          # Parser-Registry für den Rezept-Import (siehe Abschnitt "Import-Funktion")
+ │    │    │    │    ├── ChefkochParser.php           # erkennt/parst chefkoch.de
+ │    │    │    │    ├── fetch.php                    # http_get(): curl, sonst file_get_contents()-Fallback
+ │    │    │    │    ├── GenericSchemaOrgParser.php   # Fallback für jede Seite mit schema.org/Recipe
+ │    │    │    │    ├── RecipeParserInterface.php    # Vertrag: supports(url), parse(url)
+ │    │    │    │    └── schema_org.php               # Gemeinsame JSON-LD-Extraktion (auch @graph-Strukturen)
+ │    │    │    ├── slug.php                          # slugify() + Eindeutigkeits-Check
+ │    │    │    └── thumbnail.php                     # Thumbnail-Erzeugung per GD (Center-Crop) + Lazy-Fallback
+ │    │    ├── image.php                              # Liefert image.<ext>/thumb.<ext> aus
+ │    │    ├── import.php                             # Rezept von externer URL importieren
+ │    │    ├── recipes.php                            # Rezepte lesen, anlegen, bearbeiten, löschen
+ │    │    └── upload.php                             # Bild-Upload für ein Rezept inkl. Thumbnail-Generierung
+ │    ├── dev/                                        # Admin-/Wartungsskripte – NICHT dauerhaft auf dem Produktivserver lassen (siehe unten)
+ │    ├── .htaccess                                   # Apache Zugriffsschutz
+ │    ├── .htaccess.example                           # Vorlage für Apache Zugriffsschutz
+ │    ├── app.css                                     # CSS-Styles für das Frontend
+ │    ├── app.js                                      # JavaScript für das Frontend
+ │    ├── favicon.svg                                 # Browser-Tab-Icon
+ │    └── index.html                                  # Frontend (lädt/schreibt ausschließlich über /api/*)
+ ├── .gitignore                                       # Vom Git-Repository auszuschließende Dateien
+ ├── .htpasswd                                        # Apache Passwortdatei (nicht im Git-Repository)
+ ├── config.example.php                               # Vorlage für config.php
+ ├── config.php                                       # Zentrale Konfigurationsdatei (nicht im Git-Repository)
+ ├── LICENSE                                          # Lizenzhinweis   
+ └── README.md                                        # Landingpage für das Git-Repository
+</pre>
 
 ### Admin-/Dev-Skripte (`public/dev/`)
 
