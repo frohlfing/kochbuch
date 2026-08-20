@@ -5,7 +5,7 @@
  * Nötig, weil DATA_DIR bewusst außerhalb des Document Root liegt und daher nicht
  * direkt per statischer URL erreichbar ist (siehe config.php).
  *
- * GET /api/image.php?slug=xyz&type=image|thumb - kein Token nötig (wie GET auf recipes.php).
+ * GET /api/image.php?slug=xyz&type=image|thumb
  * Antwort: die Bilddatei mit passendem Content-Type, 404 falls Rezept/Bild fehlt.
  */
 
