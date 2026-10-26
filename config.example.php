@@ -9,7 +9,7 @@
 const DATA_DIR = __DIR__ . '/data';
 
 /**
- * Unterordner für Rezepte (ein Unterordner pro Rezept, benannt nach dem Slug).
+ * Unterordner für Rezepte.
  * @var string Absoluter Pfad, ohne abschließenden Slash
  */
 const RECIPES_DIR = DATA_DIR . '/recipes';
