@@ -6,12 +6,12 @@ Ein privates Familien-Kochbuch, digitalisiert als kleine PHP/JSON-API mit einer 
 
 - PHP 8.5+ mit aktivierter **GD**-Extension (für Thumbnails)
 - Ein Webserver mit `public/` als Document Root
-- Kein Datenbankserver nötig – alle Daten liegen als Dateien unter `data/`, bewusst außerhalb des Document Root 
+- Kein Datenbankserver nötig – alle Daten liegen als Dateien unter `data/`, bewusst außerhalb des Document Root
   (Zugriff nur über `api/recipes.php` bzw. `api/image.php`, nicht direkt per URL)
 
 ## Setup
 
-1. `config.example.php` nach `config.php` kopieren (liegt im Projekt-Root, **nicht** unter `public/`, damit es 
+1. `config.example.php` nach `config.php` kopieren (liegt im Projekt-Root, **nicht** unter `public/`, damit es
    außerhalb des Document Root und damit nicht direkt aufrufbar ist).
 
 2. In `config.php` ein echtes `API_TOKEN` eintragen, z. B.:
@@ -20,7 +20,7 @@ Ein privates Familien-Kochbuch, digitalisiert als kleine PHP/JSON-API mit einer 
    ```
 3. Webserver mit Document Root `public/` auf ein Verzeichnis zeigen lassen (z. B. XAMPP-vHost).
 
-4. GD-Extension für PHP aktivieren. Zur Prüfung gibt es `public/dev/info.php` (ruft `phpinfo()` auf, im Browser 
+4. GD-Extension für PHP aktivieren. Zur Prüfung gibt es `public/dev/info.php` (ruft `phpinfo()` auf, im Browser
    aufrufen und nach "gd" suchen) – siehe auch Abschnitt "Admin-/Dev-Skripte" unter Projektstruktur.
 
    Unter XAMPP:
@@ -30,17 +30,15 @@ Ein privates Familien-Kochbuch, digitalisiert als kleine PHP/JSON-API mit einer 
    Unter Hetzner-Webspace:
    - GD ist standardmäßig aktiviert. Falls nicht, kann dies per KonsoleH eingerichtet werden.
 
-5. **HTTP Basic Auth einrichten** (schützt zusätzlich zum API-Token auch die statische `index.html` selbst – ohne 
+5. **HTTP Basic Auth einrichten** (schützt zusätzlich zum API-Token auch die statische `index.html` selbst – ohne
    diese Auth wäre die leere Seiten-Hülle trotz Token-Schutz der API weiterhin für jeden abrufbar):
    ```
-   htpasswd -bcB .htpasswd <benutzername> <passwort>
+   C:\xampp\apache\bin\htpasswd -bcB .htpasswd <benutzername> <passwort>
    ```
-   Die `.htpasswd`-Datei liegt im Projekt-Root (außerhalb des Document Root, neben `config.php`). Danach 
-  `public/.htaccess.example` nach `public/.htaccess` kopieren und den `AuthUserFile`-Pfad auf den tatsächlichen 
-   absoluten Pfad zur `.htpasswd` auf diesem Server anpassen. Beide Dateien (`.htpasswd`, `public/.htaccess`) sind 
+   Die `.htpasswd`-Datei liegt im Projekt-Root (außerhalb des Document Root, neben `config.php`). Danach
+   `public/.htaccess.example` nach `public/.htaccess` kopieren und den `AuthUserFile`-Pfad auf den tatsächlichen
+   absoluten Pfad zur `.htpasswd` auf diesem Server anpassen. Beide Dateien (`.htpasswd`, `public/.htaccess`) sind
    gitignored und müssen auf jedem Rechner/Server separat eingerichtet werden.
-
-6. Seite aufrufen – die Rezeptliste lädt sich selbst über `GET /api/recipes.php`.
 
 ## Lokalen Testserver unter XAMPP (Windows) einrichten
 
@@ -105,7 +103,7 @@ Ein privates Familien-Kochbuch, digitalisiert als kleine PHP/JSON-API mit einer 
 
 4. SSL-Zertifikat in den Browser-Zertifikatsspeicher importieren:
 
-    Damit der Browser dem selbstsignierten Zertifikat vertraut, muss es in den Browser-Zertifikatsspeicher importiert 
+    Damit der Browser dem selbstsignierten Zertifikat vertraut, muss es in den Browser-Zertifikatsspeicher importiert
     werden:
     - Doppelklick auf `C:\xampp\apache\conf\ssl.crt\kochbuch.test.crt`
         - Zertifikat installieren...,
@@ -163,18 +161,18 @@ kochbuch/                                             # Projektroot
 ### Admin-/Dev-Skripte (`public/dev/`)
 
 Einmalige Wartungs- und Diagnose-Skripte, die (anders als die eigentliche App) direkt im Browser aufgerufen werden.
-Auf Hetzner-Shared-Webspace gibt es keinen Terminalzugriff, ein CLI-Pendant entfällt daher bewusst. 
+Auf Hetzner-Shared-Webspace gibt es keinen Terminalzugriff, ein CLI-Pendant entfällt daher bewusst.
 
-**Wichtig:** `public/dev/` gehört **nicht dauerhaft** auf den Produktivserver. Nach Gebrauch dort löschen – ein 
-Server-Interna preisgebender `phpinfo()`-Endpunkt und ein Token im URL-Query (landet in Server-Logs/Browser-Verlauf) 
+**Wichtig:** `public/dev/` gehört **nicht dauerhaft** auf den Produktivserver. Nach Gebrauch dort löschen – ein
+Server-Interna preisgebender `phpinfo()`-Endpunkt und ein Token im URL-Query (landet in Server-Logs/Browser-Verlauf)
 sollen keine Dauereinrichtung sein.
 
 ## API
 
-Alle schreibenden Endpunkte (`POST`/`PUT`/`DELETE`) erwarten den Header `X-API-Token: <token>`, sonst `401`. 
-Lesende Endpunkte (`GET`) sind ohne eigenes Token offen — Schutz vor öffentlichem Zugriff übernimmt stattdessen 
-die HTTP Basic Auth vor der gesamten `public/`-Domain (siehe Setup, Schritt 5), die auch die statische `index.html` 
-selbst mit abdeckt.
+Alle schreibenden Endpunkte (`POST`/`PUT`/`DELETE`) erwarten den Header `X-API-Token: <token>`, sonst `401`. Lesende
+Endpunkte (`GET`) sind ohne eigenes Token offen — Schutz vor öffentlichem Zugriff übernimmt stattdessen die HTTP Basic
+Auth vor der gesamten `public/`-Domain (siehe Setup, Schritt 5), die auch die statische `index.html` selbst mit
+abdeckt.
 
 | Methode | Endpunkt                                     | Beschreibung                                                                                                                 |
 |---------|----------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
@@ -214,39 +212,38 @@ selbst mit abdeckt.
 
 Beim Aufruf von `index.html` laufen die Requests in dieser Reihenfolge:
 
-1. **Statische Assets** (durch den Browser beim HTML-Parsing): `favicon.svg`, `app.css`, danach `app.js` (steht am 
+1. **Statische Assets** (durch den Browser beim HTML-Parsing): `favicon.svg`, `app.css`, danach `app.js` (steht am
    Ende von `<body>`, lädt/läuft also erst nach dem übrigen HTML).
-2. Sobald `app.js` ausgeführt wird, startet sofort `init()` (kein Warten auf `DOMContentLoaded` nötig, da das Script 
+2. Sobald `app.js` ausgeführt wird, startet sofort `init()` (kein Warten auf `DOMContentLoaded` nötig, da das Script
    ohnehin erst am Body-Ende geladen wird):
-   - **`GET api/recipes.php`** lädt die komplette Rezeptliste als JSON. Das ist der einzige zwingende Request beim 
+   - **`GET api/recipes.php`** lädt die komplette Rezeptliste als JSON. Das ist der einzige zwingende Request beim
      Start; schlägt er fehl, wird eine Fehlermeldung angezeigt und die Initialisierung bricht ab.
    - Beim Rendern des Kartenrasters bekommt jedes Rezept mit Bild ein
-     `<img src="api/image.php?slug=…&type=thumb" loading="lazy">`. Dadurch fordert der Browser die Thumbnails an, 
-     aber wegen `loading="lazy"` nur die Thumbnails, die tatsächlich (nahe) im sichtbaren Viewport liegen; der Rest 
-     folgt erst beim Scrollen. Die Originalbilder (`type=image`) werden beim Öffnen eines einzelnen Rezepts 
-     nachgeladen.
+     `<img src="api/image.php?slug=…&type=thumb" loading="lazy">`. Dadurch fordert der Browser die Thumbnails an, aber
+     wegen `loading="lazy"` nur die Thumbnails, die tatsächlich (nahe) im sichtbaren Viewport liegen; der Rest folgt
+     erst beim Scrollen. Die Originalbilder (`type=image`) werden beim Öffnen eines einzelnen Rezepts nachgeladen.
 
 Kein Token-Request/Prompt beim Laden: `requireToken()` wird ausschließlich bei schreibenden Aktionen (Speichern/
 Löschen/Importieren) aufgerufen, siehe nächsten Abschnitt.
 
 ### Token-Authentifizierung
 
-Für Änderungen (Rezept anlegen/bearbeiten/löschen, Bild-Upload) fragt das Frontend beim ersten Schreibversuch per 
-`prompt()` nach dem API-Token und legt es danach in `localStorage` unter dem Schlüssel `kochbuch_api_token` ab. 
-Jeder weitere Schreibversuch liest das gespeicherte Token wieder aus und fragt nicht erneut nach.
+Für Änderungen (Rezept anlegen/bearbeiten/löschen, Bild-Upload) fragt das Frontend beim ersten Schreibversuch per
+`prompt()` nach dem API-Token und legt es danach in `localStorage` unter dem Schlüssel `kochbuch_api_token` ab. Jeder
+weitere Schreibversuch liest das gespeicherte Token wieder aus und fragt nicht erneut nach.
 
-Es wird nur dann wieder nachgefragt, wenn 
-a) der Server das gespeicherte Token ablehnt (401) – dann wird es automatisch aus `localStorage` gelöscht, oder 
-b) du es manuell löschst, z. B. in den Browser-DevTools mit `localStorage.removeItem('kochbuch_api_token')` oder über 
+Es wird nur dann wieder nachgefragt, wenn
+a) der Server das gespeicherte Token ablehnt (401) – dann wird es automatisch aus `localStorage` gelöscht, oder
+b) du es manuell löschst, z. B. in den Browser-DevTools mit `localStorage.removeItem('kochbuch_api_token')` oder über
    "Website-Daten löschen".
 
-Lesezugriffe (Rezeptliste, Bilder) brauchen kein App-Token — Schutz vor öffentlichem Zugriff übernimmt die 
-HTTP Basic Auth vor der gesamten `public/`-Domain (siehe Setup, Schritt 5).
+Lesezugriffe (Rezeptliste, Bilder) brauchen kein App-Token — Schutz vor öffentlichem Zugriff übernimmt die HTTP Basic
+Auth vor der gesamten `public/`-Domain (siehe Setup, Schritt 5).
 
 ### Import-Funktion
 
-Der "Importieren"-Button neben "+ Neues Rezept" öffnet ein Formular für eine URL und ruft `POST /api/import.php` auf 
-(`{"url": "..."}`, Token nötig). Der Endpunkt nutzt eine kleine Parser-Registry (`api/lib/parsers/`): anhand der URL 
+Der "Importieren"-Button neben "+ Neues Rezept" öffnet ein Formular für eine URL und ruft `POST /api/import.php` auf
+(`{"url": "..."}`, Token nötig). Der Endpunkt nutzt eine kleine Parser-Registry (`api/lib/parsers/`): anhand der URL
 wird ein zuständiger `RecipeParserInterface` gesucht (`supports(url): bool`) und mit `parse(url): array` ausgelesen.
 
 - **`ChefkochParser`**: zuständig für `chefkoch.de`.
@@ -254,14 +251,14 @@ wird ein zuständiger `RecipeParserInterface` gesucht (`supports(url): bool`) un
   letztes in der Registry stehen) – funktioniert überall dort, wo `schema.org/Recipe`-JSON-LD eingebettet ist (z. B.
   wie bei nextcloud/cookbook üblich).
 
-Beide Parser nutzen dieselbe Extraktion (`schema_org.php`): sie durchsuchen alle `<script
-type="application/ld+json">`-Blöcke der Seite, auch verschachtelt in einer `@graph`-Struktur (so bei chefkoch.de),
-lösen `@id`-Referenzen auf (Bild, Autor) auf und wandeln `recipeInstructions` unabhängig von der Form (String,
-HowToStep-Liste, verschachtelte HowToSection wie bei chefkoch.de) in eine flache Schritt-Liste um. Ein an den Titel
-angehängter Autorenname (z. B. chefkoch.de: `"... von PicassosWelt"`) wird nur entfernt, wenn er exakt mit dem über
-`author` verlinkten Namen übereinstimmt (kein Raten anhand von Textmustern) – Titel wie "Involtini von Huhn" bleiben
-also unangetastet. Die `description` wird bewusst **nicht** als Notiz übernommen, da dort bei chefkoch.de u. a. reiner
-SEO-Marketingtext steht.
+Beide Parser nutzen dieselbe Extraktion (`schema_org.php`): sie durchsuchen alle
+`<script type="application/ld+json">`-Blöcke der Seite, auch verschachtelt in einer `@graph`-Struktur (so bei
+chefkoch.de), lösen `@id`-Referenzen auf (Bild, Autor) auf und wandeln `recipeInstructions` unabhängig von der Form
+(String, HowToStep-Liste, verschachtelte HowToSection wie bei chefkoch.de) in eine flache Schritt-Liste um. Ein an den
+Titel angehängter Autorenname (z. B. chefkoch.de: `"... von PicassosWelt"`) wird nur entfernt, wenn er exakt mit dem
+über `author` verlinkten Namen übereinstimmt (kein Raten anhand von Textmustern) – Titel wie "Involtini von Huhn"
+bleiben also unangetastet. Die `description` wird bewusst **nicht** als Notiz übernommen, da dort bei chefkoch.de u.a. 
+reiner SEO-Marketingtext steht.
 
 Neue Portale: einfach `RecipeParserInterface` implementieren und in der `$parsers`-Registry in `import.php` eintragen
 (vor dem `GenericSchemaOrgParser`-Fallback) – an `import.php` selbst ändert sich dabei nichts.

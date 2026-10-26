@@ -3,9 +3,11 @@
 /**
  * Sucht in allen <script type="application/ld+json">-Blöcken der Seite nach einem schema.org/Recipe-Knoten
  * (auch verschachtelt in einer @graph-Struktur, wie chefkoch.de sie verwendet) und übersetzt ihn
- * in unser internes Rohformat. Null, wenn kein Recipe gefunden wurde.
+ * in unser internes Rohformat.
  *
+ * @param string $html Roher HTML-Quelltext der Rezeptseite
  * @return array{title: string, category: ?string, servings: ?string, image_url: ?string, ingredients: string[], steps: string[], notes: ?string}|null
+ *         Rezeptdaten; null, wenn kein Recipe gefunden wurde
  */
 function extract_schema_org_recipe(string $html): ?array
 {
@@ -60,7 +62,12 @@ function extract_schema_org_recipe(string $html): ?array
     ];
 }
 
-/** Liefert $decoded und – rekursiv – alle Einträge aus dessen @graph bzw. Listen-Elementen als flache Liste von Knoten. */
+/**
+ * Liefert $decoded und – rekursiv – alle Einträge aus dessen @graph bzw. Listen-Elementen als flache Liste von Knoten.
+ *
+ * @param mixed $decoded Dekodierter JSON-LD-Block
+ * @return array[] Flache Liste aller gefundenen Knoten
+ */
 function schema_org_flatten_nodes(mixed $decoded): array
 {
     if (is_array($decoded) && array_is_list($decoded)) {
@@ -82,6 +89,12 @@ function schema_org_flatten_nodes(mixed $decoded): array
     return $out;
 }
 
+/**
+ * Prüft, ob ein JSON-LD-Knoten vom Typ schema.org/Recipe ist (@type als String oder Liste).
+ *
+ * @param array $node JSON-LD-Knoten
+ * @return bool true, wenn der Knoten ein Recipe ist
+ */
 function schema_org_is_recipe(array $node): bool
 {
     $type = $node['@type'] ?? null;
@@ -91,6 +104,12 @@ function schema_org_is_recipe(array $node): bool
     return $type === 'Recipe';
 }
 
+/**
+ * Normalisiert einen String-Wert (trim).
+ *
+ * @param mixed $value Beliebiger Wert
+ * @return string|null Getrimmter String; null, wenn $value kein String oder leer ist
+ */
 function schema_org_text(mixed $value): ?string
 {
     if (is_string($value)) {
@@ -100,7 +119,12 @@ function schema_org_text(mixed $value): ?string
     return null;
 }
 
-/** Erste nicht-leere Zeichenkette aus einem String oder (verschachtelten) Array von Strings. */
+/**
+ * Erste nicht-leere Zeichenkette aus einem String oder (verschachtelten) Array von Strings.
+ *
+ * @param mixed $value String oder (verschachteltes) Array von Strings
+ * @return string|null Erster nicht-leerer Text; null, wenn es keinen gibt
+ */
 function schema_org_first_string(mixed $value): ?string
 {
     if (is_string($value)) {
@@ -117,7 +141,12 @@ function schema_org_first_string(mixed $value): ?string
     return null;
 }
 
-/** recipeYield ist oft z. B. ["4", "4 Portionen"] – die aussagekräftigere (nicht rein numerische) Variante bevorzugen. */
+/**
+ * recipeYield ist oft z. B. ["4", "4 Portionen"] – die aussagekräftigere (nicht rein numerische) Variante bevorzugen.
+ *
+ * @param mixed $value Skalar oder Array von Skalaren
+ * @return string|null Beste Variante; sonst die erste rein numerische; null, wenn keine vorhanden
+ */
 function schema_org_best_yield(mixed $value): ?string
 {
     $candidates = is_array($value) ? $value : [$value];
@@ -135,7 +164,12 @@ function schema_org_best_yield(mixed $value): ?string
     return $best;
 }
 
-/** @return string[] */
+/**
+ * Wandelt eine Liste aus Strings oder Objekten mit "name" in eine Liste getrimmter, nicht-leerer Strings.
+ *
+ * @param mixed $value Liste von Strings bzw. Objekten mit "name"
+ * @return string[] Nicht-leere Texte; leer, wenn $value kein Array ist
+ */
 function schema_org_string_list(mixed $value): array
 {
     if (!is_array($value)) {
@@ -163,7 +197,8 @@ function schema_org_string_list(mixed $value): array
  * ({"@type":"HowToStep","text": ...}) oder verschachtelt als HowToSection mit itemListElement vor
  * (so bei chefkoch.de) – wird rekursiv zu einer flachen Liste von Schritt-Texten aufgelöst.
  *
- * @return string[]
+ * @param mixed $value Wert von recipeInstructions
+ * @return string[] Schritt-Texte in Reihenfolge
  */
 function schema_org_flatten_instructions(mixed $value): array
 {
@@ -194,7 +229,13 @@ function schema_org_flatten_instructions(mixed $value): array
     return $out;
 }
 
-/** Der Wert von "author" kann ein String oder ein Person-Objekt sein (inline oder @id-Referenz ins @graph). */
+/**
+ * Der Wert von "author" kann ein String oder ein Person-Objekt sein (inline oder @id-Referenz ins @graph).
+ *
+ * @param mixed $value Wert von "author"
+ * @param array $nodesById Alle bekannten Knoten, indiziert nach @id (zum Auflösen von Referenzen)
+ * @return string|null Name des Autors; null, wenn nicht ermittelbar
+ */
 function schema_org_resolve_author_name(mixed $value, array $nodesById): ?string
 {
     if (is_string($value)) {
@@ -211,7 +252,13 @@ function schema_org_resolve_author_name(mixed $value, array $nodesById): ?string
     return null;
 }
 
-/** Der Wert von "image" kann ein String, ein Array von Strings oder ein ImageObject sein (inline oder @id-Referenz ins @graph). */
+/**
+ * Der Wert von "image" kann ein String, ein Array von Strings oder ein ImageObject sein (inline oder @id-Referenz ins @graph).
+ *
+ * @param mixed $value Wert von "image"
+ * @param array $nodesById Alle bekannten Knoten, indiziert nach @id (zum Auflösen von Referenzen)
+ * @return string|null URL des (ersten) Bilds; null, wenn nicht ermittelbar
+ */
 function schema_org_resolve_image(mixed $value, array $nodesById): ?string
 {
     if (is_string($value)) {

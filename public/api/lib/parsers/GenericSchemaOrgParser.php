@@ -6,11 +6,20 @@
  */
 class GenericSchemaOrgParser implements RecipeParserInterface
 {
+    /**
+     * @param string $url Adresse der Rezeptseite
+     * @return bool immer true
+     */
     public function supports(string $url): bool
     {
         return true;
     }
 
+    /**
+     * @param string $url Adresse der Rezeptseite
+     * @return array{title: string, category: ?string, servings: ?string, image_url: ?string, ingredients: string[], steps: string[], notes: ?string}
+     * @throws RuntimeException wenn die Seite nicht geladen werden konnte oder kein Rezept enthält
+     */
     public function parse(string $url): array
     {
         $html = http_get($url);

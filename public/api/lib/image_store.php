@@ -14,7 +14,12 @@ class ImageValidationException extends RuntimeException
  * dabei nur gelesen (kopiert), nicht verschoben oder gelöscht – Aufräumen bleibt Sache des Aufrufers.
  * Gemeinsam genutzt von upload.php (Browser-Upload) und import.php (heruntergeladenes Bild).
  *
- * @throws ImageValidationException|NotFoundException
+ * @param string $slug Slug des Rezepts (muss existieren)
+ * @param string $localPath Pfad der zu übernehmenden Bilddatei
+ * @return array Das aktualisierte Rezept (image und thumb gesetzt; thumb null, falls die Erzeugung scheiterte)
+ * @throws ImageValidationException wenn die Datei kein erlaubtes Bild ist
+ * @throws NotFoundException wenn das Rezept nicht existiert
+ * @throws RuntimeException wenn das Bild nicht kopiert werden konnte
  */
 function store_recipe_image(string $slug, string $localPath): array
 {

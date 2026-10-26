@@ -20,48 +20,84 @@
  * @property {string} [import_warning]
  */
 
-/** @type {Recipe[]} */
+/**
+ * Alle geladenen Rezepte (Quelle für Kartenraster, Kategorie-Filter und Detailansicht).
+ * @type {Recipe[]}
+ */
 let RECIPES = [];
-// `true`, während openEditForm()/openImportForm() offen ist (ungespeicherte Eingaben sind möglich).
-// Verhindert, dass ein Klick neben das Formular oder Escape die Eingaben versehentlich verwirft
-// (siehe overlay-Klick-Handler und keydown-Handler weiter unten) — nur die expliziten Buttons
-// "Abbrechen"/"×"/"Speichern" schließen das Formular dann noch.
+
+/**
+ * `true`, während openEditForm()/openImportForm() offen ist (ungespeicherte Eingaben sind möglich).
+ * Verhindert, dass ein Klick neben das Formular oder Escape die Eingaben versehentlich verwirft
+ * (siehe overlay-Klick-Handler und keydown-Handler weiter unten) — nur die expliziten Buttons
+ * "Abbrechen"/"×"/"Speichern" schließen das Formular dann noch.
+ * @type {boolean}
+ */
 let formIsOpen = false;
 
+/** Container des Rezept-Kartenrasters. @type {HTMLElement} */
 const grid = document.getElementById('grid');
+/** Abgedunkelter Hintergrund hinter dem Rezeptblatt/Formular; hat die Klasse `open`, wenn sichtbar. @type {HTMLElement} */
 const overlay = document.getElementById('overlay');
+/** Inhaltsbereich im Overlay (Lese-Ansicht, Bearbeitungs- oder Importformular). @type {HTMLElement} */
 const sheet = document.getElementById('sheet');
+/** Suchfeld. @type {HTMLInputElement} */
 const searchInput = document.getElementById('search');
+/** Auswahl der Sortierung. @type {HTMLSelectElement} */
 const sortSel = document.getElementById('sortSel');
+/** Auswahl des Kategorie-Filters. @type {HTMLSelectElement} */
 const catSel = document.getElementById('catSel');
+/** Anzeige "x von y Rezepten" über dem Kartenraster. @type {HTMLElement} */
 const resultCount = document.getElementById('resultCount');
+/** Anzeige der Gesamtanzahl im Header. @type {HTMLElement} */
 const subCount = document.getElementById('subCount');
+/** Button "Neues Rezept". @type {HTMLButtonElement} */
 const newRecipeBtn = document.getElementById('newRecipeBtn');
+/** Button "Importieren". @type {HTMLButtonElement} */
 const importRecipeBtn = document.getElementById('importRecipeBtn');
 
+/** Schlüssel in localStorage, unter dem das API-Token abgelegt wird. @type {string} */
 const TOKEN_KEY = 'kochbuch_api_token';
 
+/**
+ * Maskiert die HTML-Sonderzeichen & < > " ' (für Text und Attributwerte).
+ * @param {?string} str Beliebiger Text (null/undefined wird wie "" behandelt)
+ * @returns {string} Der maskierte Text
+ */
 function escapeHtml(str){
   return (str||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-// PHP liefert die Rezeptliste über die JSON-API (api/recipes.php).
-/** @returns {Promise<Recipe[]>} */
+/**
+ * Lädt die Rezeptliste von der JSON-API (api/recipes.php).
+ * @returns {Promise<Recipe[]>} Alle Rezepte
+ */
 async function loadRecipes(){
   /** @type {{recipes: Recipe[]}} */
   const data = await fetch('api/recipes.php').then(res => res.json());
   return data.recipes;
 }
 
+/**
+ * Liest das gespeicherte API-Token aus localStorage.
+ * @returns {string} Das Token, oder "" falls keins gespeichert ist
+ */
 function getStoredToken(){
   return localStorage.getItem(TOKEN_KEY) || '';
 }
 
+/**
+ * Löscht das gespeicherte API-Token aus localStorage.
+ * @returns {void}
+ */
 function forgetToken(){
   localStorage.removeItem(TOKEN_KEY);
 }
 
-/** Holt das gespeicherte API-Token oder fragt es einmalig per prompt() ab und merkt es sich in localStorage. */
+/**
+ * Holt das gespeicherte API-Token oder fragt es einmalig per prompt() ab und merkt es sich in localStorage.
+ * @returns {string} Das Token, oder "" falls der Nutzer keins eingegeben hat
+ */
 function requireToken(){
   let token = getStoredToken();
   if(!token){
@@ -75,6 +111,10 @@ function requireToken(){
  * fetch()-Wrapper für schreibende API-Aufrufe: hängt das Token an, wirft bei
  * 401 (und vergisst dann das falsche Token) bzw. anderen Fehlerstatus mit der
  * Server-Fehlermeldung als Error.
+ * @param {string} url Ziel-URL des API-Aufrufs
+ * @param {RequestInit} [options] fetch()-Optionen (Methode, Body, Header); das Token wird ergänzt
+ * @returns {Promise<any>} Der dekodierte JSON-Body der Antwort
+ * @throws {Error} Ohne Token, bei 401 oder bei sonstigem Fehlerstatus
  */
 async function apiWrite(url, options){
   const token = requireToken();
@@ -97,22 +137,32 @@ async function apiWrite(url, options){
   return body;
 }
 
-// data/ liegt außerhalb des Document Root, Bilder laufen deshalb über api/image.php statt über eine statische URL.
-/** @param {Recipe} r */
+/**
+ * URL des Thumbnails (bzw. des Originals, falls kein Thumbnail existiert).
+ * data/ liegt außerhalb des Document Root, Bilder laufen deshalb über api/image.php statt über eine statische URL.
+ * @param {Recipe} r Das Rezept
+ * @returns {?string} Die Bild-URL, oder null, wenn das Rezept kein Bild hat
+ */
 function thumbSrc(r){
   if(!r.image) return null;
   const type = r.thumb ? 'thumb' : 'image';
   return `api/image.php?slug=${encodeURIComponent(r.slug)}&type=${type}`;
 }
 
-/** @param {Recipe} r */
+/**
+ * URL des Originalbilds eines Rezepts (über api/image.php).
+ * @param {Recipe} r Das Rezept
+ * @returns {?string} Die Bild-URL, oder null, wenn das Rezept kein Bild hat
+ */
 function imageSrc(r){
   return r.image ? `api/image.php?slug=${encodeURIComponent(r.slug)}&type=image` : null;
 }
 
 /**
- * @param {Recipe} r
- * @param {number} idx
+ * Baut das HTML einer Rezeptkarte im Kartenraster.
+ * @param {Recipe} r Das Rezept
+ * @param {number} idx Index des Rezepts in RECIPES (landet in `data-idx` der Karte)
+ * @returns {string} HTML der Karte
  */
 function cardHtml(r, idx){
   const src = thumbSrc(r);
@@ -127,7 +177,10 @@ function cardHtml(r, idx){
   </div>`;
 }
 
-/** Alle bereits verwendeten Kategorien (aus dem aktuellen RECIPES-Stand), alphabetisch, ohne Duplikate. */
+/**
+ * Alle bereits verwendeten Kategorien (aus dem aktuellen RECIPES-Stand), alphabetisch, ohne Duplikate.
+ * @returns {string[]} Die Kategorienamen
+ */
 function knownCategories(){
   return [...new Set(RECIPES.map(r => r.category).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'de'));
 }
@@ -143,6 +196,8 @@ function knownCategories(){
  * Die Vorschlagsliste erscheint und funktioniert, aber alle Optionen werden als leer angezeigt.
  * Stand 13. Okt. 2025: keine offizielle Lösung
  * https://learn.microsoft.com/en-us/answers/questions/5583325/datalist-tag-not-properly-rendered-on-microsoft-ed
+ *
+ * @returns {void}
  */
 function refreshCategoryFilter(){
   const cats = knownCategories();
@@ -151,20 +206,29 @@ function refreshCategoryFilter(){
   catSel.value = cats.includes(current) ? current : '';
 }
 
-/** Aktualisiert die Gesamtanzahl im Header (nötig nach jedem Anlegen/Löschen/Import). */
+/**
+ * Aktualisiert die Gesamtanzahl im Header (nötig nach jedem Anlegen/Löschen/Import).
+ * @returns {void}
+ */
 function updateHeaderCount(){
   subCount.textContent = `${RECIPES.length} Rezepte`;
 }
 
 /**
  * Zeitstempel von r.created als Zahl für Sortierung. Fehlt/ungültig -> 0 (sortiert als ältestes).
- * @param {Recipe} r
+ * @param {Recipe} r Das Rezept
+ * @returns {number} Millisekunden seit 1970, oder 0
  */
 function createdTime(r){
   const t = r.created ? new Date(r.created).getTime() : NaN;
   return isNaN(t) ? 0 : t;
 }
 
+/**
+ * Filtert (Kategorie, Suchbegriff in Titel/Portionen/Zutaten/Schritten) und sortiert RECIPES gemäß den
+ * aktuellen Eingaben und rendert das Ergebnis ins Kartenraster inkl. Trefferzähler.
+ * @returns {void}
+ */
 function renderGrid(){
   const q = searchInput.value.trim().toLowerCase();
   const cat = catSel.value;
@@ -217,7 +281,8 @@ function renderGrid(){
  * Baut den Inhalt, der sowohl in der Lese-Ansicht als auch beim Drucken sichtbar ist
  * (Hero-Bild/Titel, Zutaten, Zubereitung, Notizen — ohne Toolbar/Schließen-Button).
  * Wird auch fürs unsichtbare Vermessen der Druckhöhe in printRecipe() wiederverwendet.
- * @param {Recipe} r
+ * @param {Recipe} r Das Rezept
+ * @returns {string} HTML des druckbaren Rezeptblatts
  */
 function printableSheetHtml(r){
   const ingredientsHtml = r.ingredients.map(g => `
@@ -261,6 +326,11 @@ function printableSheetHtml(r){
   `;
 }
 
+/**
+ * Zeigt ein Rezept in der Lese-Ansicht (Overlay) mit den Buttons Drucken/Bearbeiten/Löschen.
+ * @param {number} idx Index des Rezepts in RECIPES
+ * @returns {void}
+ */
 function openRecipe(idx){
   const r = RECIPES[idx];
   formIsOpen = false;
@@ -287,7 +357,8 @@ function openRecipe(idx){
  * twoColumnPrint aktiv ist, und öffnet danach den Druckdialog. Keine automatische Schätzung mehr
  * (eine frühere Pixel-Messung im unsichtbaren DOM sowie eine Zeilen-Zeichen-Schätzung waren beide
  * unzuverlässig) — der Nutzer entscheidet das selbst pro Rezept.
- * @param {Recipe} r
+ * @param {Recipe} r Das zu druckende (aktuell geöffnete) Rezept
+ * @returns {void}
  */
 function printRecipe(r){
   const wrap = document.getElementById('ingredientsWrap');
@@ -296,6 +367,10 @@ function printRecipe(r){
   window.print();
 }
 
+/**
+ * Schließt das Overlay (Lese-Ansicht oder Formular) und leert den Inhalt.
+ * @returns {void}
+ */
 function closeRecipe(){
   formIsOpen = false;
   overlay.classList.remove('open');
@@ -307,6 +382,8 @@ function closeRecipe(){
  * eine Zutat pro Zeile, eine Zeile mit führendem "#" markiert eine neue Gruppenüberschrift.
  * Vor jeder Gruppenüberschrift (außer ganz am Anfang) steht zur besseren Lesbarkeit eine
  * Leerzeile; parseIngredientsText() ignoriert Leerzeilen beim Zurückparsen wieder.
+ * @param {IngredientGroup[]} ingredients Die gruppierten Zutaten
+ * @returns {string} Der Text fürs Formularfeld
  */
 function formatIngredientsText(ingredients){
   return ingredients.map((g, i) => {
@@ -316,7 +393,11 @@ function formatIngredientsText(ingredients){
   }).join('\n');
 }
 
-/** Nummeriert die Zubereitungsschritte fürs Formular durch. Umkehrfunktion zu parseStepsText(). */
+/**
+ * Nummeriert die Zubereitungsschritte fürs Formular durch. Umkehrfunktion zu parseStepsText().
+ * @param {string[]} steps Die Schritte
+ * @returns {string} Der Text fürs Formularfeld, ein nummerierter Schritt pro Zeile
+ */
 function formatStepsText(steps){
   return steps.map((s, i) => `${i + 1}. ${s}`).join('\n');
 }
@@ -325,6 +406,8 @@ function formatStepsText(steps){
  * Entfernt eine vom User eingegebene Nummerierung ("1.", "2)", ...) oder ein Listenzeichen
  * ("-", "*") am Zeilenanfang wieder – Bsp1–Bsp4 aus der Anfrage führen alle zum selben Ergebnis.
  * Leerzeilen werden ignoriert.
+ * @param {string} text Der Inhalt des Schritte-Felds
+ * @returns {string[]} Die Schritte ohne Nummerierung/Listenzeichen
  */
 function parseStepsText(text){
   return text.split('\n')
@@ -337,6 +420,8 @@ function parseStepsText(text){
  * eröffnen eine neue Gruppe (Text danach = Gruppenname, ein optionaler abschließender Doppelpunkt
  * wird entfernt; "#" allein bzw. ohne Text danach = zurück zu "ohne Überschrift"). Leere Zeilen
  * und Gruppen ohne Zutaten werden verworfen.
+ * @param {string} text Der Inhalt des Zutaten-Felds
+ * @returns {IngredientGroup[]} Die gruppierten Zutaten
  */
 function parseIngredientsText(text){
   const groups = [];
@@ -362,8 +447,9 @@ function parseIngredientsText(text){
 }
 
 /**
- * Zeigt das Anlege-/Bearbeitungsformular. $r === null bedeutet: neues Rezept.
- * @param {?Recipe} r
+ * Zeigt das Anlege-/Bearbeitungsformular.
+ * @param {?Recipe} r Das zu bearbeitende Rezept; null bedeutet: neues Rezept
+ * @returns {void}
  */
 function openEditForm(r){
   formIsOpen = true;
@@ -443,7 +529,11 @@ function openEditForm(r){
   document.getElementById('saveBtn').addEventListener('click', () => saveRecipe(isEdit ? r.slug : null));
 }
 
-/** Liest die Formularfelder aus und baut daraus den API-Payload (ohne leere Zutatengruppen/-zeilen). */
+/**
+ * Liest die Formularfelder aus und baut daraus den API-Payload (ohne leere Zutatengruppen/-zeilen).
+ * @returns {{title: string, category: string, servings: string, ingredients: IngredientGroup[],
+ *            steps: string[], notes: ?string, twoColumnPrint: boolean}} Der Payload für POST/PUT api/recipes.php
+ */
 function collectFormData(){
   const title = document.getElementById('titleInput').value.trim();
   const category = document.getElementById('categoryInput').value.trim();
@@ -458,6 +548,12 @@ function collectFormData(){
   return {title, category, servings, ingredients, steps, notes, twoColumnPrint};
 }
 
+/**
+ * Speichert das Formular (Anlegen oder Ändern), lädt danach ggf. das gewählte Bild hoch und zeigt das
+ * gespeicherte Rezept an. Fehler werden im Formular angezeigt; ein Bild-Upload-Fehler erst nach dem Speichern.
+ * @param {?string} slug Slug des bearbeiteten Rezepts; null legt ein neues Rezept an
+ * @returns {Promise<void>}
+ */
 async function saveRecipe(slug){
   const payload = collectFormData();
   const errorBox = document.getElementById('formError');
@@ -514,7 +610,11 @@ async function saveRecipe(slug){
   }
 }
 
-/** @param {Recipe} r */
+/**
+ * Löscht ein Rezept nach Rückfrage und aktualisiert die Oberfläche.
+ * @param {Recipe} r Das zu löschende Rezept
+ * @returns {Promise<void>}
+ */
 async function deleteRecipeUI(r){
   if(!window.confirm(`"${r.title}" wirklich unwiderruflich löschen?`)) return;
   try {
@@ -539,9 +639,13 @@ overlay.addEventListener('click', e => {
 document.addEventListener('keydown', e => {
   if(e.key === 'Escape' && !formIsOpen) closeRecipe();
 });
+/** Schlüssel in localStorage, unter dem Suchbegriff, Kategorie-Filter und Sortierung abgelegt werden. @type {string} */
 const VIEW_STATE_KEY = 'kochbuch_view_state';
 
-/** Speichert Suchbegriff, Kategorie-Filter und Sortierung, damit sie einen Reload überstehen. */
+/**
+ * Speichert Suchbegriff, Kategorie-Filter und Sortierung, damit sie einen Reload überstehen.
+ * @returns {void}
+ */
 function saveViewState(){
   localStorage.setItem(VIEW_STATE_KEY, JSON.stringify({
     search: searchInput.value,
@@ -550,6 +654,10 @@ function saveViewState(){
   }));
 }
 
+/**
+ * Liest den mit saveViewState() gespeicherten Zustand.
+ * @returns {{search?: string, category?: string, sort?: string}} Der Zustand; leeres Objekt, falls nicht lesbar
+ */
 function loadViewState(){
   try {
     return JSON.parse(localStorage.getItem(VIEW_STATE_KEY) || '{}');
@@ -558,6 +666,10 @@ function loadViewState(){
   }
 }
 
+/**
+ * Handler für Änderungen an Suche, Sortierung und Kategorie: Zustand speichern, Raster neu rendern.
+ * @returns {void}
+ */
 function onFilterChange(){
   saveViewState();
   renderGrid();
@@ -569,7 +681,10 @@ catSel.addEventListener('change', onFilterChange);
 newRecipeBtn.addEventListener('click', () => openEditForm(null));
 importRecipeBtn.addEventListener('click', () => openImportForm());
 
-/** Zeigt das Formular zum Rezept-Import per URL (chefkoch.de u. Ä. mit schema.org/Recipe). */
+/**
+ * Zeigt das Formular zum Rezept-Import per URL (chefkoch.de u. Ä. mit schema.org/Recipe).
+ * @returns {void}
+ */
 function openImportForm(){
   formIsOpen = true;
   sheet.innerHTML = `
@@ -596,6 +711,11 @@ function openImportForm(){
   document.getElementById('importBtn').addEventListener('click', runImport);
 }
 
+/**
+ * Importiert das Rezept von der eingegebenen URL (POST api/import.php) und zeigt es danach an.
+ * Fehler werden im Formular angezeigt.
+ * @returns {Promise<void>}
+ */
 async function runImport(){
   const url = document.getElementById('importUrlInput').value.trim();
   const errorBox = document.getElementById('formError');
@@ -633,6 +753,11 @@ async function runImport(){
   }
 }
 
+/**
+ * Startet die App: lädt die Rezepte, baut den Kategorie-Filter auf, stellt Suchbegriff/Filter/Sortierung
+ * vom letzten Besuch wieder her und rendert das Kartenraster.
+ * @returns {Promise<void>}
+ */
 async function init(){
   try {
     RECIPES = await loadRecipes();

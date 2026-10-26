@@ -13,6 +13,13 @@
 
 require_once __DIR__ . '/../../config.php';
 
+/**
+ * Entfernt das Feld "order" aus jeder recipe.json unter RECIPES_DIR und schreibt die Datei zurück.
+ * Dateien ohne dieses Feld bleiben unangetastet.
+ *
+ * @return array{removed: string[], alreadyClean: int} Titel der geänderten Rezepte (alphabetisch)
+ *         und Anzahl der Rezepte, die das Feld bereits nicht mehr hatten
+ */
 function run_remove_order_field(): array
 {
     $removed = [];
