@@ -4,33 +4,23 @@ Ein privates Familien-Kochbuch, digitalisiert als kleine PHP/JSON-API mit einer 
 
 ## Voraussetzungen
 
-- PHP 8.5+ mit aktivierter **GD**-Extension (für Thumbnails)
+- PHP 8.5+ mit aktivierter GD-Extension (für Thumbnails)
 - Ein Webserver mit `public/` als Document Root
 - Kein Datenbankserver nötig – alle Daten liegen als Dateien unter `data/`, bewusst außerhalb des Document Root
   (Zugriff nur über `api/recipes.php` bzw. `api/image.php`, nicht direkt per URL)
 
 ## Setup
 
-1. `config.example.php` nach `config.php` kopieren (liegt im Projekt-Root, **nicht** unter `public/`, damit es
+1. `config.example.php` nach **`config.php`** kopieren (liegt im Projekt-Root, nicht unter `public/`, damit es
    außerhalb des Document Root und damit nicht direkt aufrufbar ist).
 
-2. In `config.php` ein echtes `API_TOKEN` eintragen, z. B.:
+2. In `config.php` ein echtes **`API_TOKEN`** eintragen, z. B.:
    ```
    php -r "echo bin2hex(random_bytes(32));"
    ```
-3. Webserver mit Document Root `public/` auf ein Verzeichnis zeigen lassen (z. B. XAMPP-vHost).
+3. Webserver mit **Document Root** `public/` auf ein Verzeichnis zeigen lassen (z. B. XAMPP-vHost).
 
-4. GD-Extension für PHP aktivieren. Zur Prüfung gibt es `public/dev/info.php` (ruft `phpinfo()` auf, im Browser
-   aufrufen und nach "gd" suchen) – siehe auch Abschnitt "Admin-/Dev-Skripte" unter Projektstruktur.
-
-   Unter XAMPP:
-   - `C:\xampp\php\php.ini` öffnen und die Zeile `;extension=gd` zu `extension=gd` ändern.
-   - Apache neu starten.
-
-   Unter Hetzner-Webspace:
-   - GD ist standardmäßig aktiviert. Falls nicht, kann dies per KonsoleH eingerichtet werden.
-
-5. **HTTP Basic Auth einrichten** (schützt zusätzlich zum API-Token auch die statische `index.html` selbst – ohne
+4. **HTTP Basic Auth einrichten** (schützt zusätzlich zum API-Token auch die statische `index.html` selbst – ohne
    diese Auth wäre die leere Seiten-Hülle trotz Token-Schutz der API weiterhin für jeden abrufbar):
    ```
    C:\xampp\apache\bin\htpasswd -bcB .htpasswd <benutzername> <passwort>
@@ -39,6 +29,16 @@ Ein privates Familien-Kochbuch, digitalisiert als kleine PHP/JSON-API mit einer 
    `public/.htaccess.example` nach `public/.htaccess` kopieren und den `AuthUserFile`-Pfad auf den tatsächlichen
    absoluten Pfad zur `.htpasswd` auf diesem Server anpassen. Beide Dateien (`.htpasswd`, `public/.htaccess`) sind
    gitignored und müssen auf jedem Rechner/Server separat eingerichtet werden.
+
+5. **GD-Extension** für PHP aktivieren. Zur Prüfung gibt es `public/dev/info.php` (ruft `phpinfo()` auf, im Browser
+   aufrufen und nach "gd" suchen) – siehe auch Abschnitt "Admin-/Dev-Skripte" unter Projektstruktur.
+
+   Unter XAMPP:
+   - `C:\xampp\php\php.ini` öffnen und die Zeile `;extension=gd` zu `extension=gd` ändern.
+   - Apache neu starten.
+
+   Unter Hetzner-Webspace:
+   - GD ist standardmäßig aktiviert. Falls nicht, kann dies per KonsoleH eingerichtet werden.
 
 ## Lokalen Testserver unter XAMPP (Windows) einrichten
 
@@ -237,7 +237,7 @@ a) der Server das gespeicherte Token ablehnt (401) – dann wird es automatisch 
 b) du es manuell löschst, z. B. in den Browser-DevTools mit `localStorage.removeItem('kochbuch_api_token')` oder über
    "Website-Daten löschen".
 
-Lesezugriffe (Rezeptliste, Bilder) brauchen kein App-Token — Schutz vor öffentlichem Zugriff übernimmt die HTTP Basic
+Lesezugriffe (Rezeptliste, Bilder) brauchen kein API-Token — Schutz vor öffentlichem Zugriff übernimmt die HTTP Basic
 Auth vor der gesamten `public/`-Domain (siehe Setup, Schritt 5).
 
 ### Import-Funktion
@@ -288,6 +288,28 @@ unsichtbaren DOM, danach eine Zeilen-/Zeichen-Schätzung) wurden ausprobiert und
 ließ sich keine davon zuverlässig verifizieren, und in der Praxis wurde z. B. "Peking Ente" nicht zuverlässig erkannt.
 Bei Bedarf lässt sich anhand des bestehenden Datenbestands leicht eine Liste von Kandidaten ermitteln (Zutaten- +
 Schritt-Umfang zählen) und manuell durchgehen, statt sich auf eine unsichere Schätzung zu verlassen.
+
+### Bildschirmsperre deaktivieren
+
+Solange ein Rezept in der Lese-Ansicht offen ist, bleibt der Bildschirm an (Wake Lock).
+
+```js
+let lock = null;
+
+// Beim Start der Wiedergabe (eine Nutzeraktion; manche Browser verlangen das)
+lock = await navigator.wakeLock?.request('screen');
+
+// Bei Pause
+await lock?.release();
+lock = null;
+
+// Im Hintergrund gibt der Browser die Sperre selbst frei; beim Zurückkehren neu anfordern
+document.addEventListener('visibilitychange', async () => {
+    if (document.visibilityState === 'visible' && isPlaying) lock = await navigator.wakeLock.request('screen');
+});
+```
+
+Die API gibt es nur über HTTPS (oder `localhost`); ohne sie bleibt der Bildschirm wie eingestellt.
 
 ## Stand / Roadmap
 

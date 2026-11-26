@@ -60,6 +60,51 @@ const importRecipeBtn = document.getElementById('importRecipeBtn');
 const TOKEN_KEY = 'kochbuch_api_token';
 
 /**
+ * Sperre gegen das Abschalten des Bildschirms (Screen Wake Lock API), null ohne Sperre.
+ * @type {?WakeLockSentinel}
+ */
+let wakeLock = null;
+
+/**
+ * Ob der Bildschirm anbleiben soll: nur, solange ein Rezept in der Lese-Ansicht offen ist (beim Kochen liegt das Handy
+ * daneben), nicht in der Übersicht und nicht in den Formularen.
+ * @type {boolean}
+ */
+let keepAwake = false;
+
+/**
+ * Hält den Bildschirm an bzw. gibt ihn wieder frei. Ohne die API (nur über HTTPS oder localhost, nicht jeder Browser)
+ * bleibt der Bildschirm wie eingestellt.
+ * @param {boolean} on true, solange ein Rezept offen ist
+ * @returns {Promise<void>}
+ */
+async function setKeepAwake(on){
+  keepAwake = on;
+  if(!on){
+    const lock = wakeLock;
+    wakeLock = null;
+    await lock?.release().catch(() => {});
+    return;
+  }
+  if(wakeLock || document.visibilityState !== 'visible') return;
+  try {
+    const lock = await navigator.wakeLock?.request('screen') ?? null;
+    // Inzwischen geschlossen oder schon eine Sperre da: diese gleich wieder freigeben, sonst bliebe sie bestehen.
+    if(!keepAwake || wakeLock){
+      await lock?.release();
+      return;
+    }
+    wakeLock = lock;
+    lock?.addEventListener('release', () => { if(wakeLock === lock) wakeLock = null; });
+  } catch(err){ /* nicht unterstützt oder verweigert */ }
+}
+
+// Im Hintergrund gibt der Browser die Sperre selbst frei; beim Zurückkehren neu anfordern, wenn das Rezept noch offen ist.
+document.addEventListener('visibilitychange', () => {
+  if(document.visibilityState === 'visible' && keepAwake) void setKeepAwake(true);
+});
+
+/**
  * Maskiert die HTML-Sonderzeichen & < > " ' (für Text und Attributwerte).
  * @param {?string} str Beliebiger Text (null/undefined wird wie "" behandelt)
  * @returns {string} Der maskierte Text
@@ -349,6 +394,7 @@ function openRecipe(idx){
   document.getElementById('printBtn').addEventListener('click', () => printRecipe(r));
   document.getElementById('editBtn').addEventListener('click', () => openEditForm(r));
   document.getElementById('deleteBtn').addEventListener('click', () => deleteRecipeUI(r));
+  void setKeepAwake(true);
 }
 
 /**
@@ -373,6 +419,7 @@ function printRecipe(r){
  */
 function closeRecipe(){
   formIsOpen = false;
+  void setKeepAwake(false);
   overlay.classList.remove('open');
   sheet.innerHTML = '';
 }
@@ -453,6 +500,7 @@ function parseIngredientsText(text){
  */
 function openEditForm(r){
   formIsOpen = true;
+  void setKeepAwake(false);
   const isEdit = r !== null;
   const ingredientsText = isEdit ? formatIngredientsText(r.ingredients) : '';
   const stepsText = isEdit ? formatStepsText(r.steps) : '';
@@ -687,6 +735,7 @@ importRecipeBtn.addEventListener('click', () => openImportForm());
  */
 function openImportForm(){
   formIsOpen = true;
+  void setKeepAwake(false);
   sheet.innerHTML = `
     <button class="close" id="closeBtn" aria-label="Schließen">&times;</button>
     <h2>Rezept importieren</h2>
