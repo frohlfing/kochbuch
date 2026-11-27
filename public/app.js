@@ -40,7 +40,7 @@ const grid = document.getElementById('grid');
 /** Abgedunkelter Hintergrund hinter dem Rezeptblatt/Formular; hat die Klasse `open`, wenn sichtbar. @type {HTMLElement} */
 const overlay = document.getElementById('overlay');
 /** Inhaltsbereich im Overlay (Lese-Ansicht, Bearbeitungs- oder Importformular). @type {HTMLElement} */
-const sheet = document.getElementById('sheet');
+const dialog = document.getElementById('dialog');
 /** Suchfeld. @type {HTMLInputElement} */
 const searchInput = document.getElementById('search');
 /** Auswahl der Sortierung. @type {HTMLSelectElement} */
@@ -380,7 +380,7 @@ function openRecipe(idx){
   const r = RECIPES[idx];
   formIsOpen = false;
 
-  sheet.innerHTML = `
+  dialog.innerHTML = `
     <button class="close" id="closeBtn" aria-label="Schließen">&times;</button>
     <div class="btn-row toolbar">
       <button class="btn" id="printBtn" type="button">Drucken</button>
@@ -421,7 +421,7 @@ function closeRecipe(){
   formIsOpen = false;
   void setKeepAwake(false);
   overlay.classList.remove('open');
-  sheet.innerHTML = '';
+  dialog.innerHTML = '';
 }
 
 /**
@@ -510,7 +510,7 @@ function openEditForm(r){
     ? `<div class="form-preview"><div class="ratio-box"><img id="imgPreview" src="${escapeHtml(src)}" alt=""></div></div>`
     : `<div class="form-preview" id="previewWrap" style="display:none"><div class="ratio-box"><img id="imgPreview" src="" alt=""></div></div>`;
 
-  sheet.innerHTML = `
+  dialog.innerHTML = `
     <button class="close" id="closeBtn" aria-label="Schließen">&times;</button>
     <h2>${isEdit ? 'Rezept bearbeiten' : 'Neues Rezept'}</h2>
     <div id="formError"></div>
@@ -736,7 +736,7 @@ importRecipeBtn.addEventListener('click', () => openImportForm());
 function openImportForm(){
   formIsOpen = true;
   void setKeepAwake(false);
-  sheet.innerHTML = `
+  dialog.innerHTML = `
     <button class="close" id="closeBtn" aria-label="Schließen">&times;</button>
     <h2>Rezept importieren</h2>
     <div id="formError"></div>
