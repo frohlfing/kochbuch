@@ -1,6 +1,6 @@
 # Kochbuch
 
-Ein privates Familien-Kochbuch, digitalisiert als kleine PHP/JSON-API mit einer statischen One-Page-Frontend-App.
+Ein privates Kochbuch, digitalisiert als kleine PHP/JSON-API mit einer statischen One-Page-Frontend-App.
 
 ## Voraussetzungen
 
