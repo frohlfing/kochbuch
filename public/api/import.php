@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 require_token();
 
 $body = read_json_body();
-$url = trim((string) ($body['url'] ?? ''));
+$url = trim((string)($body['url'] ?? ''));
 if ($url === '' || !filter_var($url, FILTER_VALIDATE_URL)) {
     json_error(400, 'Gültige url ist erforderlich');
 }

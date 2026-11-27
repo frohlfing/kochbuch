@@ -2,7 +2,6 @@
 
 /**
  * Transliteriert Umlaute/Akzente, kleinschreibt und ersetzt alles Nicht-a-z0-9 durch Bindestriche.
- *
  * @param string $title Beliebiger Titel
  * @return string Slug; leer, wenn der Titel keine verwertbaren Zeichen enthält
  */
@@ -21,7 +20,6 @@ function slugify(string $title): string
 /**
  * Liefert einen im RECIPES_DIR eindeutigen Slug. Hängt bei Kollision -2, -3, ... an.
  * $excludeSlug wird ignoriert (nötig beim Rename, wenn der alte Ordner noch existiert).
- *
  * @param string $baseSlug Gewünschter Slug (siehe slugify())
  * @param string|null $excludeSlug Slug, der als frei gilt (der eigene beim Umbenennen)
  * @return string Freier Slug

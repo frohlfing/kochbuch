@@ -2,7 +2,6 @@
 
 /**
  * Lädt eine Bilddatei als GD-Image passend zur Endung $ext (jpg/jpeg/png/webp).
- *
  * @param string $path Pfad der Bilddatei
  * @param string $ext Dateiendung in Kleinbuchstaben
  * @return GdImage|false GD-Image; false bei nicht unterstütztem Format oder nicht lesbarer Datei
@@ -19,7 +18,6 @@ function gd_load(string $path, string $ext): GdImage|false
 
 /**
  * Schreibt ein GD-Image passend zur Endung $ext (jpg/jpeg/png/webp) nach $path.
- *
  * @param GdImage $image Zu speicherndes Bild
  * @param string $path Zielpfad
  * @param string $ext Dateiendung in Kleinbuchstaben (bestimmt das Format)
@@ -38,7 +36,6 @@ function gd_save(GdImage $image, string $path, string $ext): bool
 /**
  * Erzeugt aus $srcPath ein auf $width x $height zentriert zugeschnittenes Thumbnail
  * unter $destPath. Behält die Bildendung (und damit das Format) von $srcPath bei.
- *
  * @param string $srcPath Pfad des Originalbilds
  * @param string $destPath Zielpfad des Thumbnails
  * @param string $ext Dateiendung in Kleinbuchstaben (jpg/jpeg/png/webp)
@@ -60,13 +57,13 @@ function generate_thumbnail(string $srcPath, string $destPath, string $ext, int 
 
     if ($srcRatio > $dstRatio) {
         $cropH = $srcH;
-        $cropW = (int) round($srcH * $dstRatio);
+        $cropW = (int)round($srcH * $dstRatio);
     } else {
         $cropW = $srcW;
-        $cropH = (int) round($srcW / $dstRatio);
+        $cropH = (int)round($srcW / $dstRatio);
     }
-    $srcX = (int) round(($srcW - $cropW) / 2);
-    $srcY = (int) round(($srcH - $cropH) / 2);
+    $srcX = (int)round(($srcW - $cropW) / 2);
+    $srcY = (int)round(($srcH - $cropH) / 2);
 
     $dst = imagecreatetruecolor($width, $height);
     if ($ext === 'png') {
@@ -87,7 +84,6 @@ function generate_thumbnail(string $srcPath, string $destPath, string $ext, int 
  * Stellt sicher, dass für das Rezept in $recipeDir ein Thumbnail existiert.
  * Fehlt es (z. B. Altdaten-Migration), wird es aus dem Originalbild nachgeneriert
  * und recipe.json aktualisiert.
- *
  * @param string $recipeDir Absoluter Pfad des Rezeptordners
  * @param array $recipe Rezeptdaten aus recipe.json
  * @return array Das (ggf. um thumb ergänzte) Rezept

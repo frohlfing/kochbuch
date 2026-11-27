@@ -13,8 +13,8 @@ require_once __DIR__ . '/../../config.php';
 require_once __DIR__ . '/lib/http.php';
 require_once __DIR__ . '/lib/crud.php';
 
-$slug = (string) ($_GET['slug'] ?? '');
-$type = (string) ($_GET['type'] ?? 'image');
+$slug = (string)($_GET['slug'] ?? '');
+$type = (string)($_GET['type'] ?? 'image');
 
 if (!in_array($type, ['image', 'thumb'], true)) {
     json_error(400, 'type muss image oder thumb sein');

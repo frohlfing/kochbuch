@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 require_token();
 
-$slug = (string) ($_POST['slug'] ?? '');
+$slug = (string)($_POST['slug'] ?? '');
 if ($slug === '') {
     json_error(400, 'slug ist erforderlich');
 }
@@ -32,7 +32,7 @@ if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
 
 $file = $_FILES['image'];
 if ($file['size'] > MAX_UPLOAD_BYTES) {
-    json_error(400, 'Bild ist zu groß (Limit: ' . (int) (MAX_UPLOAD_BYTES / 1024 / 1024) . ' MB)');
+    json_error(400, 'Bild ist zu groß (Limit: ' . (int)(MAX_UPLOAD_BYTES / 1024 / 1024) . ' MB)');
 }
 
 // move_uploaded_file() prüft zusätzlich, dass die Datei tatsächlich per HTTP-Upload kam;

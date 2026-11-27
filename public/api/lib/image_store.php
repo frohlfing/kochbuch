@@ -13,7 +13,6 @@ class ImageValidationException extends RuntimeException
  * kopiert das Bild als image.<ext>, generiert ein Thumbnail und aktualisiert recipe.json. $localPath wird
  * dabei nur gelesen (kopiert), nicht verschoben oder gelöscht – Aufräumen bleibt Sache des Aufrufers.
  * Gemeinsam genutzt von upload.php (Browser-Upload) und import.php (heruntergeladenes Bild).
- *
  * @param string $slug Slug des Rezepts (muss existieren)
  * @param string $localPath Pfad der zu übernehmenden Bilddatei
  * @return array Das aktualisierte Rezept (image und thumb gesetzt; thumb null, falls die Erzeugung scheiterte)

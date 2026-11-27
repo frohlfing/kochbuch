@@ -1,40 +1,43 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kochbuch</title>
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="app.css?v=2">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Kochbuch</title>
+    <link href="favicon.svg" rel="icon" type="image/svg+xml">
+    <link href="app.css?v=3" rel="stylesheet">
 </head>
 <body>
 
 <header>
-  <div class="eyebrow">handgeschrieben, digitalisiert</div>
-  <h1>Das Kochbuch</h1>
-  <p class="sub" id="subCount">wird geladen &hellip;</p>
+    <div class="eyebrow">handgeschrieben, digitalisiert</div>
+    <h1>Das Kochbuch</h1>
+    <p class="sub" id="subCount">wird geladen &hellip;</p>
 </header>
 
 <div class="controls">
-  <input type="search" id="search" placeholder="Rezept oder Zutat suchen &hellip;" aria-label="Rezept oder Zutat suchen">
-  <select id="catSel" aria-label="Nach Kategorie filtern"><option value="">Alle Kategorien</option></select>
-  <select id="sortSel" aria-label="Sortierung">
-    <option value="title">Alphabetisch</option>
-    <option value="created-desc">Erstellungsdatum &uarr;</option>
-    <option value="created-asc">Erstellungsdatum &darr;</option>
-    <option value="category">Kategorie</option>
-  </select>
-  <button class="btn btn-primary" id="newRecipeBtn" type="button">+ Neues Rezept</button>
-  <button class="btn" id="importRecipeBtn" type="button">Importieren</button>
+    <input aria-label="Rezept oder Zutat suchen" id="search" placeholder="Rezept oder Zutat suchen &hellip;"
+           type="search">
+    <select aria-label="Nach Kategorie filtern" id="catSel">
+        <option value="">Alle Kategorien</option>
+    </select>
+    <select aria-label="Sortierung" id="sortSel">
+        <option value="title">Alphabetisch</option>
+        <option value="created-desc">Erstellungsdatum &uarr;</option>
+        <option value="created-asc">Erstellungsdatum &darr;</option>
+        <option value="category">Kategorie</option>
+    </select>
+    <button class="btn btn-primary" id="newRecipeBtn" type="button">+ Neues Rezept</button>
+    <button class="btn" id="importRecipeBtn" type="button">Importieren</button>
 </div>
 <p class="count" id="resultCount"></p>
 
 <div class="grid" id="grid"></div>
 
 <div class="overlay" id="overlay">
-  <div class="dialog" id="dialog"></div>
+    <div class="dialog" id="dialog"></div>
 </div>
 
-<script src="app.js?v=2"></script>
+<script src="app.js?v=3"></script>
 </body>
 </html>

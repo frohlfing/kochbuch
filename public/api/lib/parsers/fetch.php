@@ -24,7 +24,6 @@ const HTTP_FETCH_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWe
  * mit HTTP 401/402), chefkoch.de funktioniert davon unbeeinflusst. Auf dem Ziel-Webspace (Linux)
  * ist curl mit hoher Wahrscheinlichkeit intakt; vor dem Verlassen auf den Fallback dort prüfen,
  * z. B. mit einer kurzen Testdatei <?php var_dump(extension_loaded('curl'));.
- *
  * @param string $url Absolute http(s)-URL
  * @param int $timeoutSeconds Timeout für Verbindungsaufbau und Gesamtdauer in Sekunden
  * @param int $maxBytes Maximal gelesene Antwortgröße in Bytes
@@ -45,7 +44,6 @@ function http_get(string $url, int $timeoutSeconds = 10, int $maxBytes = 8 * 102
 
 /**
  * Variante von http_get() auf Basis der curl-Extension.
- *
  * @param string $url Absolute http(s)-URL
  * @param int $timeoutSeconds Timeout in Sekunden
  * @param int $maxBytes Maximal gelesene Antwortgröße in Bytes
@@ -89,7 +87,6 @@ function http_get_curl(string $url, int $timeoutSeconds, int $maxBytes): string
 
 /**
  * Variante von http_get() auf Basis von file_get_contents() (Fallback ohne curl-Extension).
- *
  * @param string $url Absolute http(s)-URL
  * @param int $timeoutSeconds Timeout in Sekunden
  * @param int $maxBytes Maximal gelesene Antwortgröße in Bytes
@@ -126,7 +123,7 @@ function http_get_stream(string $url, int $timeoutSeconds, int $maxBytes): strin
     $encoding = null;
     foreach ($http_response_header ?? [] as $header) {
         if (preg_match('#^HTTP/\S+\s+(\d+)#', $header, $m)) {
-            $status = (int) $m[1];
+            $status = (int)$m[1];
         }
         if (preg_match('#^Content-Encoding:\s*(\S+)#i', $header, $m)) {
             $encoding = strtolower($m[1]);

@@ -27,7 +27,6 @@ class ConflictException extends RuntimeException
 
 /**
  * Absoluter Pfad zum Ordner eines Rezepts (existiert nicht zwingend).
- *
  * @param string $slug Slug des Rezepts
  * @return string Pfad ohne abschließenden Slash
  */
@@ -38,7 +37,6 @@ function recipe_dir(string $slug): string
 
 /**
  * Liest und dekodiert recipe.json eines Rezepts.
- *
  * @param string $slug Slug des Rezepts
  * @return array|null Rezeptdaten; null, wenn Ordner/Datei fehlt oder JSON ungültig ist
  */
@@ -54,7 +52,6 @@ function read_recipe_json(string $slug): ?array
 
 /**
  * Schreibt $recipe als recipe.json (überschreibt eine vorhandene Datei vollständig).
- *
  * @param string $slug Slug des Rezepts (der Ordner muss bereits existieren)
  * @param array $recipe Vollständige Rezeptdaten
  * @return void
@@ -70,7 +67,6 @@ function write_recipe_json(string $slug, array $recipe): void
 /**
  * Alle Unterordner von RECIPES_DIR (= alle Slugs), unsortiert. Leeres Array, falls RECIPES_DIR
  * noch gar nicht existiert (frische Installation, bevor das erste Rezept angelegt wurde).
- *
  * @return string[] Slugs aller vorhandenen Rezeptordner
  */
 function list_recipe_slugs(): array
@@ -89,7 +85,6 @@ function list_recipe_slugs(): array
 
 /**
  * Liest ein einzelnes Rezept und stellt dabei sicher, dass sein Thumbnail existiert (Lazy-Fallback).
- *
  * @param string $slug Slug des Rezepts
  * @return array|null Rezeptdaten; null, wenn nicht gefunden
  */
@@ -104,7 +99,6 @@ function get_recipe(string $slug): ?array
 
 /**
  * Liest alle Rezepte.
- *
  * @return array[] Rezepte, alphabetisch nach Titel sortiert (das Frontend sortiert clientseitig ggf. um)
  */
 function list_recipes(): array
@@ -116,13 +110,12 @@ function list_recipes(): array
             $recipes[] = $recipe;
         }
     }
-    usort($recipes, fn(array $a, array $b) => strcasecmp((string) $a['title'], (string) $b['title']));
+    usort($recipes, fn(array $a, array $b) => strcasecmp((string)$a['title'], (string)$b['title']));
     return $recipes;
 }
 
 /**
  * Case-insensitiver Titel-Vergleich über alle Rezepte.
- *
  * @param string $title Zu prüfender Titel
  * @param string|null $excludeSlug Slug, der übersprungen wird (das eigene Rezept beim Update)
  * @return bool true, wenn ein anderes Rezept bereits diesen Titel hat
@@ -135,7 +128,7 @@ function title_exists(string $title, ?string $excludeSlug = null): bool
             continue;
         }
         $r = read_recipe_json($slug);
-        if ($r !== null && mb_strtolower(trim((string) $r['title'])) === $needle) {
+        if ($r !== null && mb_strtolower(trim((string)$r['title'])) === $needle) {
             return true;
         }
     }
@@ -144,7 +137,6 @@ function title_exists(string $title, ?string $excludeSlug = null): bool
 
 /**
  * Prüft rohe Request-Daten auf Pflichtfelder und Typen (title, ingredients, steps, notes).
- *
  * @param array $data Rohe Request-Daten
  * @return string[] Fehlermeldungen, leer wenn valide
  */
@@ -152,7 +144,7 @@ function validate_recipe_input(array $data): array
 {
     $errors = [];
 
-    if (trim((string) ($data['title'] ?? '')) === '') {
+    if (trim((string)($data['title'] ?? '')) === '') {
         $errors[] = 'title ist erforderlich';
     }
     foreach (['ingredients', 'steps'] as $field) {
@@ -177,21 +169,20 @@ function validate_recipe_input(array $data): array
  * Baut aus rohen Request-Daten die vom Store verwalteten Felder
  * (title/category/servings/ingredients/steps/notes/twoColumnPrint), mit Defaults/Typumwandlung.
  * Setzt validierte Daten voraus (siehe validate_recipe_input()).
- *
  * @param array $data Rohe Request-Daten
  * @return array Normalisierte Felder, leere Werte als null
  */
 function normalize_recipe_fields(array $data): array
 {
-    $notes = trim((string) ($data['notes'] ?? ''));
+    $notes = trim((string)($data['notes'] ?? ''));
 
     return [
-        'title' => trim((string) ($data['title'] ?? '')),
-        'category' => !empty($data['category']) ? (string) $data['category'] : null,
-        'servings' => !empty($data['servings']) ? (string) $data['servings'] : null,
+        'title' => trim((string)($data['title'] ?? '')),
+        'category' => !empty($data['category']) ? (string)$data['category'] : null,
+        'servings' => !empty($data['servings']) ? (string)$data['servings'] : null,
         'ingredients' => array_map(
             fn(array $g) => [
-                'group' => !empty($g['group']) ? (string) $g['group'] : null,
+                'group' => !empty($g['group']) ? (string)$g['group'] : null,
                 'text' => array_values(array_map('strval', $g['text'])),
             ],
             $data['ingredients'] ?? []
@@ -207,7 +198,6 @@ function normalize_recipe_fields(array $data): array
 
 /**
  * Legt ein neues Rezept an: validiert, vergibt Slug/created, erstellt den Ordner und schreibt recipe.json.
- *
  * @param array $data Rohe Request-Daten (title ist Pflicht)
  * @return array Das angelegte Rezept inkl. slug, created, image und thumb (beide null)
  * @throws ValidationException bei ungültigen Daten oder bereits vergebenem Titel
@@ -250,7 +240,6 @@ function create_recipe(array $data): array
  * Aktualisiert ein Rezept. Ändert sich der Titel so, dass der Slug wechselt, wird der
  * Ordner atomar umbenannt (siehe Abschnitt 4 der Arbeitsübergabe) – bei Fehlschlag bleibt
  * der alte Zustand vollständig erhalten.
- *
  * @param string $slug Aktueller Slug des Rezepts
  * @param array $data Rohe Request-Daten (gleiches Format wie bei create_recipe())
  * @return array Das aktualisierte Rezept (mit evtl. neuem slug)
@@ -301,7 +290,6 @@ function update_recipe(string $slug, array $data): array
 
 /**
  * Entfernt den kompletten Rezeptordner (recipe.json + Bilder verschwinden automatisch mit).
- *
  * @param string $slug Slug des Rezepts
  * @return void
  * @throws NotFoundException wenn das Rezept nicht existiert
@@ -322,7 +310,6 @@ function delete_recipe(string $slug): void
  * Windows bei einem kurzzeitigen Datei-Lock (z. B. Windows Search/Virenscanner öffnet gerade
  * thumb.jpg) real bestehen, während die API trotzdem Erfolg meldete – Rezepte "verschwanden" aus
  * der Liste beim nächsten Request nicht wirklich, sondern tauchten wieder auf.
- *
  * @param string $dir Absoluter Pfad des zu löschenden Ordners
  * @return void
  * @throws RuntimeException wenn eine Datei oder der Ordner selbst nicht gelöscht werden konnte
