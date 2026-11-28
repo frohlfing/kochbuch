@@ -500,8 +500,11 @@ header p.sub {
         display: none !important;
     }
 
+    /* Ohne min-height: 100vh wäre der Body im Druck genau eine Seite hoch; schon ein Rundungspixel ergäbe eine
+       leere zweite Seite. */
     body {
         background: none !important;
+        min-height: 0 !important;
     }
 
     .overlay.open {
